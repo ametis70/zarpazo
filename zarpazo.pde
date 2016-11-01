@@ -2,16 +2,24 @@ int pantallaJuegoActiva = 0;
 boolean peleando = false;
 SistemaPelea combat;
 
+float velocidad= 3;
+
+float velocidadInicial = velocidad;
+
+float accel = 1.00009;
+
+boolean nuevoTurno = false;
+
+
 void setup() {
 
-  size(1280, 720);
+  //size(1366, 768);
+  fullScreen();
 
   //-------------------------------------------------------------------------------------------------------------------------------------
 
   // Tipografía 
-  cargarFuentes();
-  textFont(fuenteJuego);
-  textAlign(CENTER, CENTER);
+  inicializarFuentes();
 
   // Imagenes
 
@@ -46,17 +54,20 @@ void draw() {
 
   imageMode(CORNER);
   if (pantallaJuegoActiva==1) {
-    /* Escenario2.resize(displayWidth, displayHeight);
-     image(Escenario2, 0, 0);
-     imageMode(CENTER);
-     Xolotl.resize(300, 0);
-     image(Xolotl, width/2, height/2+150); */
-    background(0);
+    Escenario2.resize(displayWidth, displayHeight);
+    image(Escenario2, 0, 0);
+    imageMode(CENTER);
+    Xolotl.resize(600, 0);
+    image(Xolotl, width/2+random(-1,1), height/2+50+random(-1,1));
+    // background(0);
+
     if (peleando == false) {
       iniciarPelea();
     }
     combat.pelea();
     combat.turno();
     combat.debugging();
+    player.dibujarBarraJugador();
+    enemigo.dibujarBarraEnemigo();
   }
 }

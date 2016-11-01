@@ -1,32 +1,22 @@
 class Barra {
   // Datos 
-  float posX, posY, barVelocidad, barVelocidadInicial, barAccel; 
+  float posX, posY; 
   int tamX, tamY; 
 
   // Constructor
-  Barra(float posicionX, float posicionY, int barX, int barY, float velocidad) {
+  Barra(float posicionX, float posicionY, int barX, int barY) {
     posX = posicionX;
     posY = posicionY;
+    
     tamX = barX;
-    tamY =  barY;
-    barVelocidad = barVelocidadInicial = velocidad;
-
-    barAccel = 1.0009;
-  }
-
-  void dibujar() {
-    fill(255);
-    noStroke();
-    rect(posX, posY, tamX, tamY);
-  }
-
-  void mover() {
-    if (player.combo == 0) 
-      barVelocidad = barVelocidadInicial;   // Si hay combo break, se reinicia la velocidad
-    if (barVelocidad <= 7) 
-      barVelocidad *= barAccel;             // Si la velocidad es menor a 7, ésta se multiplica por la aceleración
-      
-    posX += barVelocidad;
+    tamY = barY;
   }
   
+  // Función para dibujar la barra 
+  void dibujar() {
+    fill(0,0,100);
+    noStroke();
+    rectMode(CENTER);
+    rect(posX, posY, tamX, tamY);
+  }
 }

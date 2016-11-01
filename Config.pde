@@ -1,24 +1,30 @@
 // Funciones y variables de configuración(llamar desde setup)
 
 // Tipografía
-PFont fuenteJuego,
-      fuenteDebugging;
+PFont fuenteJuego, 
+  fuenteDebugging;
 
 void cargarFuentes() {
   textAlign(CENTER, CENTER);
   fuenteJuego = createFont("Open Sans", 25);
-  fuenteDebugging = createFont("Arial", 12);
+  fuenteDebugging = createFont("Arial", 16);
 }
 
 // Imagenes
 PImage startScreen, 
-       escenario2, 
-       xolotl;   
+  Escenario2, 
+  Xolotl; 
+
+void inicializarFuentes() {
+  cargarFuentes();
+  textFont(fuenteJuego);
+  textAlign(CENTER, CENTER);
+}
 
 void cargarImagenes() {
   startScreen = loadImage("StartScreen.jpg");
-  escenario2 = loadImage("Escenario2.jpg");
-  xolotl = loadImage("Xolotl.png");
+  Escenario2 = loadImage("Escenario.jpg");
+  Xolotl = loadImage("Xolotl.png");
 }
 
 // Configuración inicial
@@ -31,9 +37,13 @@ void inicializacion() {
   noStroke();                      // No se dibujan las lineas para nada, todavía
 }
 
+
+// Mover a clase
+
 void iniciarPelea() {
- if(!peleando){ 
-   combat = new SistemaPelea(3); 
- }
- peleando = true;
+  if (!peleando) { 
+    combat = new SistemaPelea(3);
+  }
+
+  peleando = true;
 }

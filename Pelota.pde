@@ -1,13 +1,13 @@
-String resultado;
+String resultado; // Esta variable es para el debugging onscreen
 
 class Pelota {
   // Datos
-  int posX, posY, tam, tipo;
+  float posX, posY;
   boolean activa, fueActiva;
+  int tipo, tam;
 
   // Constructor
   Pelota(int posicionX, int posicionY, int type) { 
-    posY = height / 2;
     tam = 100;
     activa = fueActiva = false;
 
@@ -31,18 +31,31 @@ class Pelota {
     if (dist(posX, posY, bar.posX, bar.posY) < tam / 2 && fueActiva == false)
       activa = fueActiva = true;
   }
+  
+  // Se desactiva la pelota luego de tocar un botón o que esta pase de largo
   void desactivar() {
     activa = false;
   }
+  // Esta funcion restablece la variable para que las pelotas puedan volver a ser activas
   void restablecer() {
     fueActiva = false;
   }
+  
 
   // Función para cambiar el tipo de circulo(color-tecla)
   void cambiarTipo() {
     tipo = int(random(4));
   }
-
+  
+  void mover() {
+    if (player.combo == 0) 
+      velocidad = velocidadInicial;   // Si hay combo break, se reinicia la velocidad
+    if (velocidad <= 7) 
+      velocidad *= accel;             // Si la velocidad es menor a 7, ésta se multiplica por la aceleración
+      
+    posX -= velocidad; 
+  }
+  
   // Función para los golpes
   void golpear() {
     // Si el circulo está activo...
@@ -142,21 +155,21 @@ class Pelota {
               resultado = "¡Perfecto!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 25 && dist(posX, posY, bar.posX, bar.posY) > 5) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 75 && dist(posX, posY, bar.posX, bar.posY) > 25) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 100 && dist(posX, posY, bar.posX, bar.posY) > 75) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -181,21 +194,21 @@ class Pelota {
               resultado = "¡Perfecto!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 25 && dist(posX, posY, bar.posX, bar.posY) > 5) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 75 && dist(posX, posY, bar.posX, bar.posY) > 25) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 100 && dist(posX, posY, bar.posX, bar.posY) > 75) {
+            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -214,7 +227,6 @@ class Pelota {
       }
       // Si la barra pasa y no se pulsa ninguna tecla, se recibe daño.
       if (dist(posX, posY, bar.posX, bar.posY) >= tam / 2) {
-        enemigo.combo = 0;
         player.combo = 0;
         enemigo.combo++;
         enemigo.damageActual += int(random(9, 20));
