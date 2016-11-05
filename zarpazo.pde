@@ -1,12 +1,12 @@
 SistemaPelea combat;
 Niveles nivel;
 
-
 void setup() {
 
-  size(1366, 768);
-  //fullScreen();
-  nivel = new Niveles();
+  //size(1366, 768);
+  fullScreen();
+
+   nivel = new Niveles();
   //-------------------------------------------------------------------------------------------------------------------------------------
 
   // Tipografía 
@@ -14,6 +14,8 @@ void setup() {
 
   // Imagenes
   cargarImagenes();
+
+  // Arduino
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   // Se llama a que se declaren las condiciones iniciales necesarias para el sistema de pelea.
