@@ -57,7 +57,7 @@ class Pelota {
   }
   
   // Función para los golpes
-  void golpear() {
+  void golpear() { 
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una tecla...

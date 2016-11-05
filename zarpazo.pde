@@ -10,7 +10,6 @@ float accel = 1.00009;
 
 boolean nuevoTurno = false;
 
-
 void setup() {
 
   //size(1366, 768);
@@ -24,6 +23,8 @@ void setup() {
   // Imagenes
 
   cargarImagenes();
+
+  // Arduino
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   // Se llama a que se declaren las condiciones iniciales necesarias para el sistema de pelea.
@@ -58,7 +59,7 @@ void draw() {
     image(Escenario2, 0, 0);
     imageMode(CENTER);
     Xolotl.resize(600, 0);
-    image(Xolotl, width/2+random(-1,1), height/2+50+random(-1,1));
+    image(Xolotl, width/2+random(-1, 1), height/2+50+random(-1, 1));
     // background(0);
 
     if (peleando == false) {
