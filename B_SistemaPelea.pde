@@ -21,8 +21,8 @@ class SistemaPelea {
   SistemaPelea(int pelotasInicial) {
 
     // Se inicializan los objetos del jugador y el enemigo
-    player = new Jugador(450, 0);
-    enemigo = new Enemigo(450, 0);
+    player = new Jugador(450, "Zarpazo");
+    enemigo = new Enemigo(450, "Xolotl");
 
     // Inicialización de barra
     bar = new Barra(300, 150, 7, 125);
@@ -89,6 +89,7 @@ class SistemaPelea {
       inicializarFuentes();
       text("GANASTE", width / 2, 100);
       nivel.nivelActual = 0;
+      nivel.peleando = false;
     }
 
     if (player.salud < 0) {
@@ -96,6 +97,7 @@ class SistemaPelea {
       inicializarFuentes();
       text("PERDISTE", width / 2, 100);
       nivel.nivelActual = 0;
+      nivel.peleando = false;
     }
 
     // Texto de controles

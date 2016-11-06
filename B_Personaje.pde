@@ -1,16 +1,7 @@
-class Jugador {
+class Personaje {
   // Datos
-  int salud, saludMaxima, combo, damage, damageActual, gato;
-  float barraVida, barraVidaAtras;
-
-  //Constructor
-  Jugador(int saludInicial, int gatito) {
-    combo = damage = damageActual = 0;
-
-    salud = saludMaxima = saludInicial;
-    gato = gatito;
-    barraVidaAtras = 400;
-  }
+  int salud, saludMaxima, combo, damage, damageActual;
+  String animal;
 
   // Función para infligir daño al enemigo
   void infligirDamage() {
@@ -23,53 +14,69 @@ class Jugador {
     }
     damageActual = 0;
   }
+}
 
-  void dibujarBarraJugador() {
-    barraVida = map(salud, 0, saludMaxima, 0, barraVidaAtras);
 
-    rectMode(CORNER);
+class BarraVida {
+  float barraVida, barraVidaAtras;
+  BarraVida() {
+    barraVidaAtras = 400;
+  }
+
+/*
+
+  void dibujar(Personaje personaje,int modo, color color1, int x1,int y1,int x2,int y2, int x3,int y3,int x4,int y4) {
+
+    barraVida = map(personaje.salud, 0, personaje.saludMaxima, 0, barraVidaAtras);
+    rectMode(modo);
     fill(0, 0, 0);
-    rect(50, 25, barraVidaAtras, 25);
+    rect(x1, y1, barraVidaAtras, y2);
     fill(360, 100, 100);
     rect(50, 25, barraVida, 25);
   }
 }
 
 
-class Enemigo {
-  // Datos
-  int salud, saludMaxima, combo, damage, damageActual, perro;
-  float barraVida, barraVidaAtras;
+/* void dibujarBarraJugador() {
+ barraVida = map(salud, 0, saludMaxima, 0, barraVidaAtras);
+ 
+ rectMode(CORNER);
+ fill(0, 0, 0);
+ rect(50, 25, barraVidaAtras, 25);
+ fill(360, 100, 100);
+ rect(50, 25, barraVida, 25);
+ }
+ 
+ 
+ void dibujarBarraEnemigo() {
+ barraVida = map(salud, 0, saludMaxima, 0, barraVidaAtras);
+ 
+ rectMode(CORNERS);
+ fill(0, 0, 0);
+ rect(width-50, 25, width-50-barraVidaAtras, 50);
+ fill(270, 100, 100);
+ rect(width-50, 25, width-50-barraVida, 50);
+ }
+ 
+ */
 
 
+class Jugador extends Personaje {
   //Constructor
-  Enemigo(int saludInicial, int perrito) {
+  Jugador(int saludInicial, String animalito) {
     combo = damage = damageActual = 0;
 
     salud = saludMaxima = saludInicial;
-    perro = perrito;
-    barraVidaAtras = 400;
+    animal = animalito;
   }
+}
 
-  // Función para infligir daño al jugador
-  void infligirDamage() {
-    if (combo >= 3) {
-      damage = damageActual * combo / 3;
-      player.salud -= damageActual * combo / 3;
-    } else {
-      damage = damageActual;
-      player.salud -= damageActual;
-    }
-    damageActual = 0;
-  }
+class Enemigo extends Personaje {
+  //Constructor
+  Enemigo(int saludInicial, String animalito) {
+    combo = damage = damageActual = 0;
 
-  void dibujarBarraEnemigo() {
-    barraVida = map(salud, 0, saludMaxima, 0, barraVidaAtras);
-
-    rectMode(CORNERS);
-    fill(0, 0, 0);
-    rect(width-50, 25, width-50-barraVidaAtras, 50);
-    fill(270, 100, 100);
-    rect(width-50, 25, width-50-barraVida, 50);
+    salud = saludMaxima = saludInicial;
+    animal = animalito;
   }
 }
