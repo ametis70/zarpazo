@@ -8,11 +8,8 @@ Jugador player;
 class SistemaPelea {
 
   float velocidad;
-
   float velocidadInicial;
-
   float accel;
-
   boolean nuevoTurno;
 
   // Variables sistema de pelea
@@ -73,8 +70,8 @@ class SistemaPelea {
         pelotasActual = 3;
 
       // Se calculan los daños 
-      player.infligirDamage();
-      enemigo.infligirDamage();
+      player.infligirDamage(enemigo);
+      enemigo.infligirDamage(player);
     }
   }
 

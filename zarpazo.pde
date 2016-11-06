@@ -1,6 +1,8 @@
 SistemaPelea combat;
 Nivel nivel;
 Menu menu;
+BarraVida barraVidaJugador;
+BarraVida barraVidaEnemigo;
 
 void setup() {
 
@@ -9,6 +11,8 @@ void setup() {
 
    nivel = new Nivel();
    menu = new Menu();
+   barraVidaJugador = new BarraVida();
+   barraVidaEnemigo = new BarraVida();
   //-------------------------------------------------------------------------------------------------------------------------------------
 
   // Tipografía 
