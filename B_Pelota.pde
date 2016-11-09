@@ -31,7 +31,7 @@ class Pelota {
     if (dist(posX, posY, bar.posX, bar.posY) < tam / 2 && fueActiva == false)
       activa = fueActiva = true;
   }
-  
+
   // Se desactiva la pelota luego de tocar un botón o que esta pase de largo
   void desactivar() {
     activa = false;
@@ -40,22 +40,22 @@ class Pelota {
   void restablecer() {
     fueActiva = false;
   }
-  
+
 
   // Función para cambiar el tipo de circulo(color-tecla)
   void cambiarTipo() {
     tipo = int(random(4));
   }
-  
+
   void mover() {
     if (player.combo == 0) 
       combat.velocidad = combat.velocidadInicial;   // Si hay combo break, se reinicia la combat.velocidad
     if (combat.velocidad <= 7) 
       combat.velocidad *= combat.accel;             // Si la combat.velocidad es menor a 7, ésta se multiplica por la aceleración
-      
-    posX -= combat.velocidad; 
+
+    posX -= combat.velocidad;
   }
-  
+
   // Función para los golpes
   void golpear() { 
     // Si el circulo está activo...

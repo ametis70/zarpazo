@@ -1,6 +1,6 @@
 class Nivel {
 
-  int nivelActual;
+  int etapaActual;
   boolean peleando = false;
   boolean pan = true;
 
@@ -8,11 +8,11 @@ class Nivel {
   Nivel() {
   }
 
-  void nivel(PImage escenario, PImage enemigoNombre) {
+  void nivel(PImage escenario, PImage enemigoNombre, int tamX, int tamY) {
     escenario.resize(displayWidth, displayHeight);
+    enemigoNombre.resize(tamX, tamY);
     image(escenario, 0, 0);
     imageMode(CENTER);
-    enemigoNombre.resize(600, 0);
     image(enemigoNombre, width/2+random(-1, 1), height/2+50+random(-1, 1));
     // background(0);
 

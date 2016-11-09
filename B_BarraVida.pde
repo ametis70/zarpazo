@@ -16,13 +16,13 @@ class BarraVida {
     if (modo == CORNER)
       rect(x, y, ancho, alto);        // Jugador
     if (modo == CORNERS) 
-    rect(x, y, x - ancho, alto+25);          // Enemigo
+      rect(x, y, x - ancho, alto+25);          // Enemigo
 
     // Se dibuja la barra con la vida(arriba)
     fill(color2);
     if (modo == CORNER)
       rect(x, y, saludActual, alto);  // Jugador
     if (modo == CORNERS)
-    rect(x, y, x-saludActual, alto+25);  // Enemigo
+      rect(x, y, x-saludActual, alto+25);  // Enemigo
   }
 }

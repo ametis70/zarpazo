@@ -85,16 +85,17 @@ class SistemaPelea {
       fill(90, 100, 100);
       inicializarFuentes();
       text("GANASTE", width / 2, 100);
-      nivel.nivelActual = 0;
+      nivel.etapaActual+=2;
       nivel.peleando = false;
     }
 
     if (player.salud < 0) {
+      pushStyle();
       fill(0, 100, 100);
-      inicializarFuentes();
       text("PERDISTE", width / 2, 100);
-      nivel.nivelActual = 0;
+      nivel.etapaActual = 0;
       nivel.peleando = false;
+      popStyle();
     }
 
     // Texto de controles

@@ -2,19 +2,29 @@
 
 // Tipografía
 PFont fuenteJuego, 
-  fuenteDebugging;
+  fuenteDebugging, 
+  fuenteMenu;
 
 void cargarFuentes() {
   fill(255);
   textAlign(CENTER, CENTER);
-  fuenteJuego = createFont("Open Sans", 25);
+  fuenteJuego = createFont("data/fuentes/OpenSans-Bold.ttf", 25);
+  fuenteMenu = createFont("data/fuentes/neonize.ttf", 30);
   fuenteDebugging = createFont("Arial", 16);
 }
 
 // Imagenes
 PImage startScreen, 
+  Escenario, 
   Escenario2, 
-  Xolotl; 
+  Escenario3, 
+  Cerbero, 
+  Anubis, 
+  Xolotl, 
+  Cinematica1;
+
+//PShape Cerbero, Xolotl, Rottweiler;
+
 
 void inicializarFuentes() {
   cargarFuentes();
@@ -23,9 +33,18 @@ void inicializarFuentes() {
 }
 
 void cargarImagenes() {
-  startScreen = loadImage("StartScreen.jpg");
-  Escenario2 = loadImage("Escenario.jpg");
-  Xolotl = loadImage("Xolotl.png");
+  startScreen = loadImage("data/imagenes/StartScreen.png");
+  Escenario = loadImage("data/imagenes/Escenario.jpg");
+  Escenario2 = loadImage("data/imagenes/Escenario2.jpg");
+  Escenario3 = loadImage("data/imagenes/Escenario3.jpg");
+  Cinematica1 = loadImage("data/imagenes/Cinematica1.jpg");
+  Cerbero = loadImage("data/imagenes/Cerbero.png");
+  Anubis = loadImage("data/imagenes/Anubis.png");
+  Xolotl = loadImage("data/imagenes/Xolotl.png");
+
+  //  Cerbero = loadShape("data/imagenes/Cerbero.svg");
+  // Xolotl = loadShape("data/imagenes/Xolotl.svg");
+  // Rottweiler = loadShape("data/imagenes/Rottweiler.svg");
 }
 
 // Configuración inicial
@@ -33,7 +52,7 @@ void cargarImagenes() {
 void inicializacion() {
 
   colorMode(HSB, 360, 100, 100);   // Cambiamos el color a HSB para manejar más fácil las teclas
-  rectMode(CENTER);                // La barrita se dibuja desde el centro
+  rectMode(CENTER);                // La barra se dibuja desde el centro
   strokeWeight(5);                 // Grosor de lineas
   noStroke();                      // No se dibujan las lineas para nada, todavía
 }
