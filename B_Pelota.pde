@@ -3,12 +3,12 @@ String resultado; // Esta variable es para el debugging onscreen
 class Pelota {
   // Datos
   float posX, posY;
-  boolean activa, fueActiva;
+  boolean activa, fueActiva, golpeada;
   int tipo, tam;
 
   // Constructor
   Pelota(int posicionX, int posicionY, int type) { 
-    tam = 100;
+    tam = 80;
     activa = fueActiva = false;
 
     posX = posicionX;
@@ -18,16 +18,36 @@ class Pelota {
 
   // Función para dibujar los circulos.
   void dibujar() {
-    if (activa)
-      stroke(255);
-    else
-      noStroke();
-    fill(tipo * 90, 100, 100);
-    ellipse(posX, posY, tam, tam);
+    //if (activa)
+    //  stroke(255);
+    //else
+    //  noStroke();
+    //fill(tipo * 90, 100, 100);
+    
+    //ellipse(posX, posY, tam, tam);
+    imageMode(CENTER);
+    if(tipo == 0) {
+     image(circuloRojo, posX, posY, tam, tam);
+    }
+    if(tipo == 1) {
+     image(circuloVerde, posX, posY, tam, tam);
+    }
+    if(tipo == 2) {
+     image(circuloAzul, posX, posY, tam, tam);
+    }
+    if(tipo == 3) {
+     image(circuloAmarillo, posX, posY, tam, tam);
+    }
+    if(golpeada == true) {
+     image(circuloGris, posX, posY, tam, tam);
+    }
+    
+    
+    
   }
 
   // Funciónes para saber cuando la barrita está sobre el circulo, activarlos y desactivarlos.
-  void activar() {
+  void activar(Barra bar) {
     if (dist(posX, posY, bar.posX, bar.posY) < tam / 2 && fueActiva == false)
       activa = fueActiva = true;
   }
@@ -39,15 +59,16 @@ class Pelota {
   // Esta funcion restablece la variable para que las pelotas puedan volver a ser activas
   void restablecer() {
     fueActiva = false;
+    golpeada = false;
   }
 
 
-  // Función para cambiar el tipo de circulo(color-tecla)
+  // Función para cambiar el tipo de circulo(color-bolsa)
   void cambiarTipo() {
     tipo = int(random(4));
   }
 
-  void mover() {
+  void mover(Jugador player) {
     if (player.combo == 0) 
       combat.velocidad = combat.velocidadInicial;   // Si hay combo break, se reinicia la combat.velocidad
     if (combat.velocidad <= 7) 
@@ -57,12 +78,12 @@ class Pelota {
   }
 
   // Función para los golpes
-  void golpear() { 
+  void golpear(Enemigo enemigo, Jugador player, Barra bar) { 
     // Si el circulo está activo...
     if (activa) {
-      // Y se toca una tecla...
+      // Y se toca una bolsa...
       if (keyPressed) {
-        // Y la tecla se corresponde al tipo...
+        // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
           if (key == 'a' || key == 'A') { 
             // Se hace daño según que tan cerca se esté del centro.
@@ -71,6 +92,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(12, 20));
               resultado = "¡Perfecto!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 3) {
@@ -78,6 +100,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
@@ -85,6 +108,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
@@ -92,21 +116,23 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(1, 5));
               resultado = "Puede ser mejor...";
+              golpeada = true;
               desactivar();
             }
           }
-          // Pero si se toca la tecla equivocada, se recibe daño
+          // Pero si se toca la bolsa equivocada, se recibe daño
 
           if ((key == 'a' || key == 'A') == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
-            resultado = "¡Tecla equivocada!";
+            resultado = "¡Bolsa equivocada!";
+            golpeada = true;
             desactivar();
           }
         }
 
-        // Lo mismo para cada tecla. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
+        // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
           if (key == 's' || key == 'S') {
             if (dist(posX, posY, bar.posX, bar.posY) < 5) {
@@ -114,6 +140,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(12, 20));
               resultado = "¡Perfecto!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
@@ -121,6 +148,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
@@ -128,6 +156,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
@@ -135,6 +164,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(1, 5));
               resultado = "Puede ser mejor...";
+              golpeada = true;
               desactivar();
             }
           }
@@ -142,7 +172,8 @@ class Pelota {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
-            resultado = "¡Tecla equivocada!";
+            resultado = "¡Bolsa equivocada!";
+            golpeada = true;
             desactivar();
           }
         }
@@ -153,6 +184,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(12, 20));
               resultado = "¡Perfecto!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
@@ -160,6 +192,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
@@ -167,6 +200,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
@@ -174,6 +208,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(1, 5));
               resultado = "Puede ser mejor...";
+              golpeada = true;
               desactivar();
             }
           }
@@ -181,7 +216,8 @@ class Pelota {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
-            resultado = "¡Tecla equivocada!";
+            resultado = "¡Bolsa equivocada!";
+            golpeada = true;
             desactivar();
           }
         }
@@ -192,6 +228,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(12, 20));
               resultado = "¡Perfecto!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
@@ -199,6 +236,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(9, 12));
               resultado = "¡Excelente!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
@@ -206,6 +244,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(5, 9));
               resultado = "¡Bien!";
+              golpeada = true;
               desactivar();
             } 
             if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
@@ -213,6 +252,7 @@ class Pelota {
               player.combo++;
               player.damageActual += int(random(1, 5));
               resultado = "Puede ser mejor...";
+              golpeada = true;
               desactivar();
             }
           }
@@ -220,17 +260,19 @@ class Pelota {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
-            resultado = "¡Tecla equivocada!";
+            resultado = "¡Bolsa equivocada!";
+            golpeada = true;
             desactivar();
           }
         }
       }
-      // Si la barra pasa y no se pulsa ninguna tecla, se recibe daño.
+      // Si la barra pasa y no se pulsa ninguna bolsa, se recibe daño.
       if (dist(posX, posY, bar.posX, bar.posY) >= tam / 2) {
         player.combo = 0;
         enemigo.combo++;
         enemigo.damageActual += int(random(9, 20));
-        resultado = "¡No presionaste ninguna tecla!";
+        resultado = "¡No golpeaste ninguna bolsa!";
+        golpeada = true;
         desactivar();
       }
     }

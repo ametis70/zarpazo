@@ -21,10 +21,10 @@ class Nivel {
     }
     combat.pelea();
     combat.turno();
-    combat.debugging();
+    //combat.debugging();
+    combat.textoInterfaz();
 
 
-    barraVidaJugador.dibujar( player, CORNER, color(0, 0, 0), color(0, 100, 100), 50, 25 );
-    barraVidaEnemigo.dibujar( enemigo, CORNERS, color(0, 0, 0), color(270, 100, 100), width-50, 25);
+ 
   }
 }

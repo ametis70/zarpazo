@@ -9,7 +9,7 @@ class Menu {
     startScreen.resize(displayWidth, displayHeight);
     image(startScreen, 0, 0);
     textFont(fuenteMenu);
-    text("Presione cualquier tecla para empezar", width/2, height-100);
+   // text("Presione cualquier tecla para empezar", width/2, height-100);
     popStyle();
     
   }

@@ -14,9 +14,17 @@ class Barra {
 
   // Función para dibujar la barra 
   void dibujar() {
-    fill(0, 0, 100);
-    noStroke();
-    rectMode(CENTER);
-    rect(posX, posY, tamX, tamY);
+    //fill(0, 0, 100);
+    //noStroke();
+    //rectMode(CENTER);
+    //rect(posX, posY, tamX, tamY);
+    pushStyle();
+    ellipseMode(CENTER);
+    noFill();
+    strokeWeight(6);
+    stroke(0,0, 100);
+
+    ellipse(posX, posY, tamY, tamY);
+    popStyle();
   }
 }
