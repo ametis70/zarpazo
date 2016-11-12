@@ -1,10 +1,10 @@
-class Barra {
+class Mira {
   // Datos 
   float posX, posY; 
   int tamX, tamY; 
 
   // Constructor
-  Barra(float posicionX, float posicionY, int barX, int barY) {
+  Mira(float posicionX, float posicionY, int barX, int barY) {
     posX = posicionX;
     posY = posicionY;
 
@@ -12,12 +12,8 @@ class Barra {
     tamY = barY;
   }
 
-  // Función para dibujar la barra 
+  // Función para dibujar la mira 
   void dibujar() {
-    //fill(0, 0, 100);
-    //noStroke();
-    //rectMode(CENTER);
-    //rect(posX, posY, tamX, tamY);
     pushStyle();
     ellipseMode(CENTER);
     noFill();

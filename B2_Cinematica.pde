@@ -23,6 +23,7 @@ class Cinematica {
     image(cinematica, posX, posY, tamX, tamY);
   }
 
+  // Se cambia el objetivo(tanto para posición como tamaño. Mover con ease)
   void target(float targetX, float targetY) {
     listo = true;
     this.targetX = targetX;
@@ -44,8 +45,6 @@ class Cinematica {
     }
   }
 
-
-
   void easeTam(float easing) {
     float dx = targetX - tamX;  // Variable para la distancia en X. Se resta la posición actual a donde queremos llegar.
     tamX += dx * easing;        // Se actualiza la posición con una velocidad determinada por la variable easing.
@@ -60,3 +59,32 @@ class Cinematica {
     }
   }
 }
+
+
+/* Codigo de ejemplo
+
+if (cinematica.movimiento == 0) {  
+  cinematica.target(500, 500);
+  cinematica.easePos(0.05);
+}
+if (cinematica.movimiento == 1) {
+  cinematica.target(0, 600);
+  cinematica.easePos(0.05);
+}
+if (cinematica.movimiento == 2) {
+  cinematica.target(500, 0);
+  cinematica.easePos(0.05);
+}
+if (cinematica.movimiento == 3) {
+  cinematica.target(0, 0);
+  cinematica.easePos(0.05);
+}
+if (cinematica.movimiento == 4) {
+  cinematica.target(1920, 1356);
+  cinematica.easeTam(0.05);
+}
+if (cinematica.movimiento == 5) {
+  cinematica.target(-500, -500);
+  cinematica.easePos(0.05);
+}
+*/

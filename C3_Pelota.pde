@@ -18,13 +18,6 @@ class Pelota {
 
   // Función para dibujar los circulos.
   void dibujar() {
-    //if (activa)
-    //  stroke(255);
-    //else
-    //  noStroke();
-    //fill(tipo * 90, 100, 100);
-    
-    //ellipse(posX, posY, tam, tam);
     imageMode(CENTER);
     if(tipo == 0) {
      image(circuloRojo, posX, posY, tam, tam);
@@ -41,14 +34,11 @@ class Pelota {
     if(golpeada == true) {
      image(circuloGris, posX, posY, tam, tam);
     }
-    
-    
-    
   }
 
-  // Funciónes para saber cuando la barrita está sobre el circulo, activarlos y desactivarlos.
-  void activar(Barra bar) {
-    if (dist(posX, posY, bar.posX, bar.posY) < tam / 2 && fueActiva == false)
+  // Funciónes para saber cuando la mirarita está sobre el circulo, activarlos y desactivarlos.
+  void activar(Mira mira) {
+    if (dist(posX, posY, mira.posX, mira.posY) < tam / 2 && fueActiva == false)
       activa = fueActiva = true;
   }
 
@@ -62,13 +52,12 @@ class Pelota {
     golpeada = false;
   }
 
-
   // Función para cambiar el tipo de circulo(color-bolsa)
   void cambiarTipo() {
     tipo = int(random(4));
   }
 
-  void mover(Jugador player) {
+  void mover(Jugador player, SistemaPelea combat) {
     if (player.combo == 0) 
       combat.velocidad = combat.velocidadInicial;   // Si hay combo break, se reinicia la combat.velocidad
     if (combat.velocidad <= 7) 
@@ -78,16 +67,16 @@ class Pelota {
   }
 
   // Función para los golpes
-  void golpear(Enemigo enemigo, Jugador player, Barra bar) { 
+  void golpear(Enemigo enemigo, Jugador player, Mira mira) { 
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
-      if (keyPressed) {
+      if (keyPressed || microswitch() != 0) {
         // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
-          if (key == 'a' || key == 'A') { 
+          if (key == 'a' || key == 'A' || microswitch(1) == 1) { 
             // Se hace daño según que tan cerca se esté del centro.
-            if (dist(posX, posY, bar.posX, bar.posY) < 5) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(12, 20));
@@ -95,7 +84,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 3) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 3) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
@@ -103,7 +92,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
@@ -111,7 +100,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -122,7 +111,7 @@ class Pelota {
           }
           // Pero si se toca la bolsa equivocada, se recibe daño
 
-          if ((key == 'a' || key == 'A') == false) {
+          if ((key == 'a' || key == 'A' || microswitch(1) == 1) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -134,8 +123,8 @@ class Pelota {
 
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
-          if (key == 's' || key == 'S') {
-            if (dist(posX, posY, bar.posX, bar.posY) < 5) {
+          if (key == 's' || key == 'S' || microswitch(2) == 2) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(12, 20));
@@ -143,7 +132,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
@@ -151,7 +140,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
@@ -159,7 +148,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -168,7 +157,7 @@ class Pelota {
               desactivar();
             }
           }
-          if ((key == 's' || key == 'S') == false) {
+          if ((key == 's' || key == 'S'  || microswitch(2) == 2) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -178,8 +167,8 @@ class Pelota {
           }
         }
         if (tipo == 2) {
-          if (key == 'd' || key == 'D') {
-            if (dist(posX, posY, bar.posX, bar.posY) < 5) {
+          if (key == 'd' || key == 'D' || microswitch(3) == 3) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(12, 20));
@@ -187,7 +176,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
@@ -195,7 +184,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
@@ -203,7 +192,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -212,7 +201,7 @@ class Pelota {
               desactivar();
             }
           }
-          if ((key == 'd' || key == 'D') == false) {
+          if ((key == 'd' || key == 'D'  || microswitch(3) == 3) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -222,8 +211,8 @@ class Pelota {
           }
         }
         if (tipo == 3) {
-          if (key == 'f' || key == 'F') {
-            if (dist(posX, posY, bar.posX, bar.posY) < 5) {
+          if (key == 'f' || key == 'F'  || microswitch(4) == 4) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(12, 20));
@@ -231,7 +220,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 13 && dist(posX, posY, bar.posX, bar.posY) > 5) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(9, 12));
@@ -239,7 +228,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 35 && dist(posX, posY, bar.posX, bar.posY) > 13) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(5, 9));
@@ -247,7 +236,7 @@ class Pelota {
               golpeada = true;
               desactivar();
             } 
-            if (dist(posX, posY, bar.posX, bar.posY) < 50 && dist(posX, posY, bar.posX, bar.posY) > 35) {
+            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
               enemigo.combo = 0;
               player.combo++;
               player.damageActual += int(random(1, 5));
@@ -256,7 +245,7 @@ class Pelota {
               desactivar();
             }
           }
-          if (( key == 'f' || key == 'F') == false) {
+          if (( key == 'f' || key == 'F'  || microswitch(4) == 4) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -266,8 +255,8 @@ class Pelota {
           }
         }
       }
-      // Si la barra pasa y no se pulsa ninguna bolsa, se recibe daño.
-      if (dist(posX, posY, bar.posX, bar.posY) >= tam / 2) {
+      // Si la mirara pasa y no se pulsa ninguna bolsa, se recibe daño.
+      if (dist(posX, posY, mira.posX, mira.posY) >= tam / 2) {
         player.combo = 0;
         enemigo.combo++;
         enemigo.damageActual += int(random(9, 20));

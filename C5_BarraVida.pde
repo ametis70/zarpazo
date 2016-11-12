@@ -40,9 +40,9 @@ class BarraVida {
   boolean revertido = false;
 
   BarraVida(String nombrePersonaje,String nombreImgRelleno) {
-    retrato = loadImage("grafikks/retrato-" + nombrePersonaje + ".png");
-    fondo = loadImage("grafikks/" + nombreImgRelleno + "-vacio.png");
-    relleno = loadImage("grafikks/" + nombreImgRelleno + "-lleno.png");
+    retrato = loadImage("data/imagenes/ui/barras/retrato-" + nombrePersonaje + ".png");
+    fondo = loadImage("data/imagenes/ui/barras/" + nombreImgRelleno + "-vacio.png");
+    relleno = loadImage("data/imagenes/ui/barras/" + nombreImgRelleno + "-lleno.png");
 
   }
 
