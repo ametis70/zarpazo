@@ -35,8 +35,9 @@ class SistemaPelea {
     tamImagen=300;
     transparencia=300;
 
+    // La cantidade de pelotas máximas se determina por el ancho de la barra del sistema de pelea
     cantidad = abs(ceil((posX - ancho) / 80));
-    println(cantidad);
+    // println(cantidad); // Debugging
 
     pelotas = new Pelota[cantidad]; 
 
@@ -62,6 +63,7 @@ class SistemaPelea {
       imageMode(CORNER);
       clip(posX, posY, ancho, alto);
       noStroke();
+      // Se hace un clip y se dibuja un rectangulo negro transparente detrás
       rectMode(CORNER);
       popStyle();
       rect(posX, posY, ancho, alto);
@@ -72,11 +74,11 @@ class SistemaPelea {
         pelotas[i].activar(mira);
         pelotas[i].golpear(nivel.enemigo, nivel.jugador, mira);
       }
-    }
 
-    // Se dibuja la Mira
-    mira.dibujar();
-    noClip();
+      // Se dibuja la Mira
+      mira.dibujar();
+      noClip();
+    }
   }
 
   void turno(Nivel nivel) {
@@ -112,7 +114,7 @@ class SistemaPelea {
   }
 
   void preparacion() {
-    
+
     pushStyle();
 
     imageMode(CENTER);

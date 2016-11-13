@@ -1,72 +1,52 @@
-// Hay que agarrar lo que sirve de la barra de manu y combinarla con la nuestra. Que quede una sola clase.
-
-//class BarraVida {
-//  float saludActual, ancho, alto;  
-//  BarraVida() {
-//    ancho = 400;
-//    alto = 25;
-//  }
-
-//  void dibujar(Personaje personaje, int modo, color color1, color color2, float x, float y) {
-
-//    // Se elige el personaje, y desde donde se dibujara el rectangulo
-//    saludActual = map(personaje.salud, 0, personaje.saludMaxima, 0, ancho);
-//    rectMode(modo);
-
-//    // Se dibuja la barra vacia(atrás)
-//    fill(color1);
-//    if (modo == CORNER)
-//      rect(x, y, ancho, alto);        // Jugador
-//    if (modo == CORNERS) 
-//      rect(x, y, x - ancho, alto+25);          // Enemigo
-
-//    // Se dibuja la barra con la vida(arriba)
-//    fill(color2);
-//    if (modo == CORNER)
-//      rect(x, y, saludActual, alto);  // Jugador
-//    if (modo == CORNERS)
-//      rect(x, y, x-saludActual, alto+25);  // Enemigo
-//  }
-//}
-
-
 class BarraVida {
+  // Datos
+  float posX1, posY1, posX2, posY2;  
+  PImage fondo, relleno, retrato; 
+  boolean enemigo;
 
-  PImage fondo;
-  PImage relleno;
+  // Constructor 
+  BarraVida(Personaje personaje, int posX1, int posY1, int posX2, int posY2) {
+	this.posX1 = posX1;
+	this.posX2 = posX2;
+	this.posY1 = posY1;
+	this.posY2 = posY2;
 
-  PImage retrato;
+	if (personaje.jugador)
+	enemigo = false;
+	else
+	enemigo = true;
 
-  boolean revertido = false;
-
-  BarraVida(String nombrePersonaje,String nombreImgRelleno) {
-    retrato = loadImage("data/imagenes/ui/barras/retrato-" + nombrePersonaje + ".png");
-    fondo = loadImage("data/imagenes/ui/barras/" + nombreImgRelleno + "-vacio.png");
-    relleno = loadImage("data/imagenes/ui/barras/" + nombreImgRelleno + "-lleno.png");
-
+    retrato = loadImage("data/imagenes/ui/barras/retrato-" + personaje.personaje + ".png");
+    fondo = loadImage("data/imagenes/ui/barras/vacio.png");
+	if(enemigo) 
+	  relleno = loadImage("data/imagenes/ui/barras/enemigo-lleno.png");
+	else
+      relleno = loadImage("data/imagenes/ui/barras/jugador-lleno.png");
   }
 
-  BarraVida(String nombrePersonaje,String nombreImgRelleno,boolean revertido) {
-    this(nombrePersonaje,nombreImgRelleno);
-    this.revertido = revertido;
-  }
-
-
-  void dibujar(float posX1, float posY1,float posX2,float posY2,int hp,int hpMax) {
+  // Método para dibujar la barra
+  void dibujar(Personaje personaje) {
     imageMode(CORNERS);
+	
+	// Barra vacia
     image(fondo,posX1,posY1,posX2,posY2);
 
-    if (revertido) clip(posX1,posY1,posX2,map(hp,0,hpMax,posY1,posY2));   
-    else clip(posX1,map(hp,0,hpMax,posY2,posY1),posX2,posY2);
+	// Si es enemigo, el clip es de abajo para arriba. Si es jugador, al revés
+    if (enemigo)
+		clip(posX1,posY1,posX2,map(personaje.salud, 0, personaje.saludMaxima, posY1, posY2));   
+    else 
+		clip(posX1, map(personaje.salud, 0, personaje.saludMaxima, posY2, posY1), posX2, posY2);
 
-    image(relleno,posX1,posY1,posX2,posY2);
+	// Barra con vida
+    image(relleno, posX1, posY1, posX2, posY2);
 
     noClip();
+
+	// Se dibuja el retrato
     imageMode(CENTER);
-    if (!revertido) image(retrato,(posX2+posX1)/2,posY2,100,100);
-    else image(retrato,(posX2+posX1)/2,posY1,100,100);
-
+    if (!enemigo)
+		image(retrato, (posX2 + posX1) / 2, posY2, 100, 100);
+    else 
+		image(retrato, (posX2 + posX1)/2, posY1, 100, 100);
   }
-
-
 }

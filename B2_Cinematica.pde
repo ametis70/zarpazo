@@ -1,11 +1,20 @@
 class Cinematica {
   // Datos
+  int alpha;
   float posX, posY;
   float tamX, tamY;
   float targetX, targetY;
   PImage cinematica;
-  boolean listo;
   int movimiento;
+  boolean listo;
+
+  // Variables para oscurecer la pantalla
+  boolean oscuro, termino;
+
+  // Variables para la confirmación
+  int tiempoInicial;
+  boolean millis;
+
 
   // Constructor
   Cinematica(String directorio, float posX, float posY, float tamX, float tamY) {
@@ -14,13 +23,44 @@ class Cinematica {
     this.tamX = tamX;
     this.tamY = tamY;
     cinematica = loadImage(directorio);
-    listo = true;
-    movimiento = 0;
+    listo = false;
+    movimiento = 100;
+    alpha = 255;
+    oscuro = true;
+    termino = false;
+
+    millis = true;
   }
 
   // Métodos
   void dibujar () {
+    // La pantalla comienza oscura,
+    if (oscuro && alpha > 0) 
+      alpha -= 5;
+
+    // Cuando ya no está oscura, comienza el movimiento
+    if (oscuro && !termino && alpha <= 0) { 
+      movimiento = 0;
+      oscuro = false;
+    }
+
+    // Se dibuja el comic
+    background(0, 0, 100);
     image(cinematica, posX, posY, tamX, tamY);
+
+    // Se dibuja el cuadrado negro
+    fill(0, alpha);
+    rect(0, 0, width, height);
+
+    // Función para hacer aparecer el dialogo de confirmación
+    confirmacion();
+
+    // Si la cinematica termino(o se salteó), oscurecer la pantalla
+    if (termino && alpha < 255) 
+      alpha += 5;
+
+    if (termino && alpha >= 255) 
+      juego.etapaActual = "callejon";
   }
 
   // Se cambia el objetivo(tanto para posición como tamaño. Mover con ease)
@@ -58,33 +98,72 @@ class Cinematica {
       }
     }
   }
-}
+
+  // Confirmación
+  void confirmacion() {
+    if (oscuro == false && termino == false) {
+      if (keyPressed & millis) {
+        tiempoInicial = millis();
+        millis = false;
+      }
+    }
+
+    if (millis == false) {
+
+      textAlign(RIGHT, BOTTOM);
+      textFont(fuenteNeon);
+      textSize(32);
+      fill(0, 100);
+      rectMode(CORNER);
+      noStroke();
+      rect(width - 665, height -50, 665, 50);
+      fill(0, 0, 100);
+      text("Golpea nuevamente para saltear la escena", width - 10, height - 10);
+    }
+
+    // Si no pasaron 3 segundos
+    if (keyPressed && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 1000) {
+      termino = true;
+      millis = true;
+    }
 
 
-/* Codigo de ejemplo
+    if (millis() > tiempoInicial + 3000) {
+      millis = true;
+      tiempoInicial = 0;
+    }
+  }
 
-if (cinematica.movimiento == 0) {  
-  cinematica.target(500, 500);
-  cinematica.easePos(0.05);
+
+
+  // Métodos propios de cada cinemática
+  void introduccion() {
+    if (movimiento == 0) {  
+      target(500, 500);
+      easePos(0.05);
+    }
+    if (movimiento == 1) {
+      target(0, 600);
+      easePos(0.05);
+    }
+    if (movimiento == 2) {
+      target(500, 0);
+      easePos(0.05);
+    }
+    if (movimiento == 3) {
+      target(0, 0);
+      easePos(0.05);
+    }
+    if (movimiento == 4) {
+      target(1920, 1356);
+      easeTam(0.05);
+    }
+    if (movimiento == 5) {
+      target(-500, -500);
+      easePos(0.05);
+    }
+    if (movimiento == 6) {
+      termino = true;
+    }
+  }
 }
-if (cinematica.movimiento == 1) {
-  cinematica.target(0, 600);
-  cinematica.easePos(0.05);
-}
-if (cinematica.movimiento == 2) {
-  cinematica.target(500, 0);
-  cinematica.easePos(0.05);
-}
-if (cinematica.movimiento == 3) {
-  cinematica.target(0, 0);
-  cinematica.easePos(0.05);
-}
-if (cinematica.movimiento == 4) {
-  cinematica.target(1920, 1356);
-  cinematica.easeTam(0.05);
-}
-if (cinematica.movimiento == 5) {
-  cinematica.target(-500, -500);
-  cinematica.easePos(0.05);
-}
-*/
