@@ -71,10 +71,10 @@ class Pelota {
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
-      if (keyPressed || microswitch() != 0) {
+      if (keyPressed) {
         // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
-          if (key == 'a' || key == 'A' || microswitch(1) == 1) { 
+          if (key == 'a' || key == 'A') { 
             // Se hace daño según que tan cerca se esté del centro.
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
@@ -111,7 +111,7 @@ class Pelota {
           }
           // Pero si se toca la bolsa equivocada, se recibe daño
 
-          if ((key == 'a' || key == 'A' || microswitch(1) == 1) == false) {
+          if ((key == 'a' || key == 'A') == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -123,7 +123,7 @@ class Pelota {
 
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
-          if (key == 's' || key == 'S' || microswitch(2) == 2) {
+          if (key == 's' || key == 'S') {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
@@ -157,7 +157,7 @@ class Pelota {
               desactivar();
             }
           }
-          if ((key == 's' || key == 'S'  || microswitch(2) == 2) == false) {
+          if ((key == 's' || key == 'S' ) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -167,7 +167,7 @@ class Pelota {
           }
         }
         if (tipo == 2) {
-          if (key == 'd' || key == 'D' || microswitch(3) == 3) {
+          if (key == 'd' || key == 'D') {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
@@ -201,7 +201,7 @@ class Pelota {
               desactivar();
             }
           }
-          if ((key == 'd' || key == 'D'  || microswitch(3) == 3) == false) {
+          if ((key == 'd' || key == 'D' ) == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));
@@ -211,7 +211,7 @@ class Pelota {
           }
         }
         if (tipo == 3) {
-          if (key == 'f' || key == 'F'  || microswitch(4) == 4) {
+          if (key == 'f' || key == 'F') {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               player.combo++;
@@ -245,7 +245,7 @@ class Pelota {
               desactivar();
             }
           }
-          if (( key == 'f' || key == 'F'  || microswitch(4) == 4) == false) {
+          if (( key == 'f' || key == 'F') == false) {
             player.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += int(random(9, 20));

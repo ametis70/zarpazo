@@ -32,9 +32,10 @@ class Nivel {
 
     combat.pelea(this);
     combat.turno(this);
+    combat.preparacion();
     //combat.debugging();
     textoInterfaz();
-    eventoSerial(arduino);
+
 
     barra1.dibujar(45, 50, 95, height-100, jugador.salud, jugador.saludMaxima);
     barra2.dibujar(width-45, 100, width-95, height-50, jugador.salud, jugador.saludMaxima);

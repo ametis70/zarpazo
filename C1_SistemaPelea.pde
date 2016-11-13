@@ -3,6 +3,10 @@ class SistemaPelea {
   float velocidadInicial;
   float accel;
   boolean nuevoTurno;
+  PImage preparado, listo, ya, imagenActiva;
+  boolean preparadoListo, listoListo, todoListo;
+  int tamImagen, transparencia;
+
 
   Mira mira;          // Objeto para la mira
   Pelota[] pelotas;   // Array para almacenar pelotas
@@ -17,10 +21,19 @@ class SistemaPelea {
     // Inicialización de barra
     mira = new Mira(width/2, posY + alto / 2, 7, 80);
 
+    preparado = loadImage("data/imagenes/ui/preparacion/preparado.png");
+    listo = loadImage("data/imagenes/ui/preparacion/listo.png");
+    ya = loadImage("data/imagenes/ui/preparacion/ya.png");
+    imagenActiva = preparado;
+    preparadoListo=true;
+
     this.posX = posX;
     this.posY = posY;
     this.alto = alto;
     this.ancho = ancho;
+
+    tamImagen=300;
+    transparencia=300;
 
     cantidad = abs(ceil((posX - ancho) / 80));
     println(cantidad);
@@ -42,22 +55,25 @@ class SistemaPelea {
   }
 
   void pelea(Nivel nivel) {
-    textAlign(LEFT, TOP);
-
-    imageMode(CORNER);
-    clip(posX, posY, ancho, alto);
-    fill(0, 0, 0, 50);
-    noStroke();
-    rectMode(CORNER);
-    rect(posX, posY, ancho, alto);
-    // Ciclo for para dibujar, mover, activar en colisión y detectar los golpes en las pelotas
-    for (int i = 0; i < pelotas.length; i++) {
-      pelotas[i].dibujar();
-      pelotas[i].mover(nivel.jugador, this);
-      pelotas[i].activar(mira);
-      pelotas[i].golpear(nivel.enemigo, nivel.jugador, mira);
+    if (todoListo==true) {
+      fill(0, 0, 0, 50);
+      pushStyle();
+      textAlign(LEFT, TOP);
+      imageMode(CORNER);
+      clip(posX, posY, ancho, alto);
+      noStroke();
+      rectMode(CORNER);
+      popStyle();
+      rect(posX, posY, ancho, alto);
+      // Ciclo for para dibujar, mover, activar en colisión y detectar los golpes en las pelotas
+      for (int i = 0; i < pelotas.length; i++) {
+        pelotas[i].dibujar();
+        pelotas[i].mover(nivel.jugador, this);
+        pelotas[i].activar(mira);
+        pelotas[i].golpear(nivel.enemigo, nivel.jugador, mira);
+      }
     }
-    
+
     // Se dibuja la Mira
     mira.dibujar();
     noClip();
@@ -92,6 +108,37 @@ class SistemaPelea {
       //  nivel.etapaActual+=2;
       //  nivel.peleando = false;
       //}
+    }
+  }
+
+  void preparacion() {
+    
+    pushStyle();
+
+    imageMode(CENTER);
+    tint(255, transparencia);
+    image(imagenActiva, width/2, height/2, tamImagen, tamImagen*0.4);
+    tamImagen+=10;
+    transparencia-=7;
+
+    popStyle();
+
+    if (transparencia<=0 && preparadoListo== true) {
+      transparencia=200;
+      tamImagen=300;
+      imagenActiva=listo;
+      preparadoListo=false;
+      listoListo=true;
+    }
+    if (transparencia<=0 && listoListo== true) {
+      transparencia=200;
+      tamImagen=300;
+      imagenActiva=ya;
+      listoListo=false;
+      todoListo=true;
+    }
+    if (transparencia<=0 && todoListo== true) {
+      listoListo=false;
     }
   }
 }
