@@ -22,8 +22,9 @@ class SistemaPelea {
     this.alto = alto;
     this.ancho = ancho;
 
+	// La cantidade de pelotas máximas se determina por el ancho de la barra del sistema de pelea
     cantidad = abs(ceil((posX - ancho) / 80));
-    println(cantidad);
+    // println(cantidad); // Debugging
 
     pelotas = new Pelota[cantidad]; 
 
@@ -44,6 +45,7 @@ class SistemaPelea {
   void pelea(Nivel nivel) {
     textAlign(LEFT, TOP);
 
+	// Se hace un clip y se dibuja un rectangulo negro transparente detrás
     imageMode(CORNER);
     clip(posX, posY, ancho, alto);
     fill(0, 0, 0, 50);

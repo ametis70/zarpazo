@@ -25,6 +25,7 @@ class Juego {
     
     if (etapaActual == "introduccion") {
       introduccion.dibujar();
+	  introduccion.introduccion();
     }
     
     if (etapaActual == "callejon") {

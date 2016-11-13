@@ -4,6 +4,7 @@ class Personaje {
   
   // Nombre del personaje. Se utiliza para referenciar al personaje.
   String personaje;
+  boolean jugador;
   
   // Imagen para el Sprite. ¿Reemplazar por arreglo para animaciones?
   PImage sprite;
@@ -28,6 +29,7 @@ class Jugador extends Personaje {
 
     salud = saludMaxima = saludInicial;
     this.personaje = personaje;
+	jugador = true;
   }
 }
 
@@ -42,6 +44,7 @@ class Enemigo extends Personaje {
     salud = saludMaxima = saludInicial;
     this.personaje = personaje;
     sprite = loadImage("data/imagenes/personajes/" + personaje + ".png");
+	jugador = false;
     
   }
   

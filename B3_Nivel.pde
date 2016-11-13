@@ -3,7 +3,7 @@ class Nivel {
   SistemaPelea combat;
   Enemigo enemigo;
   Jugador jugador;
-  BarraVida barra1, barra2;
+  BarraVida barraJugador, barraEnemigo;
 
   // Imagen de fondo para el nivel
   PImage background;
@@ -13,12 +13,10 @@ class Nivel {
     combat = new SistemaPelea(185, 80, 999, 110);
 
     jugador = new Jugador(gatoHP, gato);
-    enemigo = new Enemigo(perroHP, perro, 500, 500);
+    enemigo = new Enemigo(perroHP, perro, 583, 768);
 
-    barra1 = new BarraVida("zarpazo", "jugador");
-    barra2 = new BarraVida("perro", "enemigo");
-    barra1 = new BarraVida("zarpazo", "jugador", false);
-    barra2 = new BarraVida("perro", "enemigo", true);
+    barraJugador = new BarraVida(jugador, 45, 50, 95, height-100);
+    barraEnemigo = new BarraVida(enemigo, width-45, 100, width-95, height-50);
 
     this.background = loadImage(background);
   }
@@ -36,10 +34,8 @@ class Nivel {
     textoInterfaz();
     eventoSerial(arduino);
 
-    barra1.dibujar(45, 50, 95, height-100, jugador.salud, jugador.saludMaxima);
-    barra2.dibujar(width-45, 100, width-95, height-50, jugador.salud, jugador.saludMaxima);
-    //barraVidaJugador.dibujar( jugador, CORNER, color(0, 0, 0), color(0, 100, 100), 50, 25 );
-    //barraVidaEnemigo.dibujar( enemigo, CORNERS, color(0, 0, 0), color(270, 100, 100), width-50, 25);
+	barraJugador.dibujar(jugador);
+	barraEnemigo.dibujar(enemigo);
   }
 
   // ¿Mover a clase UI?
