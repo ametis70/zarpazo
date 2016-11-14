@@ -18,6 +18,9 @@ void setup() {
 
   // Imagenes.
   cargarImagenes();
+  
+  // c5p
+  c5p();
 }
 
 void draw() {

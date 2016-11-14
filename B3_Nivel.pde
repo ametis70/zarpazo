@@ -29,14 +29,15 @@ class Nivel {
     enemigo.dibujar();
 
     combat.pelea(this);
-    combat.turno(this);
+    //combat.turno(this);
+    combat.reiniciar();
     combat.preparacion();
     //combat.debugging();
     textoInterfaz();
 
 
-	barraJugador.dibujar(jugador);
-	barraEnemigo.dibujar(enemigo);
+	barraJugador.dibujar(jugador, enemigo);
+	barraEnemigo.dibujar(enemigo, jugador);
   }
 
   // ¿Mover a clase UI?

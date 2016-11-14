@@ -4,16 +4,16 @@ class Juego {
   Menu menu;
   Nivel callejon;
   Cinematica introduccion;
-
+  Leaderboard leaderboard;
 
   String etapaActual;
 
   // Constructor
   Juego() {
+    leaderboard = new Leaderboard();
     menu = new Menu();
-    callejon = new Nivel("data/imagenes/niveles/escenario1.jpg", "zarpazo", 450, "cerbero", 450);
+    callejon = new Nivel("data/imagenes/niveles/escenario1.jpg", "zarpazo", 5000, "cerbero", 7000);
     introduccion = new Cinematica("data/imagenes/cinematicas/cinematica1.jpg", 0, 0, 1280, 904);
-
 
     // El juego comienza en el menú. Los diferentes valores se escriben en minúscula.
     etapaActual = "menu";
@@ -22,18 +22,20 @@ class Juego {
   // Función para empezar a dibujar el juego
   void dibujar() {
     if (etapaActual == "menu") {
-      menu.dibujar();
+      menu.principal(leaderboard);
     }
 
     if (etapaActual == "introduccion") {
       introduccion.dibujar();
-	  introduccion.introduccion();
+      introduccion.introduccion();
+    }
+    
+    if (etapaActual == "seleccion") {
+      menu.seleccion();
     }
 
     if (etapaActual == "callejon") {
-      
       callejon.dibujar();
-    
     }
   }
 }

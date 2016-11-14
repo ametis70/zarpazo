@@ -1,26 +1,35 @@
 class Personaje {
   // Datos
   int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
-  
+  int puntos;
+
   // Nombre del personaje. Se utiliza para referenciar al personaje.
   String personaje;
   boolean jugador;
-  
+
   // Imagen para el Sprite. ¿Reemplazar por arreglo para animaciones?
   PImage sprite;
 
   // Función para infligir daño al enemigo
   void infligirDamage(Personaje personaje) {
-    if (combo >= 3) {
-      damage = damageActual * combo / 3;
-      personaje.salud -= damageActual * combo / 3;
+    if (this.personaje == "zarpazo") {
+      damage = damageActual + int((combo * 1.6));
+      personaje.salud -= damageActual + int((combo * 1.6));
+    } else if (this.personaje == "baast") {
+      damage = damageActual + int((combo * 1.2));
+      personaje.salud -= damageActual + int((combo * 1.2));
     } else {
-      damage = damageActual;
-      personaje.salud -= damageActual;
+      damage = damageActual + int((combo * 1.4));
+      personaje.salud -= damageActual + int((combo * 1.4));
     }
-    damageActual = 0;
+  }
+  void comboBreak() {
+    if (combo == 0) {
+      damageActual = 0;
+    }
   }
 }
+
 
 class Jugador extends Personaje {
   //Constructor
@@ -29,7 +38,8 @@ class Jugador extends Personaje {
 
     salud = saludMaxima = saludInicial;
     this.personaje = personaje;
-	jugador = true;
+    jugador = true;
+    puntos = 0;
   }
 }
 
@@ -37,17 +47,16 @@ class Enemigo extends Personaje {
   //Constructor
   Enemigo(int saludInicial, String personaje, int tamX, int tamY) {
     combo = damage = damageActual = 0;
-    
+
     this.tamY = tamY;
     this.tamX = tamX;
 
     salud = saludMaxima = saludInicial;
     this.personaje = personaje;
     sprite = loadImage("data/imagenes/personajes/" + personaje + ".png");
-	jugador = false;
-    
+    jugador = false;
   }
-  
+
   // Métodos
   void dibujar() {
     imageMode(CENTER);

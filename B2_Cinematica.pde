@@ -60,7 +60,7 @@ class Cinematica {
       alpha += 5;
 
     if (termino && alpha >= 255) 
-      juego.etapaActual = "callejon";
+      juego.etapaActual = "seleccion";
   }
 
   // Se cambia el objetivo(tanto para posición como tamaño. Mover con ease)
@@ -122,7 +122,7 @@ class Cinematica {
     }
 
     // Si no pasaron 3 segundos
-    if (keyPressed && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 1000) {
+    if (keyPressed && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 250) {
       termino = true;
       millis = true;
     }
