@@ -13,7 +13,7 @@ class Juego {
     leaderboard = new Leaderboard();
     menu = new Menu();
     callejon = new Nivel("data/imagenes/niveles/escenario1.jpg", "zarpazo", 5000, "cerbero", 7000);
-    introduccion = new Cinematica("data/imagenes/cinematicas/cinematica1.jpg", 0, 0, 1280, 904);
+    introduccion = new Cinematica("data/imagenes/cinematicas/cinematica1.jpg", 0, 0, 1316, 751);
 
     // El juego comienza en el menú. Los diferentes valores se escriben en minúscula.
     etapaActual = "menu";

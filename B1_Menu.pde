@@ -27,7 +27,6 @@ class Menu {
 
     leaderboard.dibujar();
 
-
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
     if (keyPressed) 
       oscuro = true;
@@ -42,7 +41,7 @@ class Menu {
   }
 
   void seleccion() {
-    // La pantalla comienza oscura,
+    // La pantalla comienza oscura.
     if (oscuro && alpha > 0) 
       alpha -= 5;
 

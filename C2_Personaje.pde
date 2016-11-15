@@ -65,30 +65,46 @@ class Enemigo extends Personaje {
   }
 }
 
-// ¿Mover a función dentro de la clase personaje Personaje?
 
-//class Animation {
-//  PImage[] images;
-//  int imageCount;
-//  int frame;
 
-//  Animation(String imagePrefix, int count) {
-//    imageCount = count;
-//    images = new PImage[imageCount];
+class Animation {
+  PImage[] pasivo;
+  PImage[] golpeando;
+  int pasivoCount;
+  int golpeandoCount;
+  int frame, millis;
+  
+  boolean termino;
 
-//    for (int i = 0; i < imageCount; i++) {
-//      // Use nf() to number format 'i' into four digits
-//      String filename = imagePrefix + nf(i, 4) + ".gif";
-//      images[i] = loadImage(filename);
-//    }
-//  }
+  Animation(String pasivoPrefix, int pasivoCount, String golpeandoPrefix, int golpeandoCount) {
+    this.pasivoCount = pasivoCount;
+    this.golpeandoCount = golpeandoCount;
 
-//  void display(float xpos, float ypos) {
-//    frame = (frame+1) % imageCount;
-//    image(images[frame], xpos, ypos);
-//  }
+    pasivo = new PImage[pasivoCount];
+    golpeando = new PImage[pasivoCount];
 
-//  int getWidth() {
-//    return images[0].width;
-//  }
-//}
+    for (int i = 0; i < pasivoCount; i++) {
+      // Use nf() to number format 'i' into four digits
+      String filename = pasivoPrefix + i + ".png";
+      pasivo[i] = loadImage(filename);
+    }
+    for (int i = 0; i < golpeandoCount; i++) {
+      // Use nf() to number format 'i' into four digits
+      String filename = golpeandoPrefix + i + ".png";
+      golpeando[i] = loadImage(filename);
+    }
+  }
+
+  void pasivo(float xpos, float ypos, float xtam, float ytam) {
+    if (termino) {
+     millis = millis();
+     termino = false;
+    }
+    
+    if(millis() <  millis + 100) frame = 1;
+    if(millis() <  millis + 100) frame = 1;
+    if(millis() <  millis + 100) frame = 1;
+    if(millis() <  millis + 100) frame = 1;
+    if(millis() <  millis + 100) frame = 1;
+  }
+}

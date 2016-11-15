@@ -49,7 +49,7 @@ class Leaderboard {
     textSize(24);
     fill(0, 0, 100);
     for (int i = 0; i < 5; i++) {
-      text((i + 1) + ". " + jugadores[i] + " - " + puntajes[i], width / 2, height / 2 + 24 * i);
+      text((i + 1) + ". " + jugadores[i] + " - " + puntajes[i], width / 4, 500` + 24 * i);
       //Debugging
       text(nombre, width/2, height / 4);
     }

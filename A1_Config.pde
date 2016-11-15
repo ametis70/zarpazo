@@ -27,7 +27,6 @@ void cargarFuentes() {
 // Imagenes
 PImage escenario2, 
   escenario3, 
-  cerbero, 
   anubis, 
   xolotl, 
   cinematica1, 
@@ -47,7 +46,6 @@ void cargarImagenes() {
   escenario2 = loadImage("data/imagenes/niveles/escenario2.jpg");
   escenario3 = loadImage("data/imagenes/niveles/escenario3.jpg");
   cinematica1 = loadImage("data/imagenes/cinematicas/cinematica1.jpg");
-  cerbero = loadImage("data/imagenes/personajes/cerbero.png");
   anubis = loadImage("data/imagenes/personajes/anubis.png");
   xolotl = loadImage("data/imagenes/personajes/xolotl.png");
   circuloRojo = loadImage("data/imagenes/ui/pelotas/1.png");
