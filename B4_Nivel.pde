@@ -1,12 +1,22 @@
 class Nivel {
-  // Objeto para el sistema de pelea, enemigo, jugador y sus respectivas barras de vida
+  // Objeto para el sistema de pelea, cortina, enemigo, jugador y sus respectivas barras de vida
   SistemaPelea combat;
   Enemigo enemigo;
   Jugador jugador;
   BarraVida barraJugador, barraEnemigo;
+  Cortina cortina;
+  Animation cerbero;
 
   // Imagen de fondo para el nivel
   PImage background;
+
+  // Variables para la la preparación
+  PImage preparado, listo, ya, imagenActiva;
+  boolean preparadoListo, listoListo, todoListo;
+  int tamImagen, alpha;
+
+  boolean termino;
+  boolean musica;
 
   // Constructor
   Nivel(String background, String gato, int gatoHP, String perro, int perroHP) {
@@ -15,29 +25,71 @@ class Nivel {
     jugador = new Jugador(gatoHP, gato);
     enemigo = new Enemigo(perroHP, perro, 583, 768);
 
+    cerbero = new Animation("cerbero", 5, 8);
+
+    // Imagenes de preparación
+    preparado = loadImage("data/imagenes/ui/preparacion/preparado.png");
+    listo = loadImage("data/imagenes/ui/preparacion/listo.png");
+    ya = loadImage("data/imagenes/ui/preparacion/ya.png");
+
+    tamImagen = 300;
+    alpha = 300;
+
+    imagenActiva = preparado;
+    preparadoListo = true;
+
+    musica = true;
+
+    termino = true;
+
     barraJugador = new BarraVida(jugador, 45, 50, 95, height-100);
     barraEnemigo = new BarraVida(enemigo, width-45, 100, width-95, height-50);
 
-    this.background = loadImage(background);
+    this.background = loadImage("data/imagenes/niveles/" + background + ".png");
+
+    cortina = new Cortina(255);
   }
 
   void dibujar() {
-    background.resize(displayWidth, displayHeight);
+    if (musica) {
+      bone.loop();
+      musica = false;
+    }
+    cortina.fadeIn();
     imageMode(CORNER);
-    image(background, 0, 0);
+    image(background, 0, 0, 1366, 768);
 
-    enemigo.dibujar();
+    cerbero.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
+    if (todoListo==true) {
+      combat.pelea(this);
+      combat.reiniciar();
+      //combat.debugging();
+      textoInterfaz();
+    }
 
-    combat.pelea(this);
-    //combat.turno(this);
-    combat.reiniciar();
-    combat.preparacion();
-    //combat.debugging();
-    textoInterfaz();
+    // Se dibuja la Mira y el cuadrado
+    combat.mira.dibujar();
+    fill(0, 0, 0, 50);
+    noStroke();
+    rectMode(CORNER);
+    rect(combat.posX, combat.posY, combat.ancho, combat.alto);
 
+    barraJugador.dibujar(jugador, enemigo);
+    barraEnemigo.dibujar(enemigo, jugador);
 
-	barraJugador.dibujar(jugador, enemigo);
-	barraEnemigo.dibujar(enemigo, jugador);
+    cortina.dibujar();
+
+    if (cortina.listo == true)
+      preparacion(); // Si la pelota anterior no está activa
+
+    cortina.fadeOut("gameover");
+
+    if ( termino && (jugador.salud <= 0 || enemigo.salud <= 0)) {
+      bone.pause();
+      finish.trigger();
+      cortina.activar("out");
+      termino = false;
+    }
   }
 
   // ¿Mover a clase UI?
@@ -109,5 +161,35 @@ class Nivel {
     text("Combo enemigo: " + enemigo.combo, 25, height-(height/3)+90);
     text("HP Jugador: " + jugador.salud, 25, height-(height/3)+120);  
     text("HP Enemigo: " + enemigo.salud, 25, height-(height/3)+150);
+  }
+
+  void preparacion() {
+    pushStyle();
+
+    imageMode(CENTER);
+    tint(255, alpha);
+    image(imagenActiva, width/2, height/2, tamImagen, tamImagen*0.4);
+    tamImagen+=10;
+    alpha-=7;
+
+    popStyle();
+
+    if (alpha<=0 && preparadoListo== true) {
+      alpha=200;
+      tamImagen=300;
+      imagenActiva=listo;
+      preparadoListo=false;
+      listoListo=true;
+    }
+    if (alpha<=0 && listoListo== true) {
+      alpha=200;
+      tamImagen=300;
+      imagenActiva=ya;
+      listoListo=false;
+      todoListo=true;
+    }
+    if (alpha<=0 && todoListo== true) {
+      listoListo=false;
+    }
   }
 }

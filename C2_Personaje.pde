@@ -73,38 +73,88 @@ class Animation {
   int pasivoCount;
   int golpeandoCount;
   int frame, millis;
-  
-  boolean termino;
+  String personaje;
 
-  Animation(String pasivoPrefix, int pasivoCount, String golpeandoPrefix, int golpeandoCount) {
+
+  String estado;
+
+  boolean terminoP, terminoG;
+
+  Animation(String personaje, int pasivoCount, int golpeandoCount) {
     this.pasivoCount = pasivoCount;
     this.golpeandoCount = golpeandoCount;
 
     pasivo = new PImage[pasivoCount];
-    golpeando = new PImage[pasivoCount];
+    golpeando = new PImage[golpeandoCount];
+    this.personaje = personaje;
+
+    frame = 0;
+    terminoP = true;
+    terminoG = true;
+
+    estado = "pasivo";
 
     for (int i = 0; i < pasivoCount; i++) {
       // Use nf() to number format 'i' into four digits
-      String filename = pasivoPrefix + i + ".png";
+      String filename = "data/imagenes/personajes/" + personaje + "/pasivo/"+ i + ".png";
       pasivo[i] = loadImage(filename);
     }
     for (int i = 0; i < golpeandoCount; i++) {
       // Use nf() to number format 'i' into four digits
-      String filename = golpeandoPrefix + i + ".png";
+      String filename = "data/imagenes/personajes/" + personaje + "/golpeando/" + i + ".png";
       golpeando[i] = loadImage(filename);
     }
   }
 
-  void pasivo(float xpos, float ypos, float xtam, float ytam) {
-    if (termino) {
-     millis = millis();
-     termino = false;
+  void dibujar(float posX, float posY, float tamX, float tamY) {
+    if (estado == "pasivo") {
+      pasivo(); 
+      imageMode(CENTER);
+      image(pasivo[frame], posX, posY, tamX, tamY);
     }
-    
-    if(millis() <  millis + 100) frame = 1;
-    if(millis() <  millis + 100) frame = 1;
-    if(millis() <  millis + 100) frame = 1;
-    if(millis() <  millis + 100) frame = 1;
-    if(millis() <  millis + 100) frame = 1;
+    if (estado == "golpeando") {
+      golpeando();
+      imageMode(CENTER);
+      image(golpeando[frame], posX, posY, tamX, tamY);
+    }
+  }
+
+  void pasivo() {
+    if (terminoP) {
+      millis = millis();
+      terminoP = false;
+    }    
+    if (!terminoP) {
+      if (millis() <  millis + 100) frame = 0;
+      if (millis() >  millis + 100 && millis() < millis + 200) frame = 1;
+      if (millis() >  millis + 200 && millis() < millis + 300) frame = 2;
+      if (millis() >  millis + 300 && millis() < millis + 400) frame = 3;
+      if (millis() >  millis + 400 && millis() < millis + 500) frame = 4;
+      if (millis() >  millis + 500 && millis() < millis + 600) frame = 3;
+      if (millis() >  millis + 600 && millis() < millis + 700) frame = 2;
+      if (millis() > millis + 700) terminoP = true;
+    }
+  }
+  void golpeando() {
+    if (terminoG) {
+      millis = millis();
+      terminoG = false;
+    }    
+    if (terminoG == false) {
+      if (millis() <  millis + 50) frame = 0;
+      if (millis() >  millis + 50 && millis() < millis + 100) frame = 1;
+      if (millis() >  millis + 100 && millis() < millis + 150) frame = 2;
+      if (millis() >  millis + 150 && millis() < millis + 200) frame = 3;
+      if (millis() >  millis + 250 && millis() < millis + 300) frame = 4;
+      if (millis() >  millis + 350 && millis() < millis + 400) frame = 5;
+      if (millis() >  millis + 450 && millis() < millis + 500) frame = 6;
+      if (millis() >  millis + 550 && millis() < millis + 600) frame = 7;
+      
+      if (millis() > millis + 600) {
+        golpeEnemigo.trigger();
+        terminoP = true;
+        estado = "pasivo";
+      }
+    }
   }
 }

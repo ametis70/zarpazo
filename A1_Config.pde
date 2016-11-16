@@ -2,12 +2,40 @@
 import controlP5.*;
 ControlP5 cp5;
 
+import ddf.minim.*;
+Minim minim;
 
-// Libería c5p
+
+// c5p(Interfaz)
 void c5p() {
-   cp5 = new ControlP5(this);
+  cp5 = new ControlP5(this);
 }
 
+// Sonido
+
+AudioSample 
+  comun, 
+  perfect, 
+  golpeEnemigo, 
+  select, 
+  finish;
+
+AudioPlayer 
+  way, 
+  bone;
+
+void cargarSonidos() {
+  minim = new Minim(this);
+
+  comun = minim.loadSample( "data/sonidos/comun.wav", 512);
+  perfect = minim.loadSample( "data/sonidos/perfect.wav", 512);
+  golpeEnemigo = minim.loadSample( "data/sonidos/enemigo.wav", 512);
+  select = minim.loadSample( "data/sonidos/select.wav", 512);
+  finish = minim.loadSample( "data/sonidos/finish.wav", 512);
+
+  bone = minim.loadFile( "data/musica/bone.mp3", 2048);
+  way = minim.loadFile( "data/musica/way.mp3", 2048);
+}
 
 // Tipografía
 PFont fuenteJuego, 
@@ -25,15 +53,11 @@ void cargarFuentes() {
 }
 
 // Imagenes
-PImage escenario2, 
-  escenario3, 
-  anubis, 
-  xolotl, 
-  cinematica1, 
+PImage 
   circuloRojo, 
   circuloVerde, 
   circuloAzul, 
-  circuloAmarillo, 
+  circuloNaranja, 
   circuloGris;
 
 void inicializarFuentes() {
@@ -43,28 +67,29 @@ void inicializarFuentes() {
 }
 
 void cargarImagenes() {
-  escenario2 = loadImage("data/imagenes/niveles/escenario2.jpg");
-  escenario3 = loadImage("data/imagenes/niveles/escenario3.jpg");
-  cinematica1 = loadImage("data/imagenes/cinematicas/cinematica1.jpg");
-  anubis = loadImage("data/imagenes/personajes/anubis.png");
-  xolotl = loadImage("data/imagenes/personajes/xolotl.png");
   circuloRojo = loadImage("data/imagenes/ui/pelotas/1.png");
   circuloVerde = loadImage("data/imagenes/ui/pelotas/2.png");
   circuloAzul = loadImage("data/imagenes/ui/pelotas/3.png");
-  circuloAmarillo = loadImage("data/imagenes/ui/pelotas/4.png");
+  circuloNaranja = loadImage("data/imagenes/ui/pelotas/4.png");
   circuloGris = loadImage("data/imagenes/ui/pelotas/5.png");
-
-
-  // Cerbero = loadShape("data/imagenes/Cerbero.svg");
-  // Xolotl = loadShape("data/imagenes/Xolotl.svg");
-  // Rottweiler = loadShape("data/imagenes/Rottweiler.svg");
 }
 
-// Configuración inicial
-void inicializacion() {
+boolean golpe() {
+  if (keyPressed || microswitch() != 0) {
+    return true;
+  } else return false;
+}
 
+String colorGolpe() {
+  String colorcito = "";
+  if (key == 'a' || key == 'A' || microswitch(1) == 1)
+    colorcito = "rojo";
+  if (key == 's' || key == 'S' || microswitch(2) == 1)
+    colorcito = "azul";
+  if (key == 'd' || key == 'D' || microswitch(3) == 1)
+    colorcito = "naranja";
+  if (key == 'f' || key == 'F' || microswitch(4)== 1)
+    colorcito = "verde";
 
-  rectMode(CENTER);                // La barra se dibuja desde el centro
-  strokeWeight(5);                 // Grosor de lineas
-  noStroke();                      // No se dibujan las lineas para nada, todavía
+  return colorcito;
 }

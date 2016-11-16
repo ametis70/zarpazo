@@ -23,13 +23,13 @@ class Pelota {
       image(circuloRojo, posX, posY, tam, tam);
     }
     if (tipo == 1) {
-      image(circuloVerde, posX, posY, tam, tam);
-    }
-    if (tipo == 2) {
       image(circuloAzul, posX, posY, tam, tam);
     }
+    if (tipo == 2) {
+      image(circuloNaranja, posX, posY, tam, tam);
+    }
     if (tipo == 3) {
-      image(circuloAmarillo, posX, posY, tam, tam);
+      image(circuloVerde, posX, posY, tam, tam);
     }
     if (golpeada == true) {
       image(circuloGris, posX, posY, tam, tam);
@@ -65,14 +65,14 @@ class Pelota {
   }
 
   // Función para los golpes
-  void golpear(Enemigo enemigo, Jugador jugador, Mira mira) { 
+  void golpear(Enemigo enemigo, Jugador jugador, Mira mira, Nivel nivel) { 
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
-      if (keyPressed) {
+      if (golpe()) {
         // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
-          if (key == 'a' || key == 'A') { 
+          if (colorGolpe() == "rojo") { 
             // Se hace daño según que tan cerca se esté del centro.
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
@@ -81,6 +81,7 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
+              perfect.trigger();
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 3) {
@@ -88,6 +89,7 @@ class Pelota {
               jugador.combo++;
               jugador.damageActual += 15;
               resultado = "¡Excelente!";
+              comun.trigger();
               golpeada = true;
               jugador.infligirDamage(enemigo);
               desactivar();
@@ -98,6 +100,7 @@ class Pelota {
               jugador.damageActual += 10;
               resultado = "¡Bien!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -107,18 +110,21 @@ class Pelota {
               jugador.damageActual += 5;
               resultado = "Puede ser mejor...";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             }
           }
           // Pero si se toca la bolsa equivocada, se recibe daño
 
-          if ((key == 'a' || key == 'A') == false) {
+          if ((colorGolpe() == "rojo") == false) {
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
             resultado = "¡Bolsa equivocada!";
             golpeada = true;
+            if (nivel.cerbero.terminoP == true) nivel.cerbero.estado = "golpeando"; 
+            nivel.cerbero.estado = "golpeando"; 
             jugador.infligirDamage(enemigo);
             desactivar();
           }
@@ -126,7 +132,7 @@ class Pelota {
 
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
-          if (key == 's' || key == 'S') {
+          if ((colorGolpe() == "azul")) {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
@@ -134,6 +140,7 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
+              perfect.trigger();
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
@@ -142,6 +149,7 @@ class Pelota {
               jugador.damageActual += 15;
               resultado = "¡Excelente!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -151,6 +159,7 @@ class Pelota {
               jugador.damageActual += 10;
               resultado = "¡Bien!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -160,22 +169,25 @@ class Pelota {
               jugador.damageActual += 5;
               resultado = "Puede ser mejor...";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             }
           }
-          if ((key == 's' || key == 'S' ) == false) {
+          if ((colorGolpe() == "azul") == false) {
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
             resultado = "¡Bolsa equivocada!";
             golpeada = true;
+            if (nivel.cerbero.terminoP == true) nivel.cerbero.estado = "golpeando"; 
+            nivel.cerbero.estado = "golpeando"; 
             enemigo.infligirDamage(jugador);
             desactivar();
           }
         }
         if (tipo == 2) {
-          if (key == 'd' || key == 'D') {
+          if ((colorGolpe() == "naranja")) {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
@@ -183,6 +195,7 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
+              perfect.trigger();
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
@@ -191,6 +204,7 @@ class Pelota {
               jugador.damageActual += 15;
               resultado = "¡Excelente!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -200,6 +214,7 @@ class Pelota {
               jugador.damageActual += 10;
               resultado = "¡Bien!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -209,28 +224,32 @@ class Pelota {
               jugador.damageActual += 5;
               resultado = "Puede ser mejor...";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             }
           }
-          if ((key == 'd' || key == 'D' ) == false) {
+          if ((colorGolpe() == "naranja") == false) {
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
             resultado = "¡Bolsa equivocada!";
+            if (nivel.cerbero.terminoP == true) nivel.cerbero.estado = "golpeando"; 
+            nivel.cerbero.estado = "golpeando"; 
+            enemigo.infligirDamage(jugador);
             golpeada = true;
             desactivar();
-            enemigo.infligirDamage(jugador);
           }
         }
         if (tipo == 3) {
-          if (key == 'f' || key == 'F') {
+          if ((colorGolpe() == "verde")) {
             if (dist(posX, posY, mira.posX, mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
               resultado = "¡Perfecto!";
               golpeada = true;
+              perfect.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -240,6 +259,7 @@ class Pelota {
               jugador.damageActual += 15;
               resultado = "¡Excelente!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -249,6 +269,7 @@ class Pelota {
               jugador.damageActual += 10;
               resultado = "¡Bien!";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -258,18 +279,21 @@ class Pelota {
               jugador.damageActual += 5;
               resultado = "Puede ser mejor...";
               golpeada = true;
+              comun.trigger();
               jugador.infligirDamage(enemigo);
               desactivar();
             }
           }
-          if (( key == 'f' || key == 'F') == false) {
+          if ((colorGolpe() == "verde") == false) {
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
-            resultado = "¡Bolsa equivocada!";
+            resultado = "¡Bolsa equivocada!";    
+            if (nivel.cerbero.terminoP == true) nivel.cerbero.estado = "golpeando"; 
+            nivel.cerbero.estado = "golpeando"; 
+            enemigo.infligirDamage(jugador);
             golpeada = true;
             desactivar();
-            enemigo.infligirDamage(jugador);
           }
         }
       }
@@ -280,6 +304,8 @@ class Pelota {
         enemigo.damageActual += 25;
         resultado = "¡No golpeaste ninguna bolsa!";
         golpeada = true;
+        if (nivel.cerbero.terminoP == true) nivel.cerbero.estado = "golpeando"; 
+        nivel.cerbero.estado = "golpeando"; 
         enemigo.infligirDamage(jugador);
         desactivar();
       }

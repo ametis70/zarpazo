@@ -4,13 +4,11 @@ class Leaderboard {
   String[] jugadores;
   int[] puntajes;
 
-  // Objetos para el campo de texto. Ver interfascia.
-
   // Variables para el campo de texto.
   boolean listo;
   boolean nuevoNombre;
   String nombre;
-
+  
   // Constructor
   Leaderboard() {
     // Se carga el .csv
@@ -43,15 +41,14 @@ class Leaderboard {
   }
 
   // Métodos
-  void dibujar() {
+  void dibujar(int posY, int posX, int text) {
     textAlign(CENTER);
     textFont(fuenteNeon);
-    textSize(24);
+    int texto = text;
+    textSize(texto);
     fill(0, 0, 100);
     for (int i = 0; i < 5; i++) {
-      text((i + 1) + ". " + jugadores[i] + " - " + puntajes[i], width / 4, 500` + 24 * i);
-      //Debugging
-      text(nombre, width/2, height / 4);
+      text((i + 1) + ". " + jugadores[i] + " - " + puntajes[i], posX, posY + texto * i);    
     }
   }
 
