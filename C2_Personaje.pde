@@ -1,6 +1,7 @@
 class Personaje {
   // Datos
   int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
+  
   int puntos;
 
   // Nombre del personaje. Se utiliza para referenciar al personaje.

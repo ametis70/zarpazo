@@ -8,7 +8,7 @@ class Leaderboard {
   boolean listo;
   boolean nuevoNombre;
   String nombre;
-  
+
   // Constructor
   Leaderboard() {
     // Se carga el .csv
@@ -41,14 +41,21 @@ class Leaderboard {
   }
 
   // Métodos
-  void dibujar(int posY, int posX, int text) {
+  void dibujar(int posX, int posY, int text) {
     textAlign(CENTER);
     textFont(fuenteNeon);
     int texto = text;
-    textSize(texto);
-    fill(0, 0, 100);
+    fill(#e7d37a);
+    textSize(texto+10);
+    text("PUNTAJES ALTOS", posX, posY-25);
+
     for (int i = 0; i < 5; i++) {
-      text((i + 1) + ". " + jugadores[i] + " - " + puntajes[i], posX, posY + texto * i);    
+      textSize(texto);
+      textAlign(LEFT);
+      text((i + 1) + ". " + jugadores[i], posX-130, posY + texto * i);
+      text(" - ", posX, posY + texto * i);
+      textAlign(RIGHT);
+      text(nf(puntajes[i], 6), posX+130, posY + texto * i);
     }
   }
 

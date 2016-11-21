@@ -6,6 +6,7 @@ class Nivel {
   BarraVida barraJugador, barraEnemigo;
   Cortina cortina;
   Animation cerbero;
+  PImage crash;
 
   // Imagen de fondo para el nivel
   PImage background;
@@ -20,8 +21,8 @@ class Nivel {
 
   // Constructor
   Nivel(String background, String gato, int gatoHP, String perro, int perroHP) {
-    combat = new SistemaPelea(185, 80, 999, 110);
 
+    combat = new SistemaPelea(185, 80, 999, 110);
     jugador = new Jugador(gatoHP, gato);
     enemigo = new Enemigo(perroHP, perro, 583, 768);
 

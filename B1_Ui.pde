@@ -143,7 +143,7 @@ class Cortina {
     if (aclarando && alpha > 0) 
       alpha -= 5;
 
-    // Cuando está clara, se da devuelve el control al jugador para la etapa
+    // Cuando está clara, se devuelve el control al jugador para la etapa
     if (aclarando && alpha <= 0) { 
       aclarando = false;
       listo = true;
@@ -183,11 +183,14 @@ class Ease {
 
   // Se le da el mismo valor al posX y posY del ease que a lo que va a mover 
   void inicializar(float posX, float posY, float tamX, float tamY) {
-    if (inicializado == false);
+    if (inicializado == false) {
     this.posX = posX;
     this.posY = posY;
     this.tamX = tamX;
     this.tamY = tamY;
+    inicializado = true;
+    }
+    
   }
 
   // Se cambia el objetivo(tanto para posición como tamaño. Mover con ease)

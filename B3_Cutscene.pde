@@ -43,6 +43,7 @@ class Cinematica {
     // Se dibuja el comic
     background(0, 0, 100);
     image(comic, posX, posY, tamX, tamY);
+    
 
     if (cortina.listo == true && empezo) {
       ease.movimiento = 1;

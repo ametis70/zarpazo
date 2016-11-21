@@ -49,7 +49,7 @@ void cargarFuentes() {
   fuenteJuego = createFont("data/fuentes/OpenSans-Bold.ttf", 25);
   fuenteMenu = createFont("data/fuentes/neonize.ttf", 30);
   fuenteDebugging = createFont("Arial", 16);
-  fuenteNeon = createFont("data/fuentes/neon.ttf", 30);
+  fuenteNeon = createFont("data/fuentes/Neon.ttf", 30);
 }
 
 // Imagenes

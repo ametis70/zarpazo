@@ -2,15 +2,16 @@ String resultado; // Esta variable es para el debugging onscreen
 
 class Pelota {
   // Datos
+
   float posX, posY;
   boolean activa, fueActiva, golpeada;
-  int tipo, tam;
+  int tipo, tam, alpha;
 
   // Constructor
   Pelota(float posicionX, float posicionY, int type) { 
     tam = 80;
     activa = fueActiva = false;
-
+    
     posX = posicionX;
     posY = posicionY;
     tipo = type;

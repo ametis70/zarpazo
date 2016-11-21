@@ -1,16 +1,20 @@
 class Menu {
   // Datos
 
-  PImage background, seleccion, zarpazo, baast, tutorial, gameOver; // Fondos
+  int textoAlpha;
+  boolean textoAlphaDireccion;
+  float logoPosY, backPosX, backPosY, formaGolpeePosX, textoGolpeePosX;
+  PImage background, logo, textoGolpeeComenzar, formaGolpeeComenzar, seleccion, zarpazo, baast, tutorial, tutorialImagen, gameOver; // Fondos
   // Variable para almacenar el nombre del personaje que luego se construirá
   String personaje;
+
 
   // Booleanos para los fade
   boolean empezo, termino;
 
   // Obetos para el fade y mover los elementos
   Cortina cortina;
-  Ease ease;
+  Ease easeLogo, easeEmpezar;
 
   // Musica
   boolean musica;
@@ -22,14 +26,26 @@ class Menu {
 
   // Constructor
   Menu( ) {
+    textoAlpha = 0;
+    textoAlphaDireccion=true;
+
+    logoPosY =- 200;
+    formaGolpeePosX = width;
+
     background = loadImage("data/imagenes/menu/background.png");
+    logo = loadImage("data/imagenes/menu/logo.png");
+    formaGolpeeComenzar = loadImage("data/imagenes/menu/formaGolpeeComenzar.png");
+    textoGolpeeComenzar = loadImage("data/imagenes/menu/textoGolpeeComenzar.png");
     seleccion = loadImage("data/imagenes/menu/seleccion.png");
     zarpazo = loadImage("data/imagenes/menu/zarpazo.png");
     baast = loadImage("data/imagenes/menu/baast.png");
     tutorial = loadImage("data/imagenes/menu/tutorial.png");
+    tutorialImagen = loadImage("data/imagenes/menu/tutorialImagen.png");
     gameOver = loadImage("data/imagenes/menu/gameover.png");
 
     cortina = new Cortina(0);
+    easeLogo = new Ease();
+    easeEmpezar = new Ease();
 
     tiempoInicial = 0;
     millis = true;
@@ -47,16 +63,58 @@ class Menu {
       musica = false;
     }
 
-    background.resize(displayWidth, displayHeight);
-    image(background, 0, 0);
+    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
+    imageMode(CORNER);
+    image(background, backPosX, backPosY, 3000, 3000);
+    backPosX--;
+    backPosY--;
 
-    leaderboard.dibujar(400, 200, 24);
+    if (backPosX <= -1500 && backPosY <= -1500) 
+      backPosX=backPosY=0;
+
+    imageMode(CENTER);
+    image(logo, width/2, logoPosY, 964, 620);
+
+
+    easeLogo.inicializar(width/2, logoPosY, 964, 620);
+    easeLogo.target(width/2, 300);
+    easeLogo.easePos(0.05);
+
+    logoPosY = easeLogo.posY;
+
+    imageMode(CORNER);
+
+    image(formaGolpeeComenzar, formaGolpeePosX, height-170, 612, 78);
+
+    easeEmpezar.inicializar(formaGolpeePosX, height-170, 612, 78);
+    easeEmpezar.target(width-612, height-170);
+    easeEmpezar.easePos(0.09);
+
+    formaGolpeePosX = easeEmpezar.posX;
+
+    if (easeEmpezar.movimiento > -1) {
+      pushStyle();
+      tint(360, textoAlpha);
+      image(textoGolpeeComenzar, width-510, height-150, 431, 36);
+
+      if (textoAlphaDireccion)
+        textoAlpha += 5;
+      else 
+      textoAlpha -= 5;
+
+      if (textoAlpha >= 255 || textoAlpha <= 0)
+        textoAlphaDireccion  = !textoAlphaDireccion;
+
+      popStyle();
+    }
+
+    leaderboard.dibujar(250, height-170, 24);
 
     cortina.dibujar();
     cortina.fadeOut("introduccion");
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
-    if (golpe() && termino) {
+    if (golpe() && termino && easeEmpezar.movimiento > -1) {
       way.pause();
       select.trigger();
       cortina.activar("out");
@@ -65,12 +123,22 @@ class Menu {
   }
 
   void seleccion() {
+
     if (musica) {
       way.loop();
       musica = false;
     }
     cortina.activar("in");
     cortina.fadeIn();
+
+    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
+    imageMode(CORNER);
+    image(background, backPosX, backPosY, 3000, 3000);
+    backPosX--;
+    backPosY--;
+
+    if (backPosX <= -1500 && backPosY <= -1500) 
+      backPosX=backPosY=0;
 
     // Se dibuja el fondo(con el personaje seleccionado)
     if (actual == "")
@@ -79,6 +147,7 @@ class Menu {
       image(zarpazo, 0, 0, width, height);
     if (actual == "naranja") 
       image(baast, 0, 0, width, height);
+
 
 
     // Se dibuja el fade
@@ -170,7 +239,17 @@ class Menu {
     cortina.activar("in");
     cortina.fadeIn();
 
+    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
+    imageMode(CORNER);
+    image(background, backPosX, backPosY, 3000, 3000);
+    backPosX--;
+    backPosY--;
+
+    if (backPosX <= -1500 && backPosY <= -1500) 
+      backPosX=backPosY=0;
+
     image(tutorial, 0, 0, width, height);
+    image(tutorialImagen, 0, 0, width, height);
 
     cortina.dibujar();
 

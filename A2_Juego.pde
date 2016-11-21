@@ -1,6 +1,6 @@
 class Juego {
 
-  // Se crean los objetos para el Menu, nivel y cinemática. Estos se reconstruyen para mostrar todos lose segmentos del juego
+  // Se crean los objetos para el Menu, nivel y cinemática. Estos se reconstruyen para mostrar todos los segmentos del juego
   Menu menu;
   Nivel callejon;
   Cinematica introduccion;
