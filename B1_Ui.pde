@@ -7,12 +7,12 @@ class Mira {
   int tamX, tamY; 
 
   // Constructor
-  Mira(float posicionX, float posicionY, int barX, int barY) {
-    posX = posicionX;
-    posY = posicionY;
+  Mira(float posX, float posY, int tamX, int tamY) {
+    this.posX = posX;
+    this.posY = posY;
 
-    tamX = barX;
-    tamY = barY;
+    this.tamX = tamX;
+    this.tamY = tamY;
   }
 
   // Función para dibujar la mira 
@@ -32,29 +32,53 @@ class Mira {
 class BarraVida {
   // Datos
   float posX1, posY1, posX2, posY2, damageClip;  
-  PImage fondo, relleno, retrato, damage; 
+  PImage fondo, relleno, icono, damage; 
   boolean enemigo;
 
   // Constructor 
-  BarraVida(Personaje personaje, int posX1, int posY1, int posX2, int posY2) {
-    this.posX1 = posX1;
-    this.posX2 = posX2;
-    this.posY1 = posY1;
-    this.posY2 = posY2;
-
+  BarraVida(Personaje personaje) {
     if (personaje.jugador)
       enemigo = false;
     else
       enemigo = true;
 
-    retrato = loadImage("data/imagenes/ui/barras/retrato-" + personaje.personaje + ".png");
-    fondo = loadImage("data/imagenes/ui/barras/vacio.png");
-    damage = loadImage("data/imagenes/ui/barras/damage.png");
-    relleno = loadImage("data/imagenes/ui/barras/hp.png");
-    //if (enemigo) 
-    //  relleno = loadImage("data/imagenes/ui/barras/enemigo-lleno.png");
-    //else
-    //  relleno = loadImage("data/imagenes/ui/barras/jugador-lleno.png");
+    if (enemigo) {
+      posX1 = width - 25;
+      posY2 = height - 68;
+      posY1 = posY2 - 632;
+      posX2 = posX1 - 166;
+      
+    } else {
+      posX1 = 25;
+      posX2 = posX1 + 166;
+      posY1 = 68;
+      posY2 = posY1 + 632;
+    }
+
+    //barraJugador = new BarraVida(jugador, 166, 632, 95, height-100);
+    //barraEnemigo = new BarraVida(enemigo, width-45, 100, width-95, height-50);
+
+
+
+    if (enemigo) {
+      relleno = loadImage("data/imagenes/ui/barras/enemigo-lleno.png");
+      damage = loadImage("data/imagenes/ui/barras/enemigo-golpeado.png");
+      fondo = loadImage("data/imagenes/ui/barras/enemigo-fondo.png");
+      icono = loadImage("data/imagenes/ui/iconos/" + personaje.personaje + ".png");
+    }
+    if (personaje.personaje == "zarpazo") { 
+      println("hola");
+      relleno = loadImage("data/imagenes/ui/barras/zarpazo-lleno.png");
+      damage = loadImage("data/imagenes/ui/barras/zarpazo-golpeado.png");
+      fondo = loadImage("data/imagenes/ui/barras/jugador-fondo.png");
+      icono = loadImage("data/imagenes/ui/iconos/zarpazo.png");
+    } 
+    if (personaje.personaje == "baast") {
+      relleno = loadImage("data/imagenes/ui/barras/baast-lleno.png");
+      damage = loadImage("data/imagenes/ui/barras/baast-golpeado.png");
+      fondo = loadImage("data/imagenes/ui/barras/jugador-fondo.png");
+      icono = loadImage("data/imagenes/ui/iconos/baast.png");
+    }
   }
 
   // Método para dibujar la barra
@@ -69,7 +93,7 @@ class BarraVida {
       if (enemigo)
         damageClip = map(personaje.salud, 0, personaje.saludMaxima, posY1, posY2);   
       else 
-      damageClip = map(personaje.salud, 0, personaje.saludMaxima, posY2, posY1);
+      damageClip = map(personaje.salud, 0, personaje.saludMaxima, posY1, posY2);
     }
 
     if (enemigo)
@@ -88,20 +112,17 @@ class BarraVida {
     else 
     clip(posX1, map(personaje.salud, 0, personaje.saludMaxima, posY2, posY1), posX2, posY2);
 
-
-
-
     // Barra con vida
     image(relleno, posX1, posY1, posX2, posY2);
 
     noClip();
 
-    // Se dibuja el retrato
+    // Se dibuja el icono
     imageMode(CENTER);
     if (!enemigo)
-      image(retrato, (posX2 + posX1) / 2, posY2, 100, 100);
+      image(icono, (posX2 + posX1) / 2, posY2 - 75, 85, 85);
     else 
-    image(retrato, (posX2 + posX1)/2, posY1, 100, 100);
+    image(icono, (posX2 + posX1) /2, posY1 + 75, 85, 85);
   }
 }
 
@@ -130,8 +151,8 @@ class Cortina {
   // Permitir un fadeIn o Out
   void activar(String tipo) {
     if ( listo)
-    if (tipo == "in" && alpha >= 255)
-      aclarando = true;
+      if (tipo == "in" && alpha >= 255)
+        aclarando = true;
     if (tipo == "out" && alpha <= 0) 
       oscureciendo = true;
 
@@ -184,13 +205,12 @@ class Ease {
   // Se le da el mismo valor al posX y posY del ease que a lo que va a mover 
   void inicializar(float posX, float posY, float tamX, float tamY) {
     if (inicializado == false) {
-    this.posX = posX;
-    this.posY = posY;
-    this.tamX = tamX;
-    this.tamY = tamY;
-    inicializado = true;
+      this.posX = posX;
+      this.posY = posY;
+      this.tamX = tamX;
+      this.tamY = tamY;
+      inicializado = true;
     }
-    
   }
 
   // Se cambia el objetivo(tanto para posición como tamaño. Mover con ease)

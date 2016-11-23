@@ -12,7 +12,6 @@ void c5p() {
 }
 
 // Sonido
-
 AudioSample 
   comun, 
   perfect, 
@@ -22,7 +21,7 @@ AudioSample
 
 AudioPlayer 
   way, 
-  bone;
+  bone  ;
 
 void cargarSonidos() {
   minim = new Minim(this);
@@ -75,9 +74,21 @@ void cargarImagenes() {
 }
 
 boolean golpe() {
-  if (keyPressed || microswitch() != 0) {
+  if ((keyPressed ||
+    microswitch()) &&
+    (key == 'a' ||
+    key == 'A' ||
+    key == 's' ||
+    key == 'S' ||
+    key == 'd' ||
+    key == 'D' ||
+    microswitch(1) == 1 ||
+    microswitch(2) == 1 ||
+    microswitch(3) == 1))
+    
     return true;
-  } else return false;
+  else
+    return false;
 }
 
 String colorGolpe() {
@@ -87,9 +98,9 @@ String colorGolpe() {
   if (key == 's' || key == 'S' || microswitch(2) == 1)
     colorcito = "azul";
   if (key == 'd' || key == 'D' || microswitch(3) == 1)
-    colorcito = "naranja";
-  if (key == 'f' || key == 'F' || microswitch(4)== 1)
     colorcito = "verde";
+  //if (key == 'f' || key == 'F' || microswitch(4) == 1)
+  //  colorcito = "naranja";
 
   return colorcito;
 }

@@ -30,7 +30,7 @@ void loop() {
     pin2 = digitalRead(rojo);
     pin3 = digitalRead(verde);
     pin4 = digitalRead(azul);
-    pin5 = digitalRead(amarillo);
+    //    pin5 = digitalRead(amarillo);
     delay(30);
     enviarDatos();
   }
@@ -44,8 +44,8 @@ void enviarDatos() {
   Serial.print(pin3, DEC);    // Verde
   Serial.print(",");
   Serial.print(pin4, DEC);    // Azul
-  Serial.print(",");
-  Serial.print(pin5, DEC);    // Amarillo
+  //  Serial.print(",");
+  //  Serial.print(pin5, DEC);    // Naranja
   Serial.print(",");
   Serial.println();
   delay(30);

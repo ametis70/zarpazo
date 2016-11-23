@@ -10,12 +10,12 @@ int[] microswitch;
 // Función para inicializar variables.
 void inicializarArduino() {
   if (arduinoDisponible()) {
-    String puerto = Serial.list()[0];
+    String puerto = Serial.list()[1];
     arduino = new Serial(this, puerto, 9600);
   }
 
   HEADER = 'H';              // Primer caracter a enviar al monitor serial para identificar(ver función eventoSerial);
-  microswitch = new int[6];  // Cantidad de valores + 1(por el Header)
+  microswitch = new int[4];  // Cantidad de valores + 1(por el Header)
 
   for (int i = 0; i < microswitch.length; i++) {
     microswitch[i] = 0;
@@ -25,7 +25,8 @@ void inicializarArduino() {
 // Función para actualizar el monitor serial y guardar los valores en el arrelgo Microswitch
 void eventoSerial() {
   if (arduinoDisponible()) {
-    String message = arduino.readStringUntil(9);
+    String message = arduino.readStringUntil(10);
+    println(message);
     if (message != null) {
       String [] data = message.split(",");      // Se crea un arreglo utilizando las comas para crear los pares de indices y valores.
       //Aca comprobamos que el mensaje se este leyendo desde el principio utilizando el HEADER.
@@ -40,7 +41,7 @@ void eventoSerial() {
 }
 
 boolean arduinoDisponible() {
-  if (Serial.list().length > 1)
+  if (Serial.list().length == 23023841)
     return true;
   else return false;
 
@@ -55,7 +56,7 @@ boolean arduinoDisponible() {
 
 
 // Función para comprobar que se presionó ALGUNO de los microswitches
-int microswitch() {
+boolean microswitch() {
   int numero = 0;
   if (arduinoDisponible()) {
     for (int i = 0; i < microswitch.length; i++) {
@@ -63,7 +64,10 @@ int microswitch() {
     }
   }
   // println(numero);  // Debugging
-  return numero;
+  if (numero == 0)
+    return false;
+  else
+    return true;
 }
 
 // Función para comprobar que el microswitch correcto se esté presionando.

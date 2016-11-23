@@ -43,8 +43,8 @@ class Nivel {
 
     termino = true;
 
-    barraJugador = new BarraVida(jugador, 45, 50, 95, height-100);
-    barraEnemigo = new BarraVida(enemigo, width-45, 100, width-95, height-50);
+    barraJugador = new BarraVida(jugador);
+    barraEnemigo = new BarraVida(enemigo);
 
     this.background = loadImage("data/imagenes/niveles/" + background + ".png");
 
@@ -103,10 +103,10 @@ class Nivel {
     if ( jugador.combo != 0) {
       text("x" + jugador.combo, combat.posX, combat.posY + combat.alto + 25);
     }
-    textAlign(RIGHT, TOP);
-    if ( enemigo.combo != 0) {
-      text("x" + enemigo.combo, combat.posX + combat.ancho, combat.posY + combat.alto + 25);
-    }
+    //textAlign(RIGHT, TOP);
+    //if ( enemigo.combo != 0) {
+    //  text("x" + enemigo.combo, combat.posX + combat.ancho, combat.posY + combat.alto + 25);
+    //}
     textAlign(CENTER, CENTER);
     if (resultado != null) {
       if (resultado == "¡Perfecto!")
@@ -125,45 +125,6 @@ class Nivel {
       text(resultado, width/2, 50);
     }
   }
-
-  // Onscreen debugging
-
-  void debugging() {  
-    textFont(fuenteDebugging);
-
-    if (enemigo.salud < 0) {
-      fill(90, 100, 100);
-      inicializarFuentes();
-      text("GANASTE", width / 2, 100);
-    }
-
-    if (jugador.salud < 0) {
-      pushStyle();
-      fill(0, 100, 100);
-      text("PERDISTE", width / 2, 100);
-      popStyle();
-    }
-
-    // Texto de controles
-    fill(0 * 90, 100, 100);
-    text("A - Rojo", 25, 100);
-    fill(1 * 90, 100, 100);
-    text("S - Verde", 25, 130);
-    fill(2 * 90, 100, 100);
-    text("D - Azul", 25, 160);
-    fill(3 * 90, 100, 100);
-    text("F - Violeta", 25, 190);
-
-    // Texto informativo
-    fill(0, 0, 100);
-    text("Ultimo Golpe: " + resultado, 25, height-(height/3));
-    text("Daño infligido en el ultimo turno: " + jugador.damage +  " - Daño recibido en el ultimo turno: " + enemigo.damage, 25, height-(height/3)+30);
-    text("Combo jugador: " + jugador.combo, 25, height-(height/3)+60);
-    text("Combo enemigo: " + enemigo.combo, 25, height-(height/3)+90);
-    text("HP Jugador: " + jugador.salud, 25, height-(height/3)+120);  
-    text("HP Enemigo: " + enemigo.salud, 25, height-(height/3)+150);
-  }
-
   void preparacion() {
     pushStyle();
 

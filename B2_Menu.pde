@@ -36,9 +36,12 @@ class Menu {
     logo = loadImage("data/imagenes/menu/logo.png");
     formaGolpeeComenzar = loadImage("data/imagenes/menu/formaGolpeeComenzar.png");
     textoGolpeeComenzar = loadImage("data/imagenes/menu/textoGolpeeComenzar.png");
-    seleccion = loadImage("data/imagenes/menu/seleccion.png");
-    zarpazo = loadImage("data/imagenes/menu/zarpazo.png");
-    baast = loadImage("data/imagenes/menu/baast.png");
+    
+    // Selección
+    seleccion = loadImage("data/imagenes/menu/seleccion/seleccion.png");
+    zarpazo = loadImage("data/imagenes/menu/seleccion/zarpazo.png");
+    baast = loadImage("data/imagenes/menu/seleccion/baast.png");
+    
     tutorial = loadImage("data/imagenes/menu/tutorial.png");
     tutorialImagen = loadImage("data/imagenes/menu/tutorialImagen.png");
     gameOver = loadImage("data/imagenes/menu/gameover.png");
@@ -145,7 +148,7 @@ class Menu {
       image(seleccion, 0, 0, width, height);
     if (actual == "azul") 
       image(zarpazo, 0, 0, width, height);
-    if (actual == "naranja") 
+    if (actual == "verde") 
       image(baast, 0, 0, width, height);
 
 
@@ -153,7 +156,7 @@ class Menu {
     // Se dibuja el fade
     cortina.dibujar();
 
-    // Si se golpea una bolsa(naranja o azul) por primera vez, se activa marca un personaje
+    // Si se golpea una bolsa(verde o azul) por primera vez, se activa marca un personaje
     if (!empezo && !termino) {
       if (golpe() && millis) {
 
@@ -161,9 +164,9 @@ class Menu {
           select.trigger(); 
           actual = "azul";
         }
-        if (colorGolpe() == "naranja") {
+        if (colorGolpe() == "verde") {
           select.trigger(); 
-          actual = "naranja";
+          actual = "verde";
         }
 
         tiempoInicial = millis();
@@ -180,44 +183,44 @@ class Menu {
         termino = true;
         millis = true;
       }
-      // Si se golpea dos veces al naranja, se selecciona a Baast definitivamente
-      if (actual == "naranja" && colorGolpe() == "naranja" && !millis) {
+      // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
+      if (actual == "verde" && colorGolpe() == "verde" && !millis) {
         select.trigger();
         personaje = "baast";
         termino = true;
         millis = true;
       }
-      // Si se golpea el naranja después del azul, se  Marca a Baast
-      if (actual == "azul" &&  colorGolpe() == "naranja" && !millis) {
+      // Si se golpea el verde después del azul, se  Marca a Baast
+      if (actual == "azul" &&  colorGolpe() == "verde" && !millis) {
         select.trigger();
         millis = true;
-        actual = "naranja";
+        actual = "verde";
       }
-      // Si se golpea el azul después del naranja, se marca a Zarpazo
-      if (actual == "naranja" &&  colorGolpe() == "azul" && !millis) {
+      // Si se golpea el azul después del verde, se marca a Zarpazo
+      if (actual == "verde" &&  colorGolpe() == "azul" && !millis) {
         select.trigger();
         millis = true;
         actual = "azul";
       }
-      // Si se golpea algún color que no sea ni naranja ni azul
-      if (actual == "naranja" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "naranja") == false && !millis) {
+      // Si se golpea algún color que no sea ni verde ni azul
+      if (actual == "verde" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "verde") == false && !millis) {
         millis = true;
         actual = "";
       }
-      if (actual == "azul" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "naranja") == false && !millis) {
+      if (actual == "azul" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "verde") == false && !millis) {
         millis = true;
         actual = "";
       }
-      // Si no se habia golpeando ni la naranja ni la azul y se golpea una de estas
+      // Si no se habia golpeando ni la verde ni la azul y se golpea una de estas
       if (actual == "" && colorGolpe() == "azul" && !millis) {
         select.trigger();
         millis = true;
         actual = "azul";
       }
-      if (actual == "" && colorGolpe() == "naranja" && !millis) {
+      if (actual == "" && colorGolpe() == "verde`" && !millis) {
         select.trigger();
         millis = true;
-        actual = "naranja";
+        actual = "verde";
       }
     }
 
