@@ -24,13 +24,11 @@ class Leaderboard {
     puntajes = new int[tabla.getRowCount()];
 
     // Variables para el campo de texto
-
     nuevoNombre = false;
     listo = true;
     nombre = "";
 
     // Se llenan los arreglos de puntajes y jugadores para poder dibujarlos
-
     for (int i = 0; i < tabla.getRowCount(); i++) {
       TableRow row = tabla.getRow(i);
       puntajes[i] = row.getInt("Puntos");

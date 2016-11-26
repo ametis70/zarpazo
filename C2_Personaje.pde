@@ -152,7 +152,7 @@ class Animation {
       if (millis() >  millis + 550 && millis() < millis + 600) frame = 7;
       
       if (millis() > millis + 600) {
-        golpeEnemigo.trigger();
+
         terminoP = true;
         estado = "pasivo";
       }

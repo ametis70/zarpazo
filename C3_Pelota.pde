@@ -1,5 +1,3 @@
-String resultado; // Esta variable es para el debugging onscreen
-
 class Pelota {
   // Datos
 
@@ -10,18 +8,22 @@ class Pelota {
 
   // Variables para el feedback
   sistemaParticulas sp;
-
   boolean direccion;
   int contador;
 
+  // Se pasa por referencia al objeto de la interfaz para poder acceder a la nivel.ui.mira
+  Nivel nivel;
+
   // Constructor
-  Pelota(float posicionX, float posicionY, int type) { 
+  Pelota(float posicionX, float posicionY, Nivel nivel) { 
     tam = 80;
     activa = fueActiva = golpeada = false;
 
     posX = posicionX;
     posY = posicionY;
-    tipo = type;
+    tipo = int(random(3));
+
+    this.nivel = nivel;
 
     contador = 20;
     direccion = true;
@@ -43,7 +45,8 @@ class Pelota {
     //  image(circuloNaranja, posX, posY, tam, tam);
     //}
     if (golpeada == true) {
-      image(circuloGris, posX, posY, tam, tam);
+      if (bien())
+        image(circuloGris, posX, posY, tam, tam);
       if (bien() == false) vibrar();
     }
   }
@@ -58,7 +61,7 @@ class Pelota {
   }
 
   void vibrar() {
-    if (contador == 20) posX += contador;
+    if (contador == 20) posX += 10;
     if (contador > 0)
       if (direccion) {
         posX -= contador;
@@ -71,9 +74,9 @@ class Pelota {
       }
   }
 
-  // Funciónes para saber cuando la mirarita está sobre el circulo, activarlos y desactivarlos.
-  void activar(Mira mira) {
-    if (dist(posX, posY, mira.posX, mira.posY) < tam / 2 && fueActiva == false)
+  // Funciónes para saber cuando la nivel.ui.mirarita está sobre el circulo, activarlos y desactivarlos.
+  void activar() {
+    if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < tam / 2 && fueActiva == false)
       activa = fueActiva = true;
   }
 
@@ -90,7 +93,7 @@ class Pelota {
   }
 
   // Función para los golpes
-  void golpear(Enemigo enemigo, Jugador jugador, Mira mira, Nivel nivel) { 
+  void golpear(Enemigo enemigo, Jugador jugador, Nivel nivel) { 
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
@@ -99,7 +102,7 @@ class Pelota {
         if (tipo == 0) {
           if (colorGolpe() == "rojo") { 
             // Se hace daño según que tan cerca se esté del centro.
-            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
@@ -107,39 +110,39 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
+
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 3) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
-              comun.trigger();
+
               golpeada = true;
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -162,7 +165,7 @@ class Pelota {
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
           if ((colorGolpe() == "azul")) {
-            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
@@ -170,39 +173,39 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
+
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -221,7 +224,7 @@ class Pelota {
         }
         if (tipo == 2) {
           if ((colorGolpe() == "verde")) {
-            if (dist(posX, posY, mira.posX, mira.posY) < 5) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
@@ -229,39 +232,39 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
+
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
-            if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
+            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -280,7 +283,7 @@ class Pelota {
         }
         /* if (tipo == 3) {
          if ((colorGolpe() == "naranja")) {
-         if (dist(posX, posY, mira.posX, mira.posY) < 5) {
+         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
          enemigo.combo = 0;
          jugador.combo++;
          jugador.damageActual += 25;
@@ -290,7 +293,7 @@ class Pelota {
          jugador.infligirDamage(enemigo);
          desactivar();
          } 
-         if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
+         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
          enemigo.combo = 0;
          jugador.combo++;
          jugador.damageActual += 15;
@@ -300,7 +303,7 @@ class Pelota {
          jugador.infligirDamage(enemigo);
          desactivar();
          } 
-         if (dist(posX, posY, mira.posX, mira.posY) < 35 && dist(posX, posY, mira.posX, mira.posY) > 13) {
+         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
          enemigo.combo = 0;
          jugador.combo++;
          jugador.damageActual += 10;
@@ -310,7 +313,7 @@ class Pelota {
          jugador.infligirDamage(enemigo);
          desactivar();
          } 
-         if (dist(posX, posY, mira.posX, mira.posY) < 50 && dist(posX, posY, mira.posX, mira.posY) > 35) {
+         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
          enemigo.combo = 0;
          jugador.combo++;
          jugador.damageActual += 5;
@@ -334,8 +337,8 @@ class Pelota {
          }
          } */
       }
-      // Si la mirara pasa y no se pulsa ninguna bolsa, se recibe daño.
-      if (dist(posX, posY, mira.posX, mira.posY) >= tam / 2) {
+      // Si la nivel.ui.mirara pasa y no se pulsa ninguna bolsa, se recibe daño.
+      if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) >= tam / 2) {
         jugador.combo = 0;
         enemigo.combo++;
         enemigo.damageActual += 25;
@@ -395,15 +398,15 @@ class Particula {
 
     estrella = loadImage("data/imagenes/ui/particula.png");
 
-    tam = 15;
+    tam = random(10,20);
 
     // Rotación en eje Z con translate() y rotate()
     rotacion = random(0, 360);  // Rotación inicial
 
     // Velocidad y aceleración. Determinan la dirección.
-    velX = random(-2, 2);
-    velY = random(-2, 2);
-    accel = 0.98;
+    velX = random(-2.5, 2.5);
+    velY = random(-2.5, 2.5);
+    accel = 0.99;
 
     // Valor inicial para el tiempo de vida. Si se exceden los 1500, la estrella se deja de referenciar
     lifespan = millis();

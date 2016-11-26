@@ -1,54 +1,84 @@
 class Juego {
-
-  // Se crean los objetos para el Menu, nivel y cinemática. Estos se reconstruyen para mostrar todos los segmentos del juego
-  Menu menu;
-  Nivel callejon;
-  Cinematica introduccion;
+  // Objetos para el menu.
+  MenuStart menuStart;
+  MenuSeleccion menuSeleccion;
+  MenuTutorial menuTutorial;
+  MenuGameOver menuGameOver;
   Leaderboard leaderboard;
 
+  // Ojbetos para los niveles
+  Nivel callejon, patio, oficina;
+
+  // Objetos para las cinemáticas
+  Cinematica introduccion;
+
+  // String para determinar en que etapa se encuentra el juego
   String etapaActual;
 
   // Constructor
   Juego() {
-    leaderboard = new Leaderboard();
-    menu = new Menu();
-    callejon = new Nivel("callejon", "zarpazo", 5000, "cerbero", 7000);
-    introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
-
     // El juego comienza en el menú. Los diferentes valores se escriben en minúscula.
-    etapaActual = "menu";
+    etapaActual = "menuStart";
   }
 
   // Función para empezar a dibujar el juego
   void dibujar() {
+    // Eventos de Arduino. Ejecutar durante todo el juego
     eventoSerial();
-    if (etapaActual == "menu") {
-      menu.principal(leaderboard);
+
+    if (etapaActual == "menuStart") {
+      // Si el objeto menú no se creó todavía, este se crea. También el del Leaderboard
+      if (menuStart == null) {
+        leaderboard = new Leaderboard();
+        menuStart = new MenuStart(leaderboard);
+      }
+
+      // Se dibuja el menú
+      menuStart.dibujar();
     }
 
     if (etapaActual == "introduccion") {
-      menu.musica = true;
+      if (introduccion == null) 
+        introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
+
       introduccion.dibujar("seleccion");
     }
 
     if (etapaActual == "seleccion") {
-      menu.seleccion();
+      if (menuSeleccion == null)
+        menuSeleccion = new MenuSeleccion();
+
+      menuSeleccion.dibujar();
     }
 
     if (etapaActual == "tutorial") {
-      menu.tutorial();
+      if (menuTutorial == null)
+        menuTutorial = new MenuTutorial();
+
+      menuTutorial.dibujar();
     }
 
     if (etapaActual == "callejon") {
+      // Se crea el objeto del callejón
+      if (callejon == null) 
+        callejon = new Nivel("callejon", menuSeleccion.personaje, 5000, "cerbero", 7000);
+
+      // Se destruyen los objetos del menú
+      if (menuStart != null || menuSeleccion != null || menuTutorial != null) {
+        menuStart = null;
+        menuSeleccion = null;
+        menuTutorial = null;
+      }
+
+      // Se dibuja el nivel
       callejon.dibujar();
     }
 
     if (etapaActual == "gameover") {
-      menu.gameOver();
-    }
+      if (menuGameOver == null)
+        menuGameOver = new MenuGameOver();
 
-    if (etapaActual == "reiniciar") {
-      setup();
+      menuGameOver.dibujar();
     }
   }
 }

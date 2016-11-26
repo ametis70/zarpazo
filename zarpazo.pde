@@ -6,7 +6,7 @@ void setup() {
   // Se utiliza P2D como renderer para aprovechar la aceleración por hardware.
   //size(1366, 768,P2D);
   fullScreen(P2D);
-  
+
   // Se crea el objeto del juego. Todos los objetos se crean a partir de este.
   juego = new Juego();             
 
@@ -18,17 +18,19 @@ void setup() {
 
   // Imagenes.
   cargarImagenes();
-  
-  // Sonido.
-  cargarSonidos();
-  
+
   // c5p. Librería para el campo de texto.
   c5p();
-  
-   // Arduino.
+
+  // Arduino.
   inicializarArduino();
 }
 
 void draw() {
   juego.dibujar();
+}
+
+void keyReleased() {
+  if (key == 'r')
+    juego = new Juego();
 }

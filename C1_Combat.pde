@@ -1,18 +1,20 @@
 class SistemaPelea {
 
   // Datos
-  Mira mira;          // Objeto para la mira
   Pelota[] pelotas;   // Array para almacenar pelotas
 
   int pelotasActual, pelotasInicial, cantidad, multiplicador;
   int posX, posY, ancho, alto;
   float velocidad;
+  
+  // Se crea el objeto para pasar por valor al nivel y poder acceder a los personajes y los elementos de la interfaz
+  Nivel nivel;
 
-  SistemaPelea(int posX, int posY, int ancho, int alto) {
+  SistemaPelea(Nivel nivel, int posX, int posY, int ancho, int alto) {
+    
+    this.nivel = nivel;
 
     // Inicialización de barra
-    mira = new Mira(width/2, posY + alto / 2, 7, 80);
-
     this.posX = posX;
     this.posY = posY;
     this.alto = alto;
@@ -28,15 +30,15 @@ class SistemaPelea {
     for (int i = 0; i < pelotas.length; i++) {
       if (i == 0)
         //pelotas[i] = new Pelota(posX + ancho + 100 * i + random(10, 45), posY + alto / 2, int(random(3)));
-        pelotas[i] = new Pelota(posX + ancho + 100, posY + alto / 2, int(random(3)));
+        pelotas[i] = new Pelota(posX + ancho + 100, posY + alto / 2, nivel);
       else
-        pelotas[i] = new Pelota(pelotas[i - 1].posX + 100 + random(50), posY + alto / 2, int(random(3)));
+        pelotas[i] = new Pelota(pelotas[i - 1].posX + 100 + random(50), posY + alto / 2, nivel);
     }
 
     velocidad = 3;
   }
 
-  void pelea(Nivel nivel) {
+  void pelea() {
     // Se clippean las pelotas para que no salgan del cuadrado(ver nivel)
     imageMode(CORNER);
     clip(posX, posY, ancho, alto);
@@ -44,8 +46,8 @@ class SistemaPelea {
     for (int i = 0; i < pelotas.length; i++) {
       pelotas[i].dibujar();
       pelotas[i].mover(nivel.jugador);
-      pelotas[i].activar(mira); // Si la pelota anterior no está activa
-      pelotas[i].golpear(nivel.enemigo, nivel.jugador, mira, nivel);
+      pelotas[i].activar(); // Si la pelota anterior no está activa
+      pelotas[i].golpear(nivel.enemigo, nivel.jugador, nivel);
     }
     noClip();
     // Este for solo se encarga de dibujar las particulas( que quedan fuera del clip y se superponen a las siguientes pelotas en el array)
@@ -78,9 +80,9 @@ class SistemaPelea {
     for (int i = 0; i < pelotas.length; i++) {
       if (pelotas[i] == null) {
         if (i == 0) // Si la pelota, es la primera, esta se construye en base a la posición de la ultima pelota en el arreglo
-          pelotas[i] = new Pelota(pelotas[pelotas.length - 1].posX + 100 + random(50), posY + alto / 2, int(random(3)));
+          pelotas[i] = new Pelota(pelotas[pelotas.length - 1].posX + 100 + random(50), posY + alto / 2, nivel);
         else        // Si la pelota no es la primera, se construye en base a la anterior en el arreglo
-        pelotas[i] = new Pelota(pelotas[i - 1].posX + 100 + random(50), posY + alto / 2, int(random(3)));
+        pelotas[i] = new Pelota(pelotas[i - 1].posX + 100 + random(50), posY + alto / 2, nivel);
       }
     }
   }

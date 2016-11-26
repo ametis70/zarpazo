@@ -1,70 +1,57 @@
 class Menu {
-  // Datos
+  // Fondo
+  PImage background;
+  float backPosX, backPosY;
 
-  int textoAlpha;
-  boolean textoAlphaDireccion;
-  float logoPosY, backPosX, backPosY, formaGolpeePosX, textoGolpeePosX;
-  PImage background, logo, textoGolpeeComenzar, formaGolpeeComenzar, seleccion, zarpazo, baast, tutorial, tutorialImagen, gameOver; // Fondos
-  // Variable para almacenar el nombre del personaje que luego se construirá
-  String personaje;
-
-
-  // Booleanos para los fade
-  boolean empezo, termino;
-
-  // Obetos para el fade y mover los elementos
+  // Booleanos y objeto para los fade
+  boolean terminoFadeIn, empezarFadeOut;
   Cortina cortina;
-  Ease easeLogo, easeEmpezar;
-
-  // Musica
-  boolean musica;
-
-  // Variables para elegir
-  int tiempoInicial;
-  boolean millis;
-  String actual;
 
   // Constructor
   Menu( ) {
+    background = loadImage("data/imagenes/menu/background.png");
+  }
+}
+
+class MenuStart extends Menu {
+  // Easing para mover el logo y el dialogo para comenzar a jugar
+  Ease easeLogo, easeEmpezar;
+
+  // Imagenes propias del Start Menu
+  PImage logo, textoGolpeeComenzar, formaGolpeeComenzar;
+
+  // Variables para controlar el texto("Golpea para comenzar), su opacidad y fondo.
+  int textoAlpha;
+  boolean textoAlphaDireccion;
+  float formaGolpeePosX, textoGolpeePosX, logoPosY;
+  
+  // Se pasa por valor el objeto del leaderboard
+  Leaderboard leaderboard;
+
+  MenuStart(Leaderboard leaderboard) { 
+    this.leaderboard = leaderboard;
+    
     textoAlpha = 0;
-    textoAlphaDireccion=true;
+    textoAlphaDireccion = true;
 
     logoPosY =- 200;
     formaGolpeePosX = width;
 
-    background = loadImage("data/imagenes/menu/background.png");
     logo = loadImage("data/imagenes/menu/logo.png");
     formaGolpeeComenzar = loadImage("data/imagenes/menu/formaGolpeeComenzar.png");
     textoGolpeeComenzar = loadImage("data/imagenes/menu/textoGolpeeComenzar.png");
-    
-    // Selección
-    seleccion = loadImage("data/imagenes/menu/seleccion/seleccion.png");
-    zarpazo = loadImage("data/imagenes/menu/seleccion/zarpazo.png");
-    baast = loadImage("data/imagenes/menu/seleccion/baast.png");
-    
-    tutorial = loadImage("data/imagenes/menu/tutorial.png");
-    tutorialImagen = loadImage("data/imagenes/menu/tutorialImagen.png");
-    gameOver = loadImage("data/imagenes/menu/gameover.png");
 
-    cortina = new Cortina(0);
     easeLogo = new Ease();
     easeEmpezar = new Ease();
 
-    tiempoInicial = 0;
-    millis = true;
-    actual = "";
+    terminoFadeIn = true;
+    empezarFadeOut = true;
 
-    musica = true;
-
-    termino = true;
+    cortina = new Cortina(0);
   }
 
   // Función para dibujar el menú
-  void principal(Leaderboard leaderboard) {
-    if (musica) {
-      way.loop();
-      musica = false;
-    }
+  void dibujar() {
 
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     imageMode(CORNER);
@@ -75,28 +62,33 @@ class Menu {
     if (backPosX <= -1500 && backPosY <= -1500) 
       backPosX=backPosY=0;
 
+    // Se dibuja el logo
     imageMode(CENTER);
     image(logo, width/2, logoPosY, 964, 620);
 
-
+    //Se desplaza el logo
     easeLogo.inicializar(width/2, logoPosY, 964, 620);
     easeLogo.target(width/2, 300);
     easeLogo.easePos(0.05);
 
     logoPosY = easeLogo.posY;
 
+    // Se dibuja el fondo del dialogo de "Golpea para comenzar"
     imageMode(CORNER);
-
     image(formaGolpeeComenzar, formaGolpeePosX, height-170, 612, 78);
 
+    // Se desplaza el logo
     easeEmpezar.inicializar(formaGolpeePosX, height-170, 612, 78);
     easeEmpezar.target(width-612, height-170);
     easeEmpezar.easePos(0.09);
 
     formaGolpeePosX = easeEmpezar.posX;
 
+    // Cuando el fondo del dialogo llega a su posición, se dibuja el texto de éste.
     if (easeEmpezar.movimiento > -1) {
       pushStyle();
+
+      // Se utiliza tint para hacerlo intermitente
       tint(360, textoAlpha);
       image(textoGolpeeComenzar, width-510, height-150, 431, 36);
 
@@ -111,28 +103,54 @@ class Menu {
       popStyle();
     }
 
+    // Se dibuja el leaderboard  
     leaderboard.dibujar(250, height-170, 24);
 
+    // Se dibuja la cortina para el fadeout
     cortina.dibujar();
     cortina.fadeOut("introduccion");
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
-    if (golpe() && termino && easeEmpezar.movimiento > -1) {
-      way.pause();
-      select.trigger();
+    if (golpe() && empezarFadeOut && easeEmpezar.movimiento > -1) {
       cortina.activar("out");
-      termino = false;
+      empezarFadeOut = false;
     }
   }
+}
 
-  void seleccion() {
+class MenuSeleccion extends Menu {
+  // Variable para almacenar el nombre del personaje que luego se construirá
+  String personaje;
 
-    if (musica) {
-      way.loop();
-      musica = false;
+  // Imagenes de la selección.
+  PImage seleccion, zarpazo, baast;
+
+  // Variables para controlar el tiempo 
+  int tiempoInicial;
+  boolean millis;
+  String actual;
+
+  MenuSeleccion() { 
+    // Selección
+    seleccion = loadImage("data/imagenes/menu/seleccion/seleccion.png");
+    zarpazo = loadImage("data/imagenes/menu/seleccion/zarpazo.png");
+    baast = loadImage("data/imagenes/menu/seleccion/baast.png");
+
+    millis = true;
+    actual = "";
+
+    cortina = new Cortina(255);
+
+    terminoFadeIn = false;
+    empezarFadeOut = false;
+  }
+
+  void dibujar() {
+    if (!terminoFadeIn) {
+      cortina.activar("in");
+      cortina.fadeIn();
+      if (cortina.listo) terminoFadeIn = true;
     }
-    cortina.activar("in");
-    cortina.fadeIn();
 
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     imageMode(CORNER);
@@ -151,54 +169,48 @@ class Menu {
     if (actual == "verde") 
       image(baast, 0, 0, width, height);
 
-
-
-    // Se dibuja el fade
+    // Se dibuja el fadeIn y fadeOut
     cortina.dibujar();
 
     // Si se golpea una bolsa(verde o azul) por primera vez, se activa marca un personaje
-    if (!empezo && !termino) {
+    if (terminoFadeIn && !empezarFadeOut) {
       if (golpe() && millis) {
-
         if (colorGolpe() == "azul") {
-          select.trigger(); 
           actual = "azul";
         }
         if (colorGolpe() == "verde") {
-          select.trigger(); 
           actual = "verde";
         }
-
         tiempoInicial = millis();
         millis = false;
       }
     }
 
     // Si no pasaron 5 segundos y más de 350ms se selecciona un personaje 
-    if (golpe() && millis() < tiempoInicial + 5000 && millis() > tiempoInicial + 350 && !termino) {
+    if (golpe() && millis() < tiempoInicial + 5000 && millis() > tiempoInicial + 350 && !empezarFadeOut) {
       // Si se golpea dos veces al azul, se selecciona a Zarpazo definitivamente
       if (actual == "azul" && colorGolpe() == "azul" && !millis) {
-        select.trigger();
+
         personaje = "zarpazo";
-        termino = true;
+        empezarFadeOut = true;
         millis = true;
       }
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
       if (actual == "verde" && colorGolpe() == "verde" && !millis) {
-        select.trigger();
+
         personaje = "baast";
-        termino = true;
+        empezarFadeOut = true;
         millis = true;
       }
       // Si se golpea el verde después del azul, se  Marca a Baast
       if (actual == "azul" &&  colorGolpe() == "verde" && !millis) {
-        select.trigger();
+
         millis = true;
         actual = "verde";
       }
       // Si se golpea el azul después del verde, se marca a Zarpazo
       if (actual == "verde" &&  colorGolpe() == "azul" && !millis) {
-        select.trigger();
+
         millis = true;
         actual = "azul";
       }
@@ -213,12 +225,12 @@ class Menu {
       }
       // Si no se habia golpeando ni la verde ni la azul y se golpea una de estas
       if (actual == "" && colorGolpe() == "azul" && !millis) {
-        select.trigger();
+
         millis = true;
         actual = "azul";
       }
       if (actual == "" && colorGolpe() == "verde`" && !millis) {
-        select.trigger();
+
         millis = true;
         actual = "verde";
       }
@@ -231,16 +243,35 @@ class Menu {
     }
 
     // Si se seleccionó un personaje, oscurecer la pantalla
-    if (termino) {
+    if (empezarFadeOut) {
       cortina.activar("out");
       cortina.fadeOut("tutorial");
     }
   }
+}
 
-  void tutorial() {
+class MenuTutorial extends Menu {
+  // Imagenes para el tutorial.
+  PImage tutorial, tutorialImagen;
 
-    cortina.activar("in");
-    cortina.fadeIn();
+  // Constructor
+  MenuTutorial() {
+
+    tutorial = loadImage("data/imagenes/menu/tutorial.png");
+    tutorialImagen = loadImage("data/imagenes/menu/tutorialImagen.png");
+
+    cortina = new Cortina(255);
+
+    terminoFadeIn = false;
+    empezarFadeOut = false;
+  }
+
+  void dibujar() {
+    if (!terminoFadeIn) {
+      cortina.activar("in");
+      cortina.fadeIn();
+      if (cortina.listo) terminoFadeIn = true;
+    }
 
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     imageMode(CORNER);
@@ -255,18 +286,26 @@ class Menu {
     image(tutorialImagen, 0, 0, width, height);
 
     cortina.dibujar();
-
-    cortina.fadeOut("callejon");
-
-    if (golpe() && termino) {
-      way.pause();
-      select.trigger();
+    
+    if(golpe() && terminoFadeIn && !empezarFadeOut)
+      empezarFadeOut = true;
+      
+    if (empezarFadeOut) {      
       cortina.activar("out");
-      termino = false;
+      cortina.fadeOut("callejon");
+      if(cortina.listo) empezarFadeOut = false;
     }
   }
+}
 
-  void gameOver() {
+class MenuGameOver extends Menu {
+  PImage gameOver;
+
+  MenuGameOver() {
+    gameOver = loadImage("data/imagenes/menu/gameover.png");
+  }
+
+  void dibujar() {
     cortina.activar("in");
     cortina.fadeIn();
 

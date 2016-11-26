@@ -70,7 +70,6 @@ class Cinematica {
     // Si se golpea por primera vez se activa el cuadro de confirmación 
     if (cortina.listo == true && empezo == false && millis == true) {
       if (golpe()) {
-        select.trigger();
         tiempoInicial = millis();
         millis = false;
       }
@@ -91,7 +90,7 @@ class Cinematica {
 
     // Si no pasaron 3 segundos(pero pasaron mas de 250ms) y se golpea nuevamente, se saltea la escena
     if (golpe() && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 250 && !termino) {
-      select.trigger();
+
       termino = true;
     }
 
