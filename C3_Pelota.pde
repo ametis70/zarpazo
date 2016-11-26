@@ -110,7 +110,6 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-
               desactivar();
             } 
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
@@ -119,7 +118,6 @@ class Pelota {
               jugador.damageActual += 15;
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
-
               golpeada = true;
               jugador.infligirDamage(enemigo);
               desactivar();

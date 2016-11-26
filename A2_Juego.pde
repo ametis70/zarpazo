@@ -1,4 +1,4 @@
-class Juego {
+private class Juego {
   // Objetos para el menu.
   MenuStart menuStart;
   MenuSeleccion menuSeleccion;
@@ -35,30 +35,23 @@ class Juego {
 
       // Se dibuja el menú
       menuStart.dibujar();
-    }
-
-    if (etapaActual == "introduccion") {
+      
+    } else if (etapaActual == "introduccion") {
       if (introduccion == null) 
         introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
 
       introduccion.dibujar("seleccion");
-    }
-
-    if (etapaActual == "seleccion") {
+    } else if (etapaActual == "seleccion") {
       if (menuSeleccion == null)
         menuSeleccion = new MenuSeleccion();
 
       menuSeleccion.dibujar();
-    }
-
-    if (etapaActual == "tutorial") {
+    } else if (etapaActual == "tutorial") {
       if (menuTutorial == null)
         menuTutorial = new MenuTutorial();
 
       menuTutorial.dibujar();
-    }
-
-    if (etapaActual == "callejon") {
+    } else if (etapaActual == "callejon") {
       // Se crea el objeto del callejón
       if (callejon == null) 
         callejon = new Nivel("callejon", menuSeleccion.personaje, 5000, "cerbero", 7000);
@@ -72,13 +65,13 @@ class Juego {
 
       // Se dibuja el nivel
       callejon.dibujar();
-    }
-
-    if (etapaActual == "gameover") {
+    } else if (etapaActual == "gameover") {
       if (menuGameOver == null)
         menuGameOver = new MenuGameOver();
 
       menuGameOver.dibujar();
+    } else {
+      println("NO WAY? NO WAY! NO WAY? NO WAY!");
     }
   }
 }

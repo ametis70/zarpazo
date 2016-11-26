@@ -3,13 +3,24 @@ class Menu {
   PImage background;
   float backPosX, backPosY;
 
-  // Booleanos y objeto para los fade
+  // Booleanos y objeto para los fades
   boolean terminoFadeIn, empezarFadeOut;
   Cortina cortina;
 
   // Constructor
   Menu( ) {
     background = loadImage("data/imagenes/menu/background.png");
+  }
+
+  void dibujarFondo() {
+    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
+    imageMode(CORNER);
+    image(background, backPosX, backPosY, 3000, 3000);
+    backPosX--;
+    backPosY--;
+
+    if (backPosX <= -1500 && backPosY <= -1500) 
+      backPosX=backPosY=0;
   }
 }
 
@@ -24,13 +35,18 @@ class MenuStart extends Menu {
   int textoAlpha;
   boolean textoAlphaDireccion;
   float formaGolpeePosX, textoGolpeePosX, logoPosY;
-  
+
   // Se pasa por valor el objeto del leaderboard
   Leaderboard leaderboard;
 
   MenuStart(Leaderboard leaderboard) { 
     this.leaderboard = leaderboard;
-    
+
+    // Objetos para el fade y mover los elementos
+    Cortina cortina;
+    Ease easeLogo, easeEmpezar;
+
+    leaderboard = new Leaderboard();
     textoAlpha = 0;
     textoAlphaDireccion = true;
 
@@ -54,13 +70,7 @@ class MenuStart extends Menu {
   void dibujar() {
 
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
-    imageMode(CORNER);
-    image(background, backPosX, backPosY, 3000, 3000);
-    backPosX--;
-    backPosY--;
-
-    if (backPosX <= -1500 && backPosY <= -1500) 
-      backPosX=backPosY=0;
+    dibujarFondo();
 
     // Se dibuja el logo
     imageMode(CENTER);
@@ -152,14 +162,7 @@ class MenuSeleccion extends Menu {
       if (cortina.listo) terminoFadeIn = true;
     }
 
-    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
-    imageMode(CORNER);
-    image(background, backPosX, backPosY, 3000, 3000);
-    backPosX--;
-    backPosY--;
-
-    if (backPosX <= -1500 && backPosY <= -1500) 
-      backPosX=backPosY=0;
+    dibujarFondo();
 
     // Se dibuja el fondo(con el personaje seleccionado)
     if (actual == "")
@@ -190,27 +193,23 @@ class MenuSeleccion extends Menu {
     if (golpe() && millis() < tiempoInicial + 5000 && millis() > tiempoInicial + 350 && !empezarFadeOut) {
       // Si se golpea dos veces al azul, se selecciona a Zarpazo definitivamente
       if (actual == "azul" && colorGolpe() == "azul" && !millis) {
-
         personaje = "zarpazo";
         empezarFadeOut = true;
         millis = true;
       }
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
       if (actual == "verde" && colorGolpe() == "verde" && !millis) {
-
         personaje = "baast";
         empezarFadeOut = true;
         millis = true;
       }
       // Si se golpea el verde después del azul, se  Marca a Baast
       if (actual == "azul" &&  colorGolpe() == "verde" && !millis) {
-
         millis = true;
         actual = "verde";
       }
       // Si se golpea el azul después del verde, se marca a Zarpazo
       if (actual == "verde" &&  colorGolpe() == "azul" && !millis) {
-
         millis = true;
         actual = "azul";
       }
@@ -225,12 +224,10 @@ class MenuSeleccion extends Menu {
       }
       // Si no se habia golpeando ni la verde ni la azul y se golpea una de estas
       if (actual == "" && colorGolpe() == "azul" && !millis) {
-
         millis = true;
         actual = "azul";
       }
       if (actual == "" && colorGolpe() == "verde`" && !millis) {
-
         millis = true;
         actual = "verde";
       }
@@ -273,27 +270,20 @@ class MenuTutorial extends Menu {
       if (cortina.listo) terminoFadeIn = true;
     }
 
-    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
-    imageMode(CORNER);
-    image(background, backPosX, backPosY, 3000, 3000);
-    backPosX--;
-    backPosY--;
-
-    if (backPosX <= -1500 && backPosY <= -1500) 
-      backPosX=backPosY=0;
+    dibujarFondo();
 
     image(tutorial, 0, 0, width, height);
     image(tutorialImagen, 0, 0, width, height);
 
     cortina.dibujar();
-    
-    if(golpe() && terminoFadeIn && !empezarFadeOut)
+
+    if (golpe() && terminoFadeIn && !empezarFadeOut)
       empezarFadeOut = true;
-      
+
     if (empezarFadeOut) {      
       cortina.activar("out");
       cortina.fadeOut("callejon");
-      if(cortina.listo) empezarFadeOut = false;
+      if (cortina.listo) empezarFadeOut = false;
     }
   }
 }
@@ -308,10 +298,100 @@ class MenuGameOver extends Menu {
   void dibujar() {
     cortina.activar("in");
     cortina.fadeIn();
-
     imageMode(CORNER);
     image(gameOver, 0, 0, width, height);
-
     cortina.dibujar();
+  }
+}
+
+
+class Leaderboard {
+  // Datos
+  Table tabla;
+  String[] jugadores;
+  int[] puntajes;
+
+  // Variables para el campo de texto.
+  boolean listo;
+  boolean nuevoNombre;
+  String nombre;
+
+  // Constructor
+  Leaderboard() {
+    // Se carga el .csv
+    tabla = loadTable("leaderboard.csv", "header");
+
+    // println(tabla.getRowCount() + "Cantidad total de filas"); // Debugging
+
+    // Se settea la columna de puntos a int para poder ordenarla, y se ordena
+    tabla.setColumnType("Puntos", Table.INT);
+    tabla.sortReverse("Puntos");
+
+    jugadores = new String[tabla.getRowCount()];
+    puntajes = new int[tabla.getRowCount()];
+
+    // Variables para el campo de texto
+
+    nuevoNombre = false;
+    listo = true;
+    nombre = "";
+
+    // Se llenan los arreglos de puntajes y jugadores para poder dibujarlos
+
+    for (int i = 0; i < tabla.getRowCount(); i++) {
+      TableRow row = tabla.getRow(i);
+      puntajes[i] = row.getInt("Puntos");
+      //println(puntajes[i]);
+      jugadores[i] = row.getString("Jugador");
+      //println(jugadores[i]);
+    }
+  }
+
+  // Métodos
+  void dibujar(int posX, int posY, int text) {
+    textAlign(CENTER);
+    textFont(fuenteNeon);
+    int texto = text;
+    fill(#e7d37a);
+    textSize(texto+10);
+    text("PUNTAJES ALTOS", posX, posY-25);
+
+    for (int i = 0; i < 5; i++) {
+      textSize(texto);
+      textAlign(LEFT);
+      text((i + 1) + ". " + jugadores[i], posX-130, posY + texto * i);
+      text(" - ", posX, posY + texto * i);
+      textAlign(RIGHT);
+      text(nf(puntajes[i], 6), posX+130, posY + texto * i);
+    }
+  }
+
+  void crearCampoTexto() {
+    cp5.addTextfield("input")
+      .setPosition(width / 2, height /2 )
+      .setSize(200, 40)
+      .setFont(fuenteJuego)
+      .setFocus(true)
+      .setColor(color(255, 255, 255));
+  }
+
+  void enviar() {
+    if (keyPressed && listo)
+      if (key == TAB) {
+        listo = false;
+        nombre = cp5.get(Textfield.class, "input").getText();
+        cp5.remove("input");
+        nuevoNombre = true;
+      }
+  }
+
+  void agregarPuntaje(Jugador jugador) {
+    if (nuevoNombre == true) {
+      TableRow newRow = tabla.addRow();
+      newRow.setInt("Puntos", jugador.puntos);
+      newRow.setString("Nombre", nombre);
+
+      saveTable(tabla, "leaderboard.csv");
+    }
   }
 }

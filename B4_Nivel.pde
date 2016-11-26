@@ -50,7 +50,7 @@ class Nivel {
  
     cortina.fadeOut("gameover");
 
-    if (termino && (jugador.salud <= 0 || enemigo.salud <= 0)) {
+    if ( termino && (jugador.salud <= 0 || enemigo.salud <= 0)) {
       cortina.activar("out");
       termino = false;
     }
