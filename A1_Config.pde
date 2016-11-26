@@ -1,40 +1,12 @@
-// Liberías
+// Librerías
 import controlP5.*;
 ControlP5 cp5;
-
-import ddf.minim.*;
-Minim minim;
-
 
 // c5p(Interfaz)
 void c5p() {
   cp5 = new ControlP5(this);
 }
 
-// Sonido
-AudioSample 
-  comun, 
-  perfect, 
-  golpeEnemigo, 
-  select, 
-  finish;
-
-AudioPlayer 
-  way, 
-  bone  ;
-
-void cargarSonidos() {
-  minim = new Minim(this);
-
-  comun = minim.loadSample( "data/sonidos/comun.wav", 512);
-  perfect = minim.loadSample( "data/sonidos/perfect.wav", 512);
-  golpeEnemigo = minim.loadSample( "data/sonidos/enemigo.wav", 512);
-  select = minim.loadSample( "data/sonidos/select.wav", 512);
-  finish = minim.loadSample( "data/sonidos/finish.wav", 512);
-
-  bone = minim.loadFile( "data/musica/bone.mp3", 2048);
-  way = minim.loadFile( "data/musica/way.mp3", 2048);
-}
 
 // Tipografía
 PFont fuenteJuego, 

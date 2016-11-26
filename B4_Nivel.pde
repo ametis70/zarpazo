@@ -17,7 +17,6 @@ class Nivel {
   int tamImagen, alpha;
 
   boolean termino;
-  boolean musica;
 
   // Constructor
   Nivel(String background, String gato, int gatoHP, String perro, int perroHP) {
@@ -39,8 +38,6 @@ class Nivel {
     imagenActiva = preparado;
     preparadoListo = true;
 
-    musica = true;
-
     termino = true;
 
     barraJugador = new BarraVida(jugador);
@@ -52,10 +49,7 @@ class Nivel {
   }
 
   void dibujar() {
-    if (musica) {
-      bone.loop();
-      musica = false;
-    }
+
     cortina.fadeIn();
     imageMode(CORNER);
     image(background, 0, 0, 1366, 768);
@@ -86,8 +80,6 @@ class Nivel {
     cortina.fadeOut("gameover");
 
     if ( termino && (jugador.salud <= 0 || enemigo.salud <= 0)) {
-      bone.pause();
-      finish.trigger();
       cortina.activar("out");
       termino = false;
     }

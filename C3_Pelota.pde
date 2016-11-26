@@ -107,7 +107,6 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 3) {
@@ -116,7 +115,7 @@ class Pelota {
               jugador.damageActual += 15;
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
-              comun.trigger();
+
               golpeada = true;
               jugador.infligirDamage(enemigo);
               desactivar();
@@ -128,7 +127,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -139,7 +138,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -170,7 +169,7 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
+
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
@@ -180,7 +179,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -191,7 +190,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -202,7 +201,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -229,7 +228,7 @@ class Pelota {
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
-              perfect.trigger();
+
               desactivar();
             } 
             if (dist(posX, posY, mira.posX, mira.posY) < 13 && dist(posX, posY, mira.posX, mira.posY) > 5) {
@@ -239,7 +238,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 6);
               resultado = "¡Excelente!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -250,7 +249,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 4);
               resultado = "¡Bien!";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -261,7 +260,7 @@ class Pelota {
               sp = new sistemaParticulas(posX, posY, 2);
               resultado = "Puede ser mejor...";
               golpeada = true;
-              comun.trigger();
+
               jugador.infligirDamage(enemigo);
               desactivar();
             }

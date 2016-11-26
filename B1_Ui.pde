@@ -47,7 +47,6 @@ class BarraVida {
       posY2 = height - 68;
       posY1 = posY2 - 632;
       posX2 = posX1 - 166;
-      
     } else {
       posX1 = 25;
       posX2 = posX1 + 166;
@@ -67,7 +66,6 @@ class BarraVida {
       icono = loadImage("data/imagenes/ui/iconos/" + personaje.personaje + ".png");
     }
     if (personaje.personaje == "zarpazo") { 
-      println("hola");
       relleno = loadImage("data/imagenes/ui/barras/zarpazo-lleno.png");
       damage = loadImage("data/imagenes/ui/barras/zarpazo-golpeado.png");
       fondo = loadImage("data/imagenes/ui/barras/jugador-fondo.png");

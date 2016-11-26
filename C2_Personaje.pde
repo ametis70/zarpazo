@@ -1,7 +1,7 @@
 class Personaje {
   // Datos
   int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
-  
+
   int puntos;
 
   // Nombre del personaje. Se utiliza para referenciar al personaje.
@@ -107,7 +107,7 @@ class Animation {
     }
   }
 
-  void dibujar(float posX, float posY, float tamX, float tamY) {
+  void dibujar(float posX, float posY, float tamX, float tamY) { //<>//
     if (estado == "pasivo") {
       pasivo(); 
       imageMode(CENTER);
@@ -150,9 +150,8 @@ class Animation {
       if (millis() >  millis + 350 && millis() < millis + 400) frame = 5;
       if (millis() >  millis + 450 && millis() < millis + 500) frame = 6;
       if (millis() >  millis + 550 && millis() < millis + 600) frame = 7;
-      
+
       if (millis() > millis + 600) {
-        golpeEnemigo.trigger();
         terminoP = true;
         estado = "pasivo";
       }

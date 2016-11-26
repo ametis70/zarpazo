@@ -1,4 +1,4 @@
-class Menu {
+protected class Menu {
   // Datos
 
   int textoAlpha;
@@ -7,17 +7,15 @@ class Menu {
   PImage background, logo, textoGolpeeComenzar, formaGolpeeComenzar, seleccion, zarpazo, baast, tutorial, tutorialImagen, gameOver; // Fondos
   // Variable para almacenar el nombre del personaje que luego se construirá
   String personaje;
+  Leaderboard leaderboard;
 
 
   // Booleanos para los fade
   boolean empezo, termino;
 
-  // Obetos para el fade y mover los elementos
+  // Objetos para el fade y mover los elementos
   Cortina cortina;
   Ease easeLogo, easeEmpezar;
-
-  // Musica
-  boolean musica;
 
   // Variables para elegir
   int tiempoInicial;
@@ -25,7 +23,8 @@ class Menu {
   String actual;
 
   // Constructor
-  Menu( ) {
+  Menu() {
+    leaderboard = new Leaderboard();
     textoAlpha = 0;
     textoAlphaDireccion=true;
 
@@ -36,12 +35,12 @@ class Menu {
     logo = loadImage("data/imagenes/menu/logo.png");
     formaGolpeeComenzar = loadImage("data/imagenes/menu/formaGolpeeComenzar.png");
     textoGolpeeComenzar = loadImage("data/imagenes/menu/textoGolpeeComenzar.png");
-    
+
     // Selección
     seleccion = loadImage("data/imagenes/menu/seleccion/seleccion.png");
     zarpazo = loadImage("data/imagenes/menu/seleccion/zarpazo.png");
     baast = loadImage("data/imagenes/menu/seleccion/baast.png");
-    
+
     tutorial = loadImage("data/imagenes/menu/tutorial.png");
     tutorialImagen = loadImage("data/imagenes/menu/tutorialImagen.png");
     gameOver = loadImage("data/imagenes/menu/gameover.png");
@@ -54,26 +53,13 @@ class Menu {
     millis = true;
     actual = "";
 
-    musica = true;
-
     termino = true;
   }
 
   // Función para dibujar el menú
-  void principal(Leaderboard leaderboard) {
-    if (musica) {
-      way.loop();
-      musica = false;
-    }
+  void principal() {
 
-    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
-    imageMode(CORNER);
-    image(background, backPosX, backPosY, 3000, 3000);
-    backPosX--;
-    backPosY--;
-
-    if (backPosX <= -1500 && backPosY <= -1500) 
-      backPosX=backPosY=0;
+    fondo();
 
     imageMode(CENTER);
     image(logo, width/2, logoPosY, 964, 620);
@@ -118,30 +104,18 @@ class Menu {
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
     if (golpe() && termino && easeEmpezar.movimiento > -1) {
-      way.pause();
-      select.trigger();
       cortina.activar("out");
+
       termino = false;
     }
   }
 
   void seleccion() {
 
-    if (musica) {
-      way.loop();
-      musica = false;
-    }
     cortina.activar("in");
     cortina.fadeIn();
 
-    // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
-    imageMode(CORNER);
-    image(background, backPosX, backPosY, 3000, 3000);
-    backPosX--;
-    backPosY--;
-
-    if (backPosX <= -1500 && backPosY <= -1500) 
-      backPosX=backPosY=0;
+    fondo();
 
     // Se dibuja el fondo(con el personaje seleccionado)
     if (actual == "")
@@ -161,11 +135,9 @@ class Menu {
       if (golpe() && millis) {
 
         if (colorGolpe() == "azul") {
-          select.trigger(); 
           actual = "azul";
         }
         if (colorGolpe() == "verde") {
-          select.trigger(); 
           actual = "verde";
         }
 
@@ -178,27 +150,25 @@ class Menu {
     if (golpe() && millis() < tiempoInicial + 5000 && millis() > tiempoInicial + 350 && !termino) {
       // Si se golpea dos veces al azul, se selecciona a Zarpazo definitivamente
       if (actual == "azul" && colorGolpe() == "azul" && !millis) {
-        select.trigger();
         personaje = "zarpazo";
         termino = true;
         millis = true;
       }
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
       if (actual == "verde" && colorGolpe() == "verde" && !millis) {
-        select.trigger();
         personaje = "baast";
         termino = true;
         millis = true;
       }
       // Si se golpea el verde después del azul, se  Marca a Baast
       if (actual == "azul" &&  colorGolpe() == "verde" && !millis) {
-        select.trigger();
+        
         millis = true;
         actual = "verde";
       }
       // Si se golpea el azul después del verde, se marca a Zarpazo
       if (actual == "verde" &&  colorGolpe() == "azul" && !millis) {
-        select.trigger();
+        
         millis = true;
         actual = "azul";
       }
@@ -213,12 +183,12 @@ class Menu {
       }
       // Si no se habia golpeando ni la verde ni la azul y se golpea una de estas
       if (actual == "" && colorGolpe() == "azul" && !millis) {
-        select.trigger();
+        
         millis = true;
         actual = "azul";
       }
       if (actual == "" && colorGolpe() == "verde`" && !millis) {
-        select.trigger();
+        
         millis = true;
         actual = "verde";
       }
@@ -242,6 +212,30 @@ class Menu {
     cortina.activar("in");
     cortina.fadeIn();
 
+    fondo();
+
+    image(tutorial, 0, 0, width, height);
+    image(tutorialImagen, 0, 0, width, height);
+
+    cortina.dibujar();
+    cortina.fadeOut("callejon");
+
+    if (golpe() && termino) {
+
+      
+      cortina.activar("out");
+    }
+  }
+
+  void gameOver() {
+    cortina.activar("in");
+    cortina.fadeIn();
+    imageMode(CORNER);
+    image(gameOver, 0, 0, width, height);
+    cortina.dibujar();
+  }
+
+  private void fondo() {
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     imageMode(CORNER);
     image(background, backPosX, backPosY, 3000, 3000);
@@ -250,29 +244,96 @@ class Menu {
 
     if (backPosX <= -1500 && backPosY <= -1500) 
       backPosX=backPosY=0;
-
-    image(tutorial, 0, 0, width, height);
-    image(tutorialImagen, 0, 0, width, height);
-
-    cortina.dibujar();
-
-    cortina.fadeOut("callejon");
-
-    if (golpe() && termino) {
-      way.pause();
-      select.trigger();
-      cortina.activar("out");
-      termino = false;
-    }
   }
 
-  void gameOver() {
-    cortina.activar("in");
-    cortina.fadeIn();
+  class Leaderboard {
+    // Datos
+    Table tabla;
+    String[] jugadores;
+    int[] puntajes;
 
-    imageMode(CORNER);
-    image(gameOver, 0, 0, width, height);
+    // Variables para el campo de texto.
+    boolean listo;
+    boolean nuevoNombre;
+    String nombre;
 
-    cortina.dibujar();
+    // Constructor
+    Leaderboard() {
+      // Se carga el .csv
+      tabla = loadTable("leaderboard.csv", "header");
+
+      // println(tabla.getRowCount() + "Cantidad total de filas"); // Debugging
+
+      // Se settea la columna de puntos a int para poder ordenarla, y se ordena
+      tabla.setColumnType("Puntos", Table.INT);
+      tabla.sortReverse("Puntos");
+
+      jugadores = new String[tabla.getRowCount()];
+      puntajes = new int[tabla.getRowCount()];
+
+      // Variables para el campo de texto
+
+      nuevoNombre = false;
+      listo = true;
+      nombre = "";
+
+      // Se llenan los arreglos de puntajes y jugadores para poder dibujarlos
+
+      for (int i = 0; i < tabla.getRowCount(); i++) {
+        TableRow row = tabla.getRow(i);
+        puntajes[i] = row.getInt("Puntos");
+        //println(puntajes[i]);
+        jugadores[i] = row.getString("Jugador");
+        //println(jugadores[i]);
+      }
+    }
+
+    // Métodos
+    void dibujar(int posX, int posY, int text) {
+      textAlign(CENTER);
+      textFont(fuenteNeon);
+      int texto = text;
+      fill(#e7d37a);
+      textSize(texto+10);
+      text("PUNTAJES ALTOS", posX, posY-25);
+
+      for (int i = 0; i < 5; i++) {
+        textSize(texto);
+        textAlign(LEFT);
+        text((i + 1) + ". " + jugadores[i], posX-130, posY + texto * i);
+        text(" - ", posX, posY + texto * i);
+        textAlign(RIGHT);
+        text(nf(puntajes[i], 6), posX+130, posY + texto * i);
+      }
+    }
+
+    void crearCampoTexto() {
+      cp5.addTextfield("input")
+        .setPosition(width / 2, height /2 )
+        .setSize(200, 40)
+        .setFont(fuenteJuego)
+        .setFocus(true)
+        .setColor(color(255, 255, 255));
+    }
+
+    void enviar() {
+      if (keyPressed && listo)
+        if (key == TAB) {
+          listo = false;
+          nombre = cp5.get(Textfield.class, "input").getText();
+          cp5.remove("input");
+          nuevoNombre = true;
+        }
+    }
+
+    void agregarPuntaje(Jugador jugador) {
+      if (nuevoNombre == true) {
+        TableRow newRow = tabla.addRow();
+        newRow.setInt("Puntos", jugador.puntos);
+        newRow.setString("Nombre", nombre);
+
+        saveTable(tabla, "leaderboard.csv");
+      }
+    }
   }
 }

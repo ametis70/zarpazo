@@ -19,9 +19,6 @@ void setup() {
   // Imagenes.
   cargarImagenes();
   
-  // Sonido.
-  cargarSonidos();
-  
   // c5p. Librería para el campo de texto.
   c5p();
   
