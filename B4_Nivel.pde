@@ -6,8 +6,6 @@ class Nivel {
   Ui ui; 
 
   Cortina cortina;
-  Animation cerbero;
-  PImage crash;
 
   // Imagen de fondo para el nivel
   PImage background;
@@ -15,14 +13,12 @@ class Nivel {
   boolean termino;
 
   // Constructor
-  Nivel(String background, String gato, int gatoHP, String perro, int perroHP) {
+  Nivel(String background, String gato, String perro) {
     combat = new SistemaPelea(this, 185, 80, 999, 110);
-    jugador = new Jugador(gatoHP, gato);
-    enemigo = new Enemigo(perroHP, perro, 583, 768);
+    jugador = new Jugador(gato);
+    enemigo = new Enemigo(perro);
 
     ui = new Ui(jugador, enemigo, combat);
-
-    cerbero = new Animation("cerbero", 5, 8);
 
     termino = true;
 
@@ -36,7 +32,7 @@ class Nivel {
     imageMode(CORNER);
     image(background, 0, 0, width, height);
 
-    cerbero.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
+    enemigo.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
 
     cortina.dibujar();
 

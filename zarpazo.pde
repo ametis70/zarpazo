@@ -30,6 +30,7 @@ void draw() {
   juego.dibujar();
 }
 
+// Tecla para reiniciar el juego
 void keyReleased() {
   if (key == 'r')
     juego = new Juego();

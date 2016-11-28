@@ -1,15 +1,10 @@
-class Personaje {
+class Personaje { //<>//
   // Datos
   int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
-
-  int puntos;
 
   // Nombre del personaje. Se utiliza para referenciar al personaje.
   String personaje;
   boolean jugador;
-
-  // Imagen para el Sprite. ¿Reemplazar por arreglo para animaciones?
-  PImage sprite;
 
   // Función para infligir daño al enemigo
   void infligirDamage(Personaje personaje) {
@@ -33,68 +28,67 @@ class Personaje {
 
 
 class Jugador extends Personaje {
-  //Constructor
-  Jugador(int saludInicial, String personaje) {
-    combo = damage = damageActual = 0;
+  // Variable para almacenar la cantidad de puntos
+  int puntos;
 
-    salud = saludMaxima = saludInicial;
+  PImage[] guantes;
+
+  //Constructor
+  Jugador(String personaje) {
     this.personaje = personaje;
+
+    if (personaje == "zarpazo")
+      salud = saludMaxima = 5000;
+    else
+      salud = saludMaxima = 4000; 
+
+    combo = damage = damageActual = 0;
     jugador = true;
     puntos = 0;
   }
 }
 
 class Enemigo extends Personaje {
-  //Constructor
-  Enemigo(int saludInicial, String personaje, int tamX, int tamY) {
-    combo = damage = damageActual = 0;
-
-    this.tamY = tamY;
-    this.tamX = tamX;
-
-    salud = saludMaxima = saludInicial;
-    this.personaje = personaje;
-    sprite = loadImage("data/imagenes/personajes/" + personaje + ".png");
-    jugador = false;
-  }
-
-  // Métodos
-  void dibujar() {
-    imageMode(CENTER);
-    sprite.resize(tamX, tamY);
-    image(sprite, width/2+random(-1, 1), height/2+50+random(-1, 1));
-  }
-}
-
-
-
-class Animation {
   PImage[] pasivo;
   PImage[] golpeando;
   int pasivoCount;
   int golpeandoCount;
   int frame, millis;
-  String personaje;
-
 
   String estado;
 
   boolean terminoP, terminoG;
 
-  Animation(String personaje, int pasivoCount, int golpeandoCount) {
-    this.pasivoCount = pasivoCount;
-    this.golpeandoCount = golpeandoCount;
+  //Constructor
+  Enemigo(String personaje) {
+    // Según el personaje, se cargan las diferentes imagenes
+    this.personaje = personaje;
+
+    // Variables comunes 
+    jugador = false;
+    estado = "pasivo";
+    combo = damage = damageActual = 0;
+
+    // Variables para cerbero
+    if (personaje == "cerbero") {
+      salud = saludMaxima = 7000;
+      tamX = 583;
+      tamY = 768;
+
+      // Cantidad de imagenes
+      pasivoCount = 5;
+      golpeandoCount = 8;
+    }
 
     pasivo = new PImage[pasivoCount];
     golpeando = new PImage[golpeandoCount];
-    this.personaje = personaje;
 
+    // Estados para los sprites
     frame = 0;
     terminoP = true;
     terminoG = true;
 
-    estado = "pasivo";
-
+    // Loops para cargar los diferentes sprites
     for (int i = 0; i < pasivoCount; i++) {
       // Use nf() to number format 'i' into four digits
       String filename = "data/imagenes/personajes/" + personaje + "/pasivo/"+ i + ".png";
@@ -107,7 +101,8 @@ class Animation {
     }
   }
 
-  void dibujar(float posX, float posY, float tamX, float tamY) { //<>//
+  // Métodos
+  void dibujar(float posX, float posY, float tamX, float tamY) {
     if (estado == "pasivo") {
       pasivo(); 
       imageMode(CENTER);

@@ -31,7 +31,8 @@ PImage
   circuloVerde, 
   circuloAzul, 
   circuloNaranja, 
-  circuloGris;
+  circuloGris,
+  background;
 
 void inicializarFuentes() {
   cargarFuentes();
@@ -45,6 +46,7 @@ void cargarImagenes() {
   circuloAzul = loadImage("data/imagenes/ui/pelotas/3.png");
   circuloNaranja = loadImage("data/imagenes/ui/pelotas/4.png");
   circuloGris = loadImage("data/imagenes/ui/pelotas/5.png");
+  background = loadImage("data/imagenes/menu/background.png");
 }
 
 boolean golpe() {
@@ -68,11 +70,11 @@ boolean golpe() {
 String colorGolpe() {
   String colorcito = "";
   if (key == 'a' || key == 'A' || microswitch(1) == 1)
-    colorcito = "rojo";
-  if (key == 's' || key == 'S' || microswitch(2) == 1)
     colorcito = "azul";
-  if (key == 'd' || key == 'D' || microswitch(3) == 1)
+  if (key == 's' || key == 'S' || microswitch(2) == 1)
     colorcito = "verde";
+  if (key == 'd' || key == 'D' || microswitch(3) == 1)
+    colorcito = "rojo";
   //if (key == 'f' || key == 'F' || microswitch(4) == 1)
   //  colorcito = "naranja";
 

@@ -8,7 +8,7 @@ class Menu {
   Cortina cortina;
 
   // Constructor
-  Menu( ) {
+  Menu() {
     background = loadImage("data/imagenes/menu/background.png");
   }
 
@@ -28,6 +28,7 @@ class MenuStart extends Menu {
   // Easing para mover el logo y el dialogo para comenzar a jugar
   Ease easeLogo, easeEmpezar;
 
+
   // Imagenes propias del Start Menu
   PImage logo, textoGolpeeComenzar, formaGolpeeComenzar;
 
@@ -41,10 +42,6 @@ class MenuStart extends Menu {
 
   MenuStart(Leaderboard leaderboard) { 
     this.leaderboard = leaderboard;
-
-    // Objetos para el fade y mover los elementos
-    Cortina cortina;
-    Ease easeLogo, easeEmpezar;
 
     leaderboard = new Leaderboard();
     textoAlpha = 0;
@@ -140,6 +137,12 @@ class MenuSeleccion extends Menu {
   boolean millis;
   String actual;
 
+  // Variables para el feedback
+  SistemaParticulas sp;
+  int bolsaY;
+  int bolsaVerdeX;
+  int bolsaAzulX;
+
   MenuSeleccion() { 
     // Selección
     seleccion = loadImage("data/imagenes/menu/seleccion/seleccion.png");
@@ -148,6 +151,10 @@ class MenuSeleccion extends Menu {
 
     millis = true;
     actual = "";
+
+    bolsaY = 547;
+    bolsaVerdeX = 1202;
+    bolsaAzulX = 152;
 
     cortina = new Cortina(255);
 
@@ -169,20 +176,19 @@ class MenuSeleccion extends Menu {
       image(seleccion, 0, 0, width, height);
     if (actual == "azul") 
       image(zarpazo, 0, 0, width, height);
-    if (actual == "verde") 
+    if (actual == "rojo") 
       image(baast, 0, 0, width, height);
-
-    // Se dibuja el fadeIn y fadeOut
-    cortina.dibujar();
 
     // Si se golpea una bolsa(verde o azul) por primera vez, se activa marca un personaje
     if (terminoFadeIn && !empezarFadeOut) {
       if (golpe() && millis) {
         if (colorGolpe() == "azul") {
           actual = "azul";
+          sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20);
         }
-        if (colorGolpe() == "verde") {
-          actual = "verde";
+        if (colorGolpe() == "rojo") {
+          actual = "rojo";
+          sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20);
         }
         tiempoInicial = millis();
         millis = false;
@@ -196,29 +202,29 @@ class MenuSeleccion extends Menu {
         personaje = "zarpazo";
         empezarFadeOut = true;
         millis = true;
+        sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20);
       }
+      
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
-      if (actual == "verde" && colorGolpe() == "verde" && !millis) {
+      if (actual == "rojo" && colorGolpe() == "rojo" && !millis) {
         personaje = "baast";
         empezarFadeOut = true;
         millis = true;
+        sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20);
       }
+      
       // Si se golpea el verde después del azul, se  Marca a Baast
-      if (actual == "azul" &&  colorGolpe() == "verde" && !millis) {
+      if (actual == "azul" &&  colorGolpe() == "rojo" && !millis) {
         millis = true;
-        actual = "verde";
+        actual = "rojo";
       }
       // Si se golpea el azul después del verde, se marca a Zarpazo
-      if (actual == "verde" &&  colorGolpe() == "azul" && !millis) {
+      if (actual == "rojo" &&  colorGolpe() == "azul" && !millis) {
         millis = true;
         actual = "azul";
       }
-      // Si se golpea algún color que no sea ni verde ni azul
-      if (actual == "verde" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "verde") == false && !millis) {
-        millis = true;
-        actual = "";
-      }
-      if (actual == "azul" &&  (colorGolpe() == "azul") == false && (colorGolpe() == "verde") == false && !millis) {
+      // Si se golpea algún color que no sea ni rojo ni azul
+      if ((actual == "azul" && colorGolpe() != "azul") || (actual == "rojo" && colorGolpe() != "rojo") && !millis) {
         millis = true;
         actual = "";
       }
@@ -227,9 +233,9 @@ class MenuSeleccion extends Menu {
         millis = true;
         actual = "azul";
       }
-      if (actual == "" && colorGolpe() == "verde`" && !millis) {
+      if (actual == "" && colorGolpe() == "rojo" && !millis) {
         millis = true;
-        actual = "verde";
+        actual = "rojo";
       }
     }
 
@@ -239,7 +245,14 @@ class MenuSeleccion extends Menu {
       actual = "";
     }
 
-    // Si se seleccionó un personaje, oscurecer la pantalla
+    // Se dibujan las particulas si se golpea una bolsa
+    if (sp != null)
+      sp.dibujar();
+
+    // Se dibuja el fadeIn y fadeOut
+    cortina.dibujar();
+
+    // Si `se seleccionó un personaje, oscurecer la pantalla
     if (empezarFadeOut) {
       cortina.activar("out");
       cortina.fadeOut("tutorial");

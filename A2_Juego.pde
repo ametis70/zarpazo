@@ -7,7 +7,7 @@ private class Juego {
   Leaderboard leaderboard;
 
   // Ojbetos para los niveles
-  Nivel callejon, patio, oficina;
+  Nivel callejon, mansion, oficina;
 
   // Objetos para las cinemáticas
   Cinematica introduccion;
@@ -46,15 +46,17 @@ private class Juego {
         menuSeleccion = new MenuSeleccion();
 
       menuSeleccion.dibujar();
+      
     } else if (etapaActual == "tutorial") {
       if (menuTutorial == null)
         menuTutorial = new MenuTutorial();
 
       menuTutorial.dibujar();
+      
     } else if (etapaActual == "callejon") {
       // Se crea el objeto del callejón
       if (callejon == null) 
-        callejon = new Nivel("callejon", menuSeleccion.personaje, 5000, "cerbero", 7000);
+        callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero");
 
       // Se destruyen los objetos del menú
       if (menuStart != null || menuSeleccion != null || menuTutorial != null) {
@@ -65,6 +67,7 @@ private class Juego {
 
       // Se dibuja el nivel
       callejon.dibujar();
+      
     } else if (etapaActual == "gameover") {
       if (menuGameOver == null)
         menuGameOver = new MenuGameOver();

@@ -40,29 +40,26 @@ class Cinematica {
   void dibujar(String proxima) {
     cortina.fadeIn();
 
-    // Se dibuja el comic
-    background(0, 0, 100);
-    image(comic, posX, posY, tamX, tamY);
-
-
     if (cortina.listo == true && empezo) {
       ease.movimiento = 1;
       empezo = false;
     }
 
-    if (termino) {
-      cortina.activar("out");
-      cortina.fadeOut(proxima);
-    }
+    // Se dibuja el comic
+    background(0, 0, 100);
+    image(comic, posX, posY, tamX, tamY);
 
     mover();
-
-    cortina.dibujar();
 
     // Función para hacer aparecer el dialogo de confirmación
     saltear();
 
-    // Si la cinematica termino(o se salteó), oscurecer la pantalla
+    cortina.dibujar();
+
+    if (termino) {
+      cortina.activar("out");
+      cortina.fadeOut(proxima);
+    }
   }
 
   // Función para saltear la escena
