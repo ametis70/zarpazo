@@ -152,6 +152,8 @@ class Mira {
     miraRoja = loadImage ("data/imagenes/ui/mira/mira-roja.png");
     miraVerde = loadImage ("data/imagenes/ui/mira/mira-verde.png");
     miraAzul = loadImage ("data/imagenes/ui/mira/mira-azul.png");
+
+    colorcito = "";
   }
 
   // Función para dibujar la mira 
@@ -165,30 +167,27 @@ class Mira {
      stroke(0, 0, 100);
      ellipse(posX, posY, tamY, tamY);
      */
+
     imageMode(CENTER);
-    if (colorcito == "azul") {
+    if (colorcito == "azul") 
       image (miraAzul, posX, posY, tamY, tamY);
-    } else if (colorcito == "verde") {
+    if (colorcito == "verde")
       image (miraVerde, posX, posY, tamY, tamY);
-    } else if (colorcito == "rojo") {
+    if (colorcito == "rojo")
       image (miraRoja, posX, posY, tamY, tamY);
-    } else {
+    if (colorcito == "gris") 
       image (miraGris, posX, posY, tamY, tamY);
-    }
 
     popStyle();
   }
 
   void cambiarColor(Pelota i) {
-    if (i.tipo == 0) { 
+    if (i.tipo == 0) 
       colorcito = "azul";
-    } else if (i.tipo == 1) { 
+    if (i.tipo == 1) 
       colorcito = "verde";
-    } else if (i.tipo == 2) { 
+    if (i.tipo == 2) 
       colorcito = "rojo";
-    } else {
-      colorcito = "gris";
-    }
   }
 }
 // Barras para indicar la cantidad de vida de cada personaje

@@ -76,13 +76,16 @@ class Pelota {
 
   // Funciónes para saber cuando la nivel.ui.mirarita está sobre el circulo, activarlos y desactivarlos.
   void activar() {
-    if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < tam / 2 && fueActiva == false)
+    if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < tam / 2 && fueActiva == false) {
+      nivel.ui.mira.cambiarColor(this);
       activa = fueActiva = true;
+    }
   }
 
   // Se desactiva la pelota luego de tocar un botón o que esta pase de largo
   void desactivar() {
     activa = false;
+    nivel.ui.mira.colorcito = "gris";
   }
 
   void mover(Jugador jugador) {

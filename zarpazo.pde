@@ -34,4 +34,10 @@ void draw() {
 void keyReleased() {
   if (key == 'r')
     juego = new Juego();
+
+  if (key == '1') {
+    juego.etapaActual = "callejon";
+    juego.menuSeleccion = new MenuSeleccion();
+    juego.menuSeleccion.personaje = "zarpazo";
+  }
 }

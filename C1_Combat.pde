@@ -6,12 +6,12 @@ class SistemaPelea {
   int pelotasActual, pelotasInicial, cantidad, multiplicador;
   int posX, posY, ancho, alto;
   float velocidad;
-  
+
   // Se crea el objeto para pasar por valor al nivel y poder acceder a los personajes y los elementos de la interfaz
   Nivel nivel;
 
   SistemaPelea(Nivel nivel, int posX, int posY, int ancho, int alto) {
-    
+
     this.nivel = nivel;
 
     // Inicialización de barra
@@ -44,10 +44,9 @@ class SistemaPelea {
     clip(posX, posY, ancho, alto);
     // Ciclo for para dibujar, mover, activar en colisión y detectar los golpes en las pelotas
     for (int i = 0; i < pelotas.length; i++) {
-      nivel.ui.mira.cambiarColor(pelotas[i]);
       pelotas[i].dibujar();
       pelotas[i].mover(nivel.jugador);
-      pelotas[i].activar(); // Si la pelota anterior no está activa
+      pelotas[i].activar();
       pelotas[i].golpear(nivel.enemigo, nivel.jugador, nivel);
     }
     noClip();
