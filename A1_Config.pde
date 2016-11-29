@@ -31,7 +31,7 @@ PImage
   circuloVerde, 
   circuloAzul, 
   circuloNaranja, 
-  circuloGris,
+  circuloGris, 
   background;
 
 void inicializarFuentes() {
@@ -61,7 +61,7 @@ boolean golpe() {
     microswitch(1) == 1 ||
     microswitch(2) == 1 ||
     microswitch(3) == 1))
-    
+
     return true;
   else
     return false;

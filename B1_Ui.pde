@@ -7,6 +7,7 @@ class Ui {
   TextoPreparacion textoPreparacion;
   Mira mira;
 
+
   // Se crean objetos para pasar por valor los objetos de jugador y enemigo del nivel
   Jugador jugador;
   Enemigo enemigo;
@@ -21,7 +22,7 @@ class Ui {
     barraJugador = new BarraVida(jugador);
     barraEnemigo = new BarraVida(enemigo);
 
-    mira = new Mira(width/2, combat.posY + combat.alto / 2, 7, 80);
+    mira = new Mira(width/2, combat.posY + combat.alto / 2, 7, 100);
     textoPreparacion = new TextoPreparacion();
   }
 
@@ -136,6 +137,8 @@ class Mira {
   // Datos 
   float posX, posY; 
   int tamX, tamY; 
+  PImage miraGris, miraRoja, miraAzul, miraVerde;
+  String colorcito;
 
   // Constructor
   Mira(float posX, float posY, int tamX, int tamY) {
@@ -144,21 +147,50 @@ class Mira {
 
     this.tamX = tamX;
     this.tamY = tamY;
+
+    miraGris = loadImage ("data/imagenes/ui/mira/mira-gris.png");
+    miraRoja = loadImage ("data/imagenes/ui/mira/mira-roja.png");
+    miraVerde = loadImage ("data/imagenes/ui/mira/mira-verde.png");
+    miraAzul = loadImage ("data/imagenes/ui/mira/mira-azul.png");
   }
 
   // Función para dibujar la mira 
   void dibujar() {
     pushStyle();
-    ellipseMode(CENTER);
-    noFill();
-    strokeWeight(6);
-    stroke(0, 0, 100);
 
-    ellipse(posX, posY, tamY, tamY);
+    /* Mira viejeta
+     ellipseMode(CENTER);
+     noFill();
+     strokeWeight(6);
+     stroke(0, 0, 100);
+     ellipse(posX, posY, tamY, tamY);
+     */
+    imageMode(CENTER);
+    if (colorcito == "azul") {
+      image (miraAzul, posX, posY, tamY, tamY);
+    } else if (colorcito == "verde") {
+      image (miraVerde, posX, posY, tamY, tamY);
+    } else if (colorcito == "rojo") {
+      image (miraRoja, posX, posY, tamY, tamY);
+    } else {
+      image (miraGris, posX, posY, tamY, tamY);
+    }
+
     popStyle();
   }
-}
 
+  void cambiarColor(Pelota i) {
+    if (i.tipo == 0) { 
+      colorcito = "azul";
+    } else if (i.tipo == 1) { 
+      colorcito = "verde";
+    } else if (i.tipo == 2) { 
+      colorcito = "rojo";
+    } else {
+      colorcito = "gris";
+    }
+  }
+}
 // Barras para indicar la cantidad de vida de cada personaje
 class BarraVida {
   // Datos

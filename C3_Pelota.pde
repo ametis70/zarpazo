@@ -148,6 +148,7 @@ class Pelota {
           // Pero si se toca la bolsa equivocada, se recibe daño
 
           if ((colorGolpe() == "azul") == false) {
+            nivel.fallar = 30;
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
@@ -209,6 +210,7 @@ class Pelota {
             }
           }
           if ((colorGolpe() == "verde") == false) {
+            nivel.fallar = 30;
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
@@ -268,6 +270,7 @@ class Pelota {
             }
           }
           if ((colorGolpe() == "rojo") == false) {
+            nivel.fallar = 30;
             jugador.combo = 0;
             enemigo.combo++;
             enemigo.damageActual += 25;
@@ -323,6 +326,7 @@ class Pelota {
          }
          }
          if ((colorGolpe() == "naranja") == false) {
+         nivel.fallar = 30;
          jugador.combo = 0;
          enemigo.combo++;
          enemigo.damageActual += 25;
@@ -337,6 +341,7 @@ class Pelota {
       }
       // Si la nivel.ui.mirara pasa y no se pulsa ninguna bolsa, se recibe daño.
       if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) >= tam / 2) {
+        nivel.fallar = 30;
         jugador.combo = 0;
         enemigo.combo++;
         enemigo.damageActual += 25;

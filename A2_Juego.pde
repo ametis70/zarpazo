@@ -41,6 +41,7 @@ private class Juego {
         introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
 
       introduccion.dibujar("seleccion");
+      
     } else if (etapaActual == "seleccion") {
       if (menuSeleccion == null)
         menuSeleccion = new MenuSeleccion();
@@ -67,7 +68,6 @@ private class Juego {
 
       // Se dibuja el nivel
       callejon.dibujar();
-      
     } else if (etapaActual == "gameover") {
       if (menuGameOver == null)
         menuGameOver = new MenuGameOver();
@@ -78,3 +78,4 @@ private class Juego {
     }
   }
 }
+  

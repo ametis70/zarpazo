@@ -204,7 +204,7 @@ class MenuSeleccion extends Menu {
         millis = true;
         sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20);
       }
-      
+
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
       if (actual == "rojo" && colorGolpe() == "rojo" && !millis) {
         personaje = "baast";
@@ -212,7 +212,7 @@ class MenuSeleccion extends Menu {
         millis = true;
         sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20);
       }
-      
+
       // Si se golpea el verde después del azul, se  Marca a Baast
       if (actual == "azul" &&  colorGolpe() == "rojo" && !millis) {
         millis = true;

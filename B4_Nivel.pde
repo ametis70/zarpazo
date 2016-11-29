@@ -11,6 +11,8 @@ class Nivel {
   PImage background;
 
   boolean termino;
+  int fallar;  
+
 
   // Constructor
   Nivel(String background, String gato, String perro) {
@@ -25,14 +27,21 @@ class Nivel {
     this.background = loadImage("data/imagenes/niveles/" + background + ".png");
 
     cortina = new Cortina(255);
+    fallar = 0;
   }
 
   void dibujar() {
     cortina.fadeIn();
     imageMode(CORNER);
-    image(background, 0, 0, width, height);
 
+    pushMatrix();
+    if (fallar > 0 ) {
+      translate(random(-2, 2), random(-2, 2));
+      fallar--;
+    }
+    image(background, 0, 0, width, height);
     enemigo.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
+    popMatrix();
 
     cortina.dibujar();
 
@@ -43,7 +52,7 @@ class Nivel {
       }
 
     ui.dibujar();
- 
+
     cortina.fadeOut("gameover");
 
     if ( termino && (jugador.salud <= 0 || enemigo.salud <= 0)) {
