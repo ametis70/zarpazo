@@ -43,15 +43,15 @@ class Nivel {
     enemigo.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
     popMatrix();
 
-    cortina.dibujar();
-
     if (cortina.listo)
       if (ui.textoPreparacion.iniciarPelea) {
         combat.pelea();
         combat.reiniciar();
       }
-
+      
     ui.dibujar();
+    
+    cortina.dibujar();
 
     cortina.fadeOut("gameover");
 

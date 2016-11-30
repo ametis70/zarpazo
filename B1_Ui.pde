@@ -153,7 +153,7 @@ class Mira {
     miraVerde = loadImage ("data/imagenes/ui/mira/mira-verde.png");
     miraAzul = loadImage ("data/imagenes/ui/mira/mira-azul.png");
 
-    colorcito = "";
+    colorcito = "gris";
   }
 
   // Función para dibujar la mira 
@@ -188,6 +188,10 @@ class Mira {
       colorcito = "verde";
     if (i.tipo == 2) 
       colorcito = "rojo";
+  }
+
+  void apagar() {
+    colorcito = "gris";
   }
 }
 // Barras para indicar la cantidad de vida de cada personaje
@@ -270,13 +274,13 @@ class BarraVida {
     // Barra con vida
     image(relleno, posX1, posY1, posX2, posY2);
 
-    noClip();
-
     // Se dibuja el icono
     imageMode(CENTER);
     if (!enemigo)
-      image(icono, (posX2 + posX1) / 2, posY2 - 75, 85, 85);
+      image(icono, (posX2 + posX1) / 2, posY2 - 80, 85, 85);
     else 
-    image(icono, (posX2 + posX1) /2, posY1 + 75, 85, 85);
+    image(icono, (posX2 + posX1) /2, posY1 + 80, 85, 85);
+
+    noClip();
   }
 }

@@ -306,6 +306,11 @@ class MenuGameOver extends Menu {
 
   MenuGameOver() {
     gameOver = loadImage("data/imagenes/menu/gameover.png");
+
+    cortina = new Cortina(255);
+
+    terminoFadeIn = false;
+    empezarFadeOut = false;
   }
 
   void dibujar() {

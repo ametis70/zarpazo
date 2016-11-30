@@ -85,7 +85,7 @@ class Pelota {
   // Se desactiva la pelota luego de tocar un botón o que esta pase de largo
   void desactivar() {
     activa = false;
-    nivel.ui.mira.colorcito = "gris";
+    nivel.ui.mira.apagar();
   }
 
   void mover(Jugador jugador) {
