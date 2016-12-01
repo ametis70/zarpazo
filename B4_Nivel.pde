@@ -41,6 +41,7 @@ class Nivel {
     }
     image(background, 0, 0, width, height);
     enemigo.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
+    jugador.dibujar();
     popMatrix();
 
     if (cortina.listo)

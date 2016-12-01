@@ -184,11 +184,11 @@ class MenuSeleccion extends Menu {
       if (golpe() && millis) {
         if (colorGolpe() == "azul") {
           actual = "azul";
-          sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20);
+          sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20, 3);
         }
         if (colorGolpe() == "rojo") {
           actual = "rojo";
-          sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20);
+          sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20, 3);
         }
         tiempoInicial = millis();
         millis = false;
@@ -202,7 +202,7 @@ class MenuSeleccion extends Menu {
         personaje = "zarpazo";
         empezarFadeOut = true;
         millis = true;
-        sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20);
+        sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20, 3);
       }
 
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
@@ -210,7 +210,7 @@ class MenuSeleccion extends Menu {
         personaje = "baast";
         empezarFadeOut = true;
         millis = true;
-        sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20);
+        sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20, 3);
       }
 
       // Si se golpea el verde después del azul, se  Marca a Baast

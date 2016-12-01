@@ -2,6 +2,8 @@ class Personaje { //<>//
   // Datos
   int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
 
+  boolean golpeando;
+
   // Nombre del personaje. Se utiliza para referenciar al personaje.
   String personaje;
   boolean jugador;
@@ -11,6 +13,7 @@ class Personaje { //<>//
     if (this.personaje == "zarpazo") {
       damage = damageActual + int((combo * 1.6));
       personaje.salud -= damageActual + int((combo * 1.6));
+      golpeando = true;
     } else if (this.personaje == "baast") {
       damage = damageActual + int((combo * 1.2));
       personaje.salud -= damageActual + int((combo * 1.2));
@@ -32,6 +35,11 @@ class Jugador extends Personaje {
   int puntos;
 
   PImage[] guantes;
+  int sprites;
+
+  boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion;
+  int frameInicial;
+  int spriteActual;
 
   //Constructor
   Jugador(String personaje) {
@@ -45,6 +53,106 @@ class Jugador extends Personaje {
     combo = damage = damageActual = 0;
     jugador = true;
     puntos = 0;
+
+    sprites = 5;
+    guantes = new PImage[sprites];
+
+
+    for (int i = 0; i < sprites; i++) {
+      guantes[i] = loadImage("data/imagenes/personajes/zarpazo/" + i + ".png");
+    }
+    terminoAnimacion = golpeoDerecha = direccionAdelante = true;
+    spriteActual = 0;
+  }
+
+  void dibujar() {
+    pushStyle();
+    imageMode(CENTER);
+    animacion();
+    //println(spriteActual);
+    image(guantes[spriteActual], width / 2, height - 200, 1200, 800);
+    popStyle();
+  }
+
+  void animacion() {
+    if (golpeando && terminoAnimacion) {
+      frameInicial = frameCount;
+      terminoAnimacion = false;
+    }
+
+    if (!terminoAnimacion && golpeoDerecha) {
+      println("frame: " + (frameCount - frameInicial));
+
+      if (spriteActual == 0 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
+        direccionAdelante = true;
+        terminoAnimacion = true;
+        golpeoDerecha = false;
+        golpeando = false;
+        println("termino golpe izquierda");
+      }
+
+      if (spriteActual > 0 && !direccionAdelante) {
+        if ((frameCount - frameInicial) % 3 == 0) { 
+          spriteActual--; 
+          println(spriteActual);
+        }
+      }
+
+      if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
+        direccionAdelante = false;   
+        println("cambia direccion");
+      }
+
+
+      if (spriteActual < 2 && direccionAdelante && !terminoAnimacion) {
+        if ((frameCount - frameInicial) % 3 == 0) { 
+          spriteActual++;
+          println(spriteActual);
+        }
+      }
+    }
+
+    if (!terminoAnimacion && !golpeoDerecha) {
+      println("frame: " + (frameCount - frameInicial));
+      if (!golpeandoDerecha) {
+        golpeandoDerecha = true;
+        println("Empezo golpe derecha");
+        spriteActual = 3;
+        println(spriteActual);
+      } else {
+
+        if (spriteActual == 3 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
+          spriteActual = 0;
+          println(spriteActual);
+          direccionAdelante = true;
+          terminoAnimacion = true;
+          golpeoDerecha = true;
+          golpeandoDerecha = false;
+          golpeando = false;
+          println("termino golpe izquierda");
+        }
+
+        if (spriteActual > 3 && !direccionAdelante) {
+          if ((frameCount - frameInicial) % 3 == 0) { 
+            spriteActual--; 
+            println(spriteActual);
+          }
+        }
+
+        if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
+          direccionAdelante = false;   
+          println("cambia direccion");
+        }
+
+
+        if (spriteActual < 4 && direccionAdelante && !terminoAnimacion) {
+          if ((frameCount - frameInicial) % 3 == 0) { 
+            spriteActual++;
+            println(spriteActual);
+          }
+        }
+      }
+    }
   }
 }
 

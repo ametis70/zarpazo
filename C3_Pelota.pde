@@ -104,12 +104,13 @@ class Pelota {
         // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
           if (colorGolpe() == "azul") { 
+            
             // Se hace daño según que tan cerca se esté del centro.
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15);
+              sp = new SistemaParticulas(posX, posY, 15, tipo);
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
@@ -119,7 +120,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6);
+              sp = new SistemaParticulas(posX, posY, 6, tipo);
               resultado = "¡Excelente!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
@@ -129,10 +130,9 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4);
+              sp = new SistemaParticulas(posX, posY, 4, tipo);
               resultado = "¡Bien!";
               golpeada = true;
-
               jugador.infligirDamage(enemigo);
               desactivar();
             } 
@@ -140,10 +140,9 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2);
+              sp = new SistemaParticulas(posX, posY, 2, tipo);
               resultado = "Puede ser mejor...";
               golpeada = true;
-
               jugador.infligirDamage(enemigo);
               desactivar();
             }
@@ -159,19 +158,20 @@ class Pelota {
             golpeada = true;
             if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
             nivel.enemigo.estado = "golpeando"; 
-            jugador.infligirDamage(enemigo);
+            enemigo.infligirDamage(jugador);
             desactivar();
           }
         }
 
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
+          
           if ((colorGolpe() == "verde")) {
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15);
+              sp = new SistemaParticulas(posX, posY, 15, tipo);
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
@@ -182,7 +182,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6);
+              sp = new SistemaParticulas(posX, posY, 6, tipo);
               resultado = "¡Excelente!";
               golpeada = true;
 
@@ -193,7 +193,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4);
+              sp = new SistemaParticulas(posX, posY, 4, tipo);
               resultado = "¡Bien!";
               golpeada = true;
 
@@ -204,7 +204,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2);
+              sp = new SistemaParticulas(posX, posY, 2, tipo);
               resultado = "Puede ser mejor...";
               golpeada = true;
 
@@ -226,12 +226,13 @@ class Pelota {
           }
         }
         if (tipo == 2) {
+          
           if ((colorGolpe() == "rojo")) {
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15);
+              sp = new SistemaParticulas(posX, posY, 15, tipo);
               resultado = "¡Perfecto!";
               golpeada = true;
               jugador.infligirDamage(enemigo);
@@ -242,7 +243,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6);
+              sp = new SistemaParticulas(posX, posY, 6, tipo);
               resultado = "¡Excelente!";
               golpeada = true;
 
@@ -253,7 +254,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4);
+              sp = new SistemaParticulas(posX, posY, 4, tipo);
               resultado = "¡Bien!";
               golpeada = true;
 
@@ -264,7 +265,7 @@ class Pelota {
               enemigo.combo = 0;
               jugador.combo++;
               jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2);
+              sp = new SistemaParticulas(posX, posY, 2, tipo);
               resultado = "Puede ser mejor...";
               golpeada = true;
 

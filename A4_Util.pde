@@ -128,7 +128,7 @@ class SistemaParticulas {
 
   int cantidad;            // Cantidad de particulas. Depende de que tan certero sea el golpe, se asignará un número mayor
 
-  SistemaParticulas(float posX, float posY, int cantidad) {
+  SistemaParticulas(float posX, float posY, int cantidad, int tipo) {
     this.posX = posX;
     this.posY = posY;
 
@@ -136,7 +136,7 @@ class SistemaParticulas {
     particulas = new Particula[cantidad];
 
     for (int i = 0; i < particulas.length; i++) {
-      particulas[i] = new Particula(posX, posY);
+      particulas[i] = new Particula(posX, posY, tipo);
     }
   }
 
@@ -158,16 +158,22 @@ class Particula {
 
   PImage estrella;
 
-  Particula(float posX, float posY) {
+  Particula(float posX, float posY, int tipo) {
     this.posX = posX;
     this.posY = posY;
 
-    estrella = loadImage("data/imagenes/ui/particula.png");
+    if (tipo == 0)
+      estrella = loadImage("data/imagenes/ui/particula/azul.png");
+    else if (tipo == 1)
+      estrella = loadImage("data/imagenes/ui/particula/verde.png");
+    else if (tipo == 2)
+      estrella = loadImage("data/imagenes/ui/particula/rojo.png");
+    else
+      estrella = loadImage("data/imagenes/ui/particula/particula.png");
 
     tam = random(10, 20);
 
-    // Rotación en eje Z con translate() y rotate()
-    rotacion = random(0, 360);  // Rotación inicial
+    // Rotación en eje Z con translate() y rotate()    rotacion = random(0, 360);  // Rotación inicial
 
     // Velocidad y aceleración. Determinan la dirección.
     velX = random(-2.5, 2.5);
