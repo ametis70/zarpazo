@@ -8,10 +8,11 @@ class Nivel {
   Cortina cortina;
 
   // Imagen de fondo para el nivel
-  PImage background;
+  PImage background, damage;
 
   boolean termino;
   int fallar;  
+ 
 
 
   // Constructor
@@ -25,6 +26,7 @@ class Nivel {
     termino = true;
 
     this.background = loadImage("data/imagenes/niveles/" + background + ".png");
+    damage = loadImage("data/imagenes/ui/damage.png");
 
     cortina = new Cortina(255);
     fallar = 0;
@@ -36,6 +38,7 @@ class Nivel {
 
     pushMatrix();
     if (fallar > 0 ) {
+
       translate(random(-2, 2), random(-2, 2));
       fallar--;
     }
@@ -44,14 +47,22 @@ class Nivel {
     jugador.dibujar();
     popMatrix();
 
+    if (fallar > 0) {
+      pushStyle();
+      imageMode(CORNER);
+      tint(255, map(fallar, 0, 30, 0, 255));
+      image(damage, 0, 0, width, height);
+      popStyle();
+    }
+
     if (cortina.listo)
       if (ui.textoPreparacion.iniciarPelea) {
         combat.pelea();
         combat.reiniciar();
       }
-      
+
     ui.dibujar();
-    
+
     cortina.dibujar();
 
     cortina.fadeOut("gameover");
