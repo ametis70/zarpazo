@@ -40,6 +40,10 @@ class Jugador extends Personaje {
   boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion;
   int frameInicial;
   int spriteActual;
+  int guantesX, guantesY;
+  float xoff, yoff;
+  float ruido;
+  float ruidoX, ruidoY;
 
   //Constructor
   Jugador(String personaje) {
@@ -63,15 +67,26 @@ class Jugador extends Personaje {
     }
     terminoAnimacion = golpeoDerecha = direccionAdelante = true;
     spriteActual = 0;
+
+    guantesX = width/2;
+    guantesY = height - 200;
+    xoff = 0.0;
   }
 
   void dibujar() {
+    pushMatrix();
     pushStyle();
     imageMode(CENTER);
     animacion();
-    //println(spriteActual);
-    image(guantes[spriteActual], width / 2, height - 200, 1200, 800);
+    //println(spriteActual)
+    xoff += 0.1;
+    yoff *= 0.1;
+    ruidoX = noise (xoff);
+    ruidoY = noise (yoff);
+    translate(ruido * 50, ruidoX * 50);
+    image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
     popStyle();
+    popMatrix();
   }
 
   void animacion() {

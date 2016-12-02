@@ -36,6 +36,7 @@ class Ui {
       barraEnemigo.dibujar(enemigo, jugador);
       mira.dibujar();
       textoInterfaz();
+      jugador.dibujar();
 
       // Se dibuja el cuadrado que "contiene" a la barra del sistema de pelea
       fill(0, 0, 0, 50);
