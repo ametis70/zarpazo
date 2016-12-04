@@ -6,7 +6,7 @@ private class Juego {
   MenuGameOver menuGameOver;
   Leaderboard leaderboard;
 
-  Cortina cortina;
+  Jugador jugador;
 
   // Objetos para los niveles
   Nivel callejon, mansion, oficina;
@@ -53,13 +53,18 @@ private class Juego {
 
       menuTutorial.dibujar();
     } else if (etapaActual == "callejon") {
+
+      if (jugador == null) 
+        jugador = new Jugador (menuSeleccion.personaje);
+
       // Se crea el objeto del callejón
       if (callejon == null) 
-        callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero", "mansion");
+        callejon = new Nivel("callejon", jugador.personaje, "cerbero", "mansion");
 
       // Se destruyen los objetos del menú
-      if (menuStart != null || menuTutorial != null) {
+      if (menuStart != null || menuTutorial != null || menuSeleccion != null) {
         menuStart = null;
+        menuSeleccion = null;
         menuTutorial = null;
       }
 
@@ -69,7 +74,7 @@ private class Juego {
 
       // Se crea el objeto de la mansión
       if (mansion == null) 
-        mansion = new Nivel("mansion", menuSeleccion.personaje, "anubis", "oficina");
+        mansion = new Nivel("mansion", jugador.personaje, "anubis", "oficina");
 
       // Se destruye el objeto del callejon
       if (callejon != null)
@@ -93,17 +98,30 @@ private class Juego {
     if (key == '1') {
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
+      if (jugador == null) 
+        jugador = new Jugador (menuSeleccion.personaje);
+      if ( juego.menuSeleccion.personaje != null) 
+        juego.menuSeleccion.personaje = null;
       juego.etapaActual = "callejon";
     }
 
     if (key == '2') {
-      juego.etapaActual = "mansion";
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
+      if (jugador == null) 
+        jugador = new Jugador (menuSeleccion.personaje);
+      if ( juego.menuSeleccion.personaje != null) 
+        juego.menuSeleccion.personaje = null;
+      juego.etapaActual = "mansion";
     }
 
     if (key == 'k') {
-      juego.callejon.ui.enemigo.salud = 5;
+      if (callejon != null) {
+        juego.callejon.ui.enemigo.salud = 5;
+      }
+      if (mansion!= null) {
+        juego.mansion.ui.enemigo.salud = 5;
+      }
     }
     if (key == 'j') {
       juego.callejon.ui.jugador.salud = 5;

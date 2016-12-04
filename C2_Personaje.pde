@@ -81,16 +81,48 @@ class Jugador extends Personaje {
 
   void dibujar() {
 
+    float direccionAzar = random(1);
+
     pushMatrix();
     pushStyle();
     imageMode(CENTER);
     animacion();
     //println(spriteActual)
-    xoff = random(-0.3, 0.3);
-    yoff = random(-3, 3);
-    ruidoX = noise (xoff);
-    ruidoY = noise (yoff);
-    translate(ruidoX*50, ruidoY*50);
+
+    /*
+    println("x" + xoff);
+     println("y" +yoff);
+     
+     if (direccionAzar<0.2) {
+     xoff = random(-5, 5);
+     yoff = random(-10, 10);
+     } else if (direccionAzar < 0.4) {
+     xoff = random(0, 10);
+     yoff = random(-5, 5);
+     } else if (direccionAzar<0.6) {
+     xoff = random(-2, 12);
+     yoff = random(-2, 2);
+     } else if (direccionAzar<0.8) {
+     xoff = random(-3, 3);
+     yoff = random(-1, 1);
+     }
+     
+     constrain (xoff, -13, 13);
+     constrain (yoff, -13, 13);
+     ruidoX = noise (xoff);
+     ruidoY = noise (yoff);
+     translate(ruidoX*50, ruidoY*50);
+     */
+
+/*
+    guantesX+=5;
+    guantesY-=5;
+    if (guantesY <= height-250) {
+      guantesY+=15;
+    }
+    */
+
+
     image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
     //   easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
 
