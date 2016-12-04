@@ -4,7 +4,7 @@ Juego juego;
 
 void setup() {
   // Se utiliza P2D como renderer para aprovechar la aceleración por hardware.
-  size(1366, 768,P2D);
+  size(1368, 768, P2D);
   //fullScreen(P2D);
 
   // Se crea el objeto del juego. Todos los objetos se crean a partir de este.
@@ -32,12 +32,5 @@ void draw() {
 
 // Tecla para reiniciar el juego
 void keyReleased() {
-  if (key == 'r')
-    juego = new Juego();
-
-  if (key == '1') {
-    juego.etapaActual = "callejon";
-    juego.menuSeleccion = new MenuSeleccion();
-    juego.menuSeleccion.personaje = "zarpazo";
-  }
+  juego.debugging();
 }

@@ -6,7 +6,11 @@ private class Juego {
   MenuGameOver menuGameOver;
   Leaderboard leaderboard;
 
-  // Ojbetos para los niveles
+  Personaje personaje;
+
+  Cortina cortina;
+
+  // Objetos para los niveles
   Nivel callejon, mansion, oficina;
 
   // Objetos para las cinemáticas
@@ -35,39 +39,46 @@ private class Juego {
 
       // Se dibuja el menú
       menuStart.dibujar();
-      
     } else if (etapaActual == "introduccion") {
       if (introduccion == null) 
         introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
 
       introduccion.dibujar("seleccion");
-      
     } else if (etapaActual == "seleccion") {
       if (menuSeleccion == null)
         menuSeleccion = new MenuSeleccion();
 
       menuSeleccion.dibujar();
-      
     } else if (etapaActual == "tutorial") {
       if (menuTutorial == null)
         menuTutorial = new MenuTutorial();
 
       menuTutorial.dibujar();
-      
     } else if (etapaActual == "callejon") {
       // Se crea el objeto del callejón
       if (callejon == null) 
-        callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero");
+        callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero", "mansion");
 
       // Se destruyen los objetos del menú
-      if (menuStart != null || menuSeleccion != null || menuTutorial != null) {
+      if (menuStart != null || menuTutorial != null) {
         menuStart = null;
-        menuSeleccion = null;
         menuTutorial = null;
       }
 
       // Se dibuja el nivel
       callejon.dibujar();
+    } else if (etapaActual == "mansion") {
+
+      // Se crea el objeto de la mansión
+      if (mansion == null) 
+        mansion = new Nivel("mansion", menuSeleccion.personaje, "anubis", "oficina");
+
+      // Se destruye el objeto del callejon
+      if (callejon != null)
+        callejon = null;
+
+      // Se dibuja el nivel
+      mansion.dibujar();
     } else if (etapaActual == "gameover") {
       if (menuGameOver == null)
         menuGameOver = new MenuGameOver();
@@ -77,5 +88,27 @@ private class Juego {
       println("NO WAY? NO WAY! NO WAY? NO WAY!");
     }
   }
+  void debugging() {
+    if (key == 'r')
+      juego = new Juego();
+
+    if (key == '1') {
+      juego.menuSeleccion = new MenuSeleccion();
+      juego.menuSeleccion.personaje = "zarpazo";
+      juego.etapaActual = "callejon";
+    }
+
+    if (key == '2') {
+      juego.etapaActual = "mansion";
+      juego.menuSeleccion = new MenuSeleccion();
+      juego.menuSeleccion.personaje = "zarpazo";
+    }
+
+    if (key == 'k') {
+      juego.callejon.ui.enemigo.salud = 5;
+    }
+    if (key == 'j') {
+      juego.callejon.ui.jugador.salud = 5;
+    }
+  }
 }
-  

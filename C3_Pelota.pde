@@ -31,7 +31,10 @@ class Pelota {
 
   // Función para dibujar los circulos.
   void dibujar() {
+
+    pushStyle();
     imageMode(CENTER);
+    tint(360, nivel.ui.alphaNivelTerminado);
     if (tipo == 0) {
       image(circuloAzul, posX, posY, tam, tam);
     }
@@ -41,14 +44,18 @@ class Pelota {
     if (tipo == 2) {
       image(circuloRojo, posX, posY, tam, tam);
     }
+
     //if (tipo == 3) {
     //  image(circuloNaranja, posX, posY, tam, tam);
     //}
+
     if (golpeada == true) {
       if (bien())
+
         image(circuloGris, posX, posY, tam, tam);
       if (bien() == false) vibrar();
     }
+    popStyle();
   }
 
   boolean bien() {
@@ -104,7 +111,7 @@ class Pelota {
         // Y la bolsa se corresponde al tipo...
         if (tipo == 0) {
           if (colorGolpe() == "azul") { 
-            
+
             // Se hace daño según que tan cerca se esté del centro.
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
@@ -165,7 +172,7 @@ class Pelota {
 
         // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
         if (tipo == 1) {
-          
+
           if ((colorGolpe() == "verde")) {
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;
@@ -226,7 +233,7 @@ class Pelota {
           }
         }
         if (tipo == 2) {
-          
+
           if ((colorGolpe() == "rojo")) {
             if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
               enemigo.combo = 0;

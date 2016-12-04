@@ -8,6 +8,8 @@ class Personaje { //<>//
   String personaje;
   boolean jugador;
 
+  // "nivel" creado solo para referenciar
+
   // Función para infligir daño al enemigo
   void infligirDamage(Personaje personaje) {
     if (this.personaje == "zarpazo") {
@@ -44,6 +46,8 @@ class Jugador extends Personaje {
   float xoff, yoff;
   float ruido;
   float ruidoX, ruidoY;
+  Ease easeGuantes;
+
 
   //Constructor
   Jugador(String personaje) {
@@ -71,23 +75,32 @@ class Jugador extends Personaje {
     guantesX = width/2;
     guantesY = height - 200;
     xoff = 0.0;
+
+    easeGuantes = new Ease();
   }
 
   void dibujar() {
+
     pushMatrix();
     pushStyle();
     imageMode(CENTER);
     animacion();
     //println(spriteActual)
-    xoff += 0.1;
-    yoff *= 0.1;
+    xoff = random(-0.3, 0.3);
+    yoff = random(-3, 3);
     ruidoX = noise (xoff);
     ruidoY = noise (yoff);
-    translate(ruido * 50, ruidoX * 50);
+    translate(ruidoX*50, ruidoY*50);
     image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
+    //   easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
+
+    //    easeGuantes.target(guantesX+ruidoX * 50, guantesY+ruidoY * 50);
+    //   easeGuantes.easePos(0.05);
+
     popStyle();
     popMatrix();
   }
+
 
   void animacion() {
     if (golpeando && terminoAnimacion) {
@@ -174,6 +187,7 @@ class Jugador extends Personaje {
 class Enemigo extends Personaje {
   PImage[] pasivo;
   PImage[] golpeando;
+  PImage derrotado;
   int pasivoCount;
   int golpeandoCount;
   int frame, millis;
@@ -192,9 +206,18 @@ class Enemigo extends Personaje {
     estado = "pasivo";
     combo = damage = damageActual = 0;
 
-    // Variables para cerbero
-    if (personaje == "cerbero") {
+    switch (personaje) {
+    case "cerbero":
       salud = saludMaxima = 7000;
+      tamX = 583;
+      tamY = 768;
+
+      // Cantidad de imagenes
+      pasivoCount = 5;
+      golpeandoCount = 8;
+
+    case "anubis":
+      salud = saludMaxima = 8500;
       tamX = 583;
       tamY = 768;
 
@@ -203,8 +226,11 @@ class Enemigo extends Personaje {
       golpeandoCount = 8;
     }
 
+
+
     pasivo = new PImage[pasivoCount];
     golpeando = new PImage[golpeandoCount];
+    derrotado = loadImage ("data/imagenes/personajes/" + personaje + "/derrotado/derrotado.png");
 
     // Estados para los sprites
     frame = 0;
@@ -226,17 +252,28 @@ class Enemigo extends Personaje {
 
   // Métodos
   void dibujar(float posX, float posY, float tamX, float tamY) {
-    if (estado == "pasivo") {
+
+    switch (estado) {
+    case "pasivo":
       pasivo(); 
       imageMode(CENTER);
       image(pasivo[frame], posX, posY, tamX, tamY);
-    }
-    if (estado == "golpeando") {
+      break;
+
+    case "golpeando":
       golpeando();
       imageMode(CENTER);
       image(golpeando[frame], posX, posY, tamX, tamY);
+      break;
+
+
+    case "derrotado":
+      imageMode(CENTER);
+      image(derrotado, posX, posY, tamX, tamY);
+      break;
     }
   }
+
 
   void pasivo() {
     if (terminoP) {

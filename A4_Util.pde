@@ -94,7 +94,7 @@ class Ease {
     this.targetY = targetY;
   }
 
-  // El valor por default de easing es debería ser 0.05. Ajustar según el tiempo
+  // El valor por default de easing debería ser 0.05. Ajustar según el tiempo
   void easePos(float easing) {
     float dx = targetX - posX;  // Variable para la distancia en X. Se resta la posición actual a donde queremos llegar.
     posX += dx * easing;        // Se actualiza la posición con una velocidad determinada por la variable easing.

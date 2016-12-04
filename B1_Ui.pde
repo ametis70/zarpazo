@@ -6,12 +6,14 @@ class Ui {
   BarraVida barraJugador, barraEnemigo;
   TextoPreparacion textoPreparacion;
   Mira mira;
-
+  Nivel nivel;
 
   // Se crean objetos para pasar por valor los objetos de jugador y enemigo del nivel
   Jugador jugador;
   Enemigo enemigo;
   SistemaPelea combat;
+
+  int alphaRectNivelTerminado, alphaNivelTerminado;
 
   // Constructor
   Ui(Jugador jugador, Enemigo enemigo, SistemaPelea combat) {
@@ -24,6 +26,9 @@ class Ui {
 
     mira = new Mira(width/2, combat.posY + combat.alto / 2, 7, 100);
     textoPreparacion = new TextoPreparacion();
+
+    alphaRectNivelTerminado = 50;
+    alphaNivelTerminado = 255;
   }
 
   // Métodos
@@ -32,14 +37,17 @@ class Ui {
       textoPreparacion.dibujar();
     else {
       // Se dibujan los elementos que están contenidos en objetos
+      pushStyle();
+      tint(360, alphaNivelTerminado);
       barraJugador.dibujar(jugador, enemigo);
       barraEnemigo.dibujar(enemigo, jugador);
       mira.dibujar();
       textoInterfaz();
       jugador.dibujar();
+      popStyle();
 
       // Se dibuja el cuadrado que "contiene" a la barra del sistema de pelea
-      fill(0, 0, 0, 50);
+      fill(0, 0, 0, alphaRectNivelTerminado);
       noStroke();
       rectMode(CORNER);
       rect(combat.posX, combat.posY, combat.ancho, combat.alto);
@@ -48,12 +56,14 @@ class Ui {
 
   // Texto del la interfaz
   void textoInterfaz() { 
+    pushStyle();
     textFont(fuenteNeon);
     textSize(40);
-    fill(0, 0, 100);
+    fill(0, 0, 100, alphaNivelTerminado);
     textAlign(LEFT, TOP);
     if ( jugador.combo != 0) {
       text("x" + jugador.combo, combat.posX, combat.posY + combat.alto + 25);
+      popStyle();
     }
     //textAlign(RIGHT, TOP);
     //if ( enemigo.combo != 0) {
