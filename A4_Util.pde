@@ -171,14 +171,14 @@ class Particula {
     else
       estrella = loadImage("data/imagenes/ui/particula/particula.png");
 
-    tam = random(10, 20);
+    tam = random(15, 35);
 
     // Rotación en eje Z con translate() y rotate()    rotacion = random(0, 360);  // Rotación inicial
 
     // Velocidad y aceleración. Determinan la dirección.
     velX = random(-2.5, 2.5);
     velY = random(-2.5, 2.5);
-    accel = 0.99;
+    accel = 1.01;
 
     // Valor inicial para el tiempo de vida. Si se exceden los 1500, la estrella se deja de referenciar
     lifespan = millis();

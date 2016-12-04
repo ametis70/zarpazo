@@ -6,8 +6,6 @@ private class Juego {
   MenuGameOver menuGameOver;
   Leaderboard leaderboard;
 
-  Personaje personaje;
-
   Cortina cortina;
 
   // Objetos para los niveles
