@@ -65,7 +65,6 @@ class MenuStart extends Menu {
 
   // Función para dibujar el menú
   void dibujar() {
-
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     dibujarFondo();
 
@@ -115,7 +114,7 @@ class MenuStart extends Menu {
 
     // Se dibuja la cortina para el fadeout
     cortina.dibujar();
-    cortina.fadeOut("introduccion");
+    cortina.fadeOut("cinematicaCallejon");
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
     if (golpe() && empezarFadeOut && easeEmpezar.movimiento > -1) {
@@ -303,6 +302,7 @@ class MenuTutorial extends Menu {
 
 class MenuGameOver extends Menu {
   PImage gameOver;
+  int contador;
 
   MenuGameOver() {
     gameOver = loadImage("data/imagenes/menu/gameover.png");
@@ -319,8 +319,18 @@ class MenuGameOver extends Menu {
     imageMode(CORNER);
     image(gameOver, 0, 0, width, height);
     cortina.dibujar();
+    contador++;
+    switch (contador) {
+    case 10:
+      cortina.activar("out");
+      break;
+    case 100:
+      juego = new Juego();
+      break;
+    }
   }
 }
+
 
 
 class Leaderboard {

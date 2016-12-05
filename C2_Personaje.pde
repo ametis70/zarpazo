@@ -42,7 +42,7 @@ class Jugador extends Personaje {
   boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion;
   int frameInicial;
   int spriteActual;
-  int guantesX, guantesY;
+  float guantesX, guantesY;
   float xoff, yoff;
   float ruido;
   float ruidoX, ruidoY;
@@ -114,15 +114,15 @@ class Jugador extends Personaje {
      translate(ruidoX*50, ruidoY*50);
      */
 
-/*
+    /*
     guantesX+=5;
-    guantesY-=5;
-    if (guantesY <= height-250) {
-      guantesY+=15;
-    }
-    */
+     guantesY-=5;
+     if (guantesY <= height-250) {
+     guantesY+=15;
+     }
+     */
 
-
+  
     image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
     //   easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
 
@@ -148,37 +148,37 @@ class Jugador extends Personaje {
         terminoAnimacion = true;
         golpeoDerecha = false;
         golpeando = false;
-        println("termino golpe izquierda");
+        //println("termino golpe izquierda");
       }
 
       if (spriteActual > 0 && !direccionAdelante) {
         if ((frameCount - frameInicial) % 3 == 0) { 
           spriteActual--; 
-          println(spriteActual);
+          //println(spriteActual);
         }
       }
 
       if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
         direccionAdelante = false;   
-        println("cambia direccion");
+        //println("cambia direccion");
       }
 
 
       if (spriteActual < 2 && direccionAdelante && !terminoAnimacion) {
         if ((frameCount - frameInicial) % 3 == 0) { 
           spriteActual++;
-          println(spriteActual);
+          //println(spriteActual);
         }
       }
     }
 
     if (!terminoAnimacion && !golpeoDerecha) {
-      println("frame: " + (frameCount - frameInicial));
+      //println("frame: " + (frameCount - frameInicial));
       if (!golpeandoDerecha) {
         golpeandoDerecha = true;
-        println("Empezo golpe derecha");
+        //println("Empezo golpe derecha");
         spriteActual = 3;
-        println(spriteActual);
+        //println(spriteActual);
       } else {
 
         if (spriteActual == 3 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
@@ -189,26 +189,26 @@ class Jugador extends Personaje {
           golpeoDerecha = true;
           golpeandoDerecha = false;
           golpeando = false;
-          println("termino golpe izquierda");
+          //println("termino golpe izquierda");
         }
 
         if (spriteActual > 3 && !direccionAdelante) {
           if ((frameCount - frameInicial) % 3 == 0) { 
             spriteActual--; 
-            println(spriteActual);
+            //println(spriteActual);
           }
         }
 
         if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
           direccionAdelante = false;   
-          println("cambia direccion");
+          //println("cambia direccion");
         }
 
 
         if (spriteActual < 4 && direccionAdelante && !terminoAnimacion) {
           if ((frameCount - frameInicial) % 3 == 0) { 
             spriteActual++;
-            println(spriteActual);
+            //println(spriteActual);
           }
         }
       }
@@ -252,6 +252,16 @@ class Enemigo extends Personaje {
       salud = saludMaxima = 8500;
       tamX = 583;
       tamY = 768;
+
+      // Cantidad de imagenes
+      pasivoCount = 5;
+      golpeandoCount = 8;
+
+
+    case "xolotl":
+      salud = saludMaxima = 10000;
+      tamX = 1500;
+      tamY = 800;
 
       // Cantidad de imagenes
       pasivoCount = 5;

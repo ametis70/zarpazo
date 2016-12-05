@@ -12,18 +12,16 @@ class Nivel {
 
   boolean termino, peleaTerminada;
   int fallar;  
- 
 
   int alphaNivelTerminado, colorEnemigo, alphaEnemigo, alphaRectFondo;
   boolean blancoDibujado, alphaRectFondoCambio, alphaEnemigoZero;
 
-  PImage [] globosDialogocerbero;
-  int cantidadGlobos;
+  PImage globoDialogoInicio, globoDialogoFinal;
+  int numeroGlobos, alphaGlobo;
+
   boolean finalListo, finKO;
-  int alphaGlobo;
 
   String siguienteEtapa;
-  String direccion;
 
   // Constructor
   Nivel(String background, String gato, String perro, String siguienteEtapa) {
@@ -45,29 +43,24 @@ class Nivel {
 
     fallar = 0;
 
-    peleaTerminada = false;
-
-    alphaNivelTerminado = 360;
-    colorEnemigo = 360;
-    blancoDibujado = false;
+    //Se inicializan las variables que manejan la sucesión de étapas que ocurren al derrotar al enemigo
+    alphaNivelTerminado = colorEnemigo = alphaRectFondo = 360;
+    blancoDibujado = alphaRectFondoCambio = alphaEnemigoZero = finKO = peleaTerminada = false;
     alphaEnemigo = 255;
-    alphaRectFondo = 360;
-    alphaRectFondoCambio = false;
-    alphaEnemigoZero = false;
-    alphaGlobo = 0;
-    finKO = false;
 
-    cantidadGlobos = 5;
-    globosDialogocerbero = new PImage [cantidadGlobos];
-    for (int i = 0; i < cantidadGlobos; i++) {
-      globosDialogocerbero[i] = loadImage("data/imagenes/globosDialogo/cerbero/" + i + ".png");
-    }
-    direccion = "globosDialogo" + enemigo;
+    // Se inicializan las variables que controlan el accionar de los "globos de dialogo"
+    alphaGlobo = 0;
+    numeroGlobos = int(random (0, 7));
+    globoDialogoInicio = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje + "/inicio/" + numeroGlobos + ".png");
+    globoDialogoFinal = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje +"/final/" + numeroGlobos + ".png");
   }
 
   void dibujar() {
+    println("Alpha Globo" + alphaGlobo);
+    // Se limita alphaGlobo para que no exceda ciertos valores
+    alphaGlobo = constrain(alphaGlobo, 0, 256);
     cortina.fadeIn();
-    
+
     imageMode(CORNER);
 
     pushMatrix();
@@ -82,7 +75,6 @@ class Nivel {
     // Desde acá empiezan una sucesión de estados que determinan como se comportan los elementos luego de que el jugador haya derrotado al enemigo 
 
     if (peleaTerminada == true) {
-
       fill(360, 0 - alphaRectFondo);
       rect(0, 0, width, height);
 
@@ -92,7 +84,7 @@ class Nivel {
       } else
 
         if (blancoDibujado == true && colorEnemigo > 0) {
-          println(colorEnemigo);
+          //   println(colorEnemigo);
           colorEnemigo-=5;
           blancoDibujado = false;
         } else
@@ -105,7 +97,6 @@ class Nivel {
           } 
 
       if (alphaEnemigoZero == true) {
-        println(colorEnemigo);
         alphaRectFondoCambio = true;
         enemigo.estado = "derrotado";
         alphaRectFondo+=10;
@@ -115,10 +106,13 @@ class Nivel {
       }
 
       if (colorEnemigo >= 350 && finalListo == true) {
+        if (globoDialogoInicio != null) {
+          globoDialogoInicio = null;
+        }
         tint(360, alphaGlobo);
-        alphaGlobo+=2;
+        alphaGlobo+=7;
         alphaEnemigoZero = false;
-        image(globosDialogocerbero[4], width/2+150, height/2-350, 300, 300);
+        image(globoDialogoFinal, width/2+150, height/2-200, 300, 200);
       }
 
       if (alphaGlobo >= 240) {
@@ -133,6 +127,15 @@ class Nivel {
 
     popMatrix();
 
+    pushStyle ();
+
+    if (ui.textoPreparacion.iniciarPelea == false)
+      alphaGlobo+=2;
+    tint (255, alphaGlobo);
+    if ( globoDialogoInicio != null)
+      image (globoDialogoInicio, width/2+150, height/2-200, 300, 200);
+    popStyle ();
+
     if (fallar > 0) {
       pushStyle();
       imageMode(CORNER);
@@ -141,8 +144,11 @@ class Nivel {
       popStyle();
     }
 
+
+
     if (cortina.listo)
       if (ui.textoPreparacion.iniciarPelea && peleaTerminada == false) {
+        alphaGlobo -=5;
         combat.pelea();
         combat.reiniciar();
       }
@@ -153,10 +159,8 @@ class Nivel {
 
     if (termino) {
       if (jugador.salud <= 0) {
-        cortina.dibujar();
-        cortina.fadeOut("gameover");
         cortina.activar("out");
-        termino = false;
+        cortina.fadeOut("gameover");
       } else if (enemigo.salud <= 0) {
         enemigoKO();
       }

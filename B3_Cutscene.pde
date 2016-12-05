@@ -134,7 +134,9 @@ class Cinematica {
   void mover() {
     if (!empezo && !termino) {
       //println(ease.movimiento);  // Debugging
-      if (juego.etapaActual == "introduccion") {
+
+      switch (juego.etapaActual) { 
+      case "cinematicaCallejon":
         //movimiento, targetX, targetY, tipo
         ease(1, 500, 500, "pos");
         ease(2, 0, 600, "pos");
@@ -143,6 +145,37 @@ class Cinematica {
         ease(5, 2632, 1502, "tam");
         ease(6, -500, -500, "pos");
         ease(7);
+        break;
+      case "cinematicaMansion":
+        //movimiento, targetX, targetY, tipo
+        ease(1, 500, 500, "pos");
+        ease(2, 0, 600, "pos");
+        ease(3, 500, 0, "pos");
+        ease(4, 0, 0, "pos");
+        ease(5, 2632, 1502, "tam");
+        ease(6, -500, -500, "pos");
+        ease(7);
+        break;
+      case "cinematicaOficina":
+        //movimiento, targetX, targetY, tipo
+        ease(1, 500, 500, "pos");
+        ease(2, 0, 600, "pos");
+        ease(3, 500, 0, "pos");
+        ease(4, 0, 0, "pos");
+        ease(5, 2632, 1502, "tam");
+        ease(6, -500, -500, "pos");
+        ease(7);
+        break;
+      case "cinematicaFinal":
+        //movimiento, targetX, targetY, tipo
+        ease(1, 500, 500, "pos");
+        ease(2, 0, 600, "pos");
+        ease(3, 500, 0, "pos");
+        ease(4, 0, 0, "pos");
+        ease(5, 2632, 1502, "tam");
+        ease(6, -500, -500, "pos");
+        ease(7);
+        break;
       }
     }
   }
