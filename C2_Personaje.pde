@@ -75,6 +75,7 @@ class Jugador extends Personaje {
     guantesX = width/2;
     guantesY = height - 200;
     xoff = 0.0;
+    yoff = 0.0;
 
     easeGuantes = new Ease();
   }
@@ -89,30 +90,25 @@ class Jugador extends Personaje {
     animacion();
     //println(spriteActual)
 
-    /*
-    println("x" + xoff);
-     println("y" +yoff);
-     
-     if (direccionAzar<0.2) {
-     xoff = random(-5, 5);
-     yoff = random(-10, 10);
-     } else if (direccionAzar < 0.4) {
-     xoff = random(0, 10);
-     yoff = random(-5, 5);
-     } else if (direccionAzar<0.6) {
-     xoff = random(-2, 12);
-     yoff = random(-2, 2);
-     } else if (direccionAzar<0.8) {
-     xoff = random(-3, 3);
-     yoff = random(-1, 1);
-     }
-     
-     constrain (xoff, -13, 13);
-     constrain (yoff, -13, 13);
-     ruidoX = noise (xoff);
-     ruidoY = noise (yoff);
-     translate(ruidoX*50, ruidoY*50);
-     */
+    if (direccionAzar<0.2) {
+      xoff = random(-5, 5);
+      yoff = random(-10, 10);
+    } else if (direccionAzar < 0.4) {
+      xoff = random(0, 10);
+      yoff = random(-5, 5);
+    } else if (direccionAzar<0.6) {
+      xoff = random(-2, 12);
+      yoff = random(-2, 2);
+    } else if (direccionAzar<0.8) {
+      xoff = random(-3, 3);
+      yoff = random(-1, 1);
+    }
+
+    constrain (xoff, -13, 13);
+    constrain (yoff, -13, 13);
+    ruidoX = noise (xoff);
+    ruidoY = noise (yoff);
+    translate(ruidoX*50, ruidoY*50);
 
     /*
     guantesX+=5;
@@ -122,7 +118,11 @@ class Jugador extends Personaje {
      }
      */
 
-  
+    //  easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
+    //   easeGuantes.target(guantesX-500, guantesY-500);
+    //   guantesX = easeGuantes.posX; 
+    //   guantesY = easeGuantes.posY;
+
     image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
     //   easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
 
@@ -240,7 +240,7 @@ class Enemigo extends Personaje {
 
     switch (personaje) {
     case "cerbero":
-      salud = saludMaxima = 7000;
+      salud = saludMaxima = 6000;
       tamX = 583;
       tamY = 768;
 
@@ -249,7 +249,7 @@ class Enemigo extends Personaje {
       golpeandoCount = 8;
 
     case "anubis":
-      salud = saludMaxima = 8500;
+      salud = saludMaxima = 7000;
       tamX = 583;
       tamY = 768;
 
@@ -259,7 +259,7 @@ class Enemigo extends Personaje {
 
 
     case "xolotl":
-      salud = saludMaxima = 10000;
+      salud = saludMaxima = 9000;
       tamX = 1500;
       tamY = 800;
 
