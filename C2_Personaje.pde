@@ -1,4 +1,4 @@
-class Personaje { //<>//
+class Personaje {  //<>//
   // Datos
   int salud, saludMaxima, combo, damage, damageActual;
 
@@ -48,8 +48,6 @@ class Jugador extends Personaje {
   int spriteActual;
 
   int guanteRandom;
-
-
   Ease easeGuantes;
 
 
@@ -88,9 +86,11 @@ class Jugador extends Personaje {
     pushStyle();
     imageMode(CENTER);
     animacion();
+
     if (!perfect)
       image(normal[spriteActual], width/2, height - 200, 1200, 800);
     else image(gancho[spriteActual], width/2, height - 200, 1200, 800);
+
     popStyle();
     popMatrix();
   }
@@ -130,11 +130,13 @@ class Jugador extends Personaje {
 
       if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
         direccionAdelante = false;   
+
         if (perfect)
           infligirDamage(nivel.enemigo, "izquierdaGancho");
         else
           infligirDamage(nivel.enemigo, "izquierda");
           //println("cambia dirección");
+
       }
 
 
@@ -164,7 +166,9 @@ class Jugador extends Personaje {
           golpeandoDerecha = false;
           perfect = false;
           golpeando = false;
+
           //println("termino golpe derecha");
+
         }
 
         if (spriteActual > 3 && !direccionAdelante) {
@@ -176,10 +180,12 @@ class Jugador extends Personaje {
 
         if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
           direccionAdelante = false;   
+
           if (perfect)
             infligirDamage(nivel.enemigo, "derechaGancho");
           else
             infligirDamage(nivel.enemigo, "derecha");
+
           //println("cambia direccion");
         }
 
@@ -236,7 +242,7 @@ class Enemigo extends Personaje {
       break;
 
     case "anubis":
-      salud = saludMaxima = 8500;
+      salud = saludMaxima = 7000;
 
       // Cantidad de imagenes
       pasivoCount = 5;
@@ -244,8 +250,9 @@ class Enemigo extends Personaje {
       golpeadoCount = 8;
       break;
 
+
     case "xolotl":
-      salud = saludMaxima = 10000;
+      salud = saludMaxima = 9000;
 
       // Cantidad de imagenes
       pasivoCount = 5;
@@ -305,7 +312,7 @@ class Enemigo extends Personaje {
   }
 
   void animacion() {
-    if ((proximaAnimacion != "" && terminoAnimacion == true)) {
+    if ((proximaAnimacion != "" && terminoAnimacion == true) || proximaAnimacion == "golpeado") {
       frameInicial = frameCount;
       terminoAnimacion = false;
       spriteActual = 0;
