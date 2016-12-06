@@ -92,7 +92,7 @@ class MenuStart extends Menu {
     formaGolpeePosX = easeEmpezar.posX;
 
     // Cuando el fondo del dialogo llega a su posición, se dibuja el texto de éste.
-    if (easeEmpezar.movimiento > -1) {
+    if (easeEmpezar.listo == false) {
       pushStyle();
 
       // Se utiliza tint para hacerlo intermitente
@@ -118,7 +118,7 @@ class MenuStart extends Menu {
     cortina.fadeOut("introduccion");
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
-    if (golpe() && empezarFadeOut && easeEmpezar.movimiento > -1) {
+    if (golpe() && empezarFadeOut && easeEmpezar.listo == false) {
       cortina.activar("out");
       empezarFadeOut = false;
     }

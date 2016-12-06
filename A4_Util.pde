@@ -102,7 +102,6 @@ class Ease {
     float dy = targetY - posY;  // Variable para la distancia en X. Se resta la posición actual a donde queremos llegar.
     posY += dy * easing;        // Se actualiza la posición con una velocidad determinada por la variable easing.
     if (listo && dist(posX, posY, targetX, targetY) <= 1) {
-      movimiento++;
       listo = false;
     }
   }
@@ -114,7 +113,6 @@ class Ease {
     float dy = targetY - tamY;  // Variable para la distancia en X. Se resta la posición actual a donde queremos llegar.
     tamY += dy * easing;        // Se actualiza la posición con una velocidad determinada por la variable easing.
     if (listo && dist(tamX, tamY, targetX, targetY) <= 1) {
-      movimiento++;
       listo = false;
     }
   }

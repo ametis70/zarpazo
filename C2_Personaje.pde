@@ -1,21 +1,24 @@
 class Personaje { //<>//
   // Datos
-  int salud, saludMaxima, combo, damage, damageActual, tamX, tamY;
+  int salud, saludMaxima, combo, damage, damageActual;
 
   boolean golpeando;
+  String proximaAnimacion, golpeRecibido;
 
   // Nombre del personaje. Se utiliza para referenciar al personaje.
   String personaje;
   boolean jugador;
 
-  // "nivel" creado solo para referenciar
+  // Se pasa el objeto del nivel por referencia para poder dañar al jugador
+  Nivel nivel;
 
   // Función para infligir daño al enemigo
-  void infligirDamage(Personaje personaje) {
+  void infligirDamage(Personaje personaje, String golpeDado) {
     if (this.personaje == "zarpazo") {
       damage = damageActual + int((combo * 1.6));
       personaje.salud -= damageActual + int((combo * 1.6));
-      golpeando = true;
+      personaje.proximaAnimacion = "golpeado";
+      personaje.golpeRecibido = golpeDado;
     } else if (this.personaje == "baast") {
       damage = damageActual + int((combo * 1.2));
       personaje.salud -= damageActual + int((combo * 1.2));
@@ -36,21 +39,24 @@ class Jugador extends Personaje {
   // Variable para almacenar la cantidad de puntos
   int puntos;
 
-  PImage[] guantes;
+  PImage[] normal;
+  PImage[] gancho;
   int sprites;
 
-  boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion;
+  boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion, perfect;
   int frameInicial;
   int spriteActual;
-  int guantesX, guantesY;
-  float xoff, yoff;
-  float ruido;
-  float ruidoX, ruidoY;
+
+  int guanteRandom;
+
+
   Ease easeGuantes;
 
 
   //Constructor
-  Jugador(String personaje) {
+  Jugador(String personaje, Nivel nivel) {
+    this.nivel = nivel;
+
     this.personaje = personaje;
 
     if (personaje == "zarpazo")
@@ -63,72 +69,28 @@ class Jugador extends Personaje {
     puntos = 0;
 
     sprites = 5;
-    guantes = new PImage[sprites];
-
+    normal = new PImage[sprites];
+    gancho = new PImage[sprites];
 
     for (int i = 0; i < sprites; i++) {
-      guantes[i] = loadImage("data/imagenes/personajes/zarpazo/" + i + ".png");
+      normal[i] = loadImage("data/imagenes/personajes/zarpazo/normal/" + i + ".png");
+      gancho[i] = loadImage("data/imagenes/personajes/zarpazo/gancho/" + i + ".png");
     }
+
     terminoAnimacion = golpeoDerecha = direccionAdelante = true;
     spriteActual = 0;
-
-    guantesX = width/2;
-    guantesY = height - 200;
-    xoff = 0.0;
 
     easeGuantes = new Ease();
   }
 
   void dibujar() {
-
-    float direccionAzar = random(1);
-
     pushMatrix();
     pushStyle();
     imageMode(CENTER);
     animacion();
-    //println(spriteActual)
-
-    /*
-    println("x" + xoff);
-     println("y" +yoff);
-     
-     if (direccionAzar<0.2) {
-     xoff = random(-5, 5);
-     yoff = random(-10, 10);
-     } else if (direccionAzar < 0.4) {
-     xoff = random(0, 10);
-     yoff = random(-5, 5);
-     } else if (direccionAzar<0.6) {
-     xoff = random(-2, 12);
-     yoff = random(-2, 2);
-     } else if (direccionAzar<0.8) {
-     xoff = random(-3, 3);
-     yoff = random(-1, 1);
-     }
-     
-     constrain (xoff, -13, 13);
-     constrain (yoff, -13, 13);
-     ruidoX = noise (xoff);
-     ruidoY = noise (yoff);
-     translate(ruidoX*50, ruidoY*50);
-     */
-
-/*
-    guantesX+=5;
-    guantesY-=5;
-    if (guantesY <= height-250) {
-      guantesY+=15;
-    }
-    */
-
-
-    image(guantes[spriteActual], guantesX, guantesY, 1200, 800);
-    //   easeGuantes.inicializar(guantesX, guantesY, 1200, 800);
-
-    //    easeGuantes.target(guantesX+ruidoX * 50, guantesY+ruidoY * 50);
-    //   easeGuantes.easePos(0.05);
-
+    if (!perfect)
+      image(normal[spriteActual], width/2, height - 200, 1200, 800);
+    else image(gancho[spriteActual], width/2, height - 200, 1200, 800);
     popStyle();
     popMatrix();
   }
@@ -138,77 +100,94 @@ class Jugador extends Personaje {
     if (golpeando && terminoAnimacion) {
       frameInicial = frameCount;
       terminoAnimacion = false;
+
+      guanteRandom = int(random(2));
+
+      if (guanteRandom == 0) 
+        golpeoDerecha = true;
+      else
+        golpeoDerecha = false;
     }
 
     if (!terminoAnimacion && golpeoDerecha) {
-      println("frame: " + (frameCount - frameInicial));
+      //println("frame: " + (frameCount - frameInicial));
 
       if (spriteActual == 0 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
         direccionAdelante = true;
         terminoAnimacion = true;
         golpeoDerecha = false;
+        perfect = false;
         golpeando = false;
-        println("termino golpe izquierda");
+        //println("termino golpe izquierda");
       }
 
       if (spriteActual > 0 && !direccionAdelante) {
         if ((frameCount - frameInicial) % 3 == 0) { 
           spriteActual--; 
-          println(spriteActual);
+          //println(spriteActual);
         }
       }
 
       if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
         direccionAdelante = false;   
-        println("cambia direccion");
+        if (perfect)
+          infligirDamage(nivel.enemigo, "izquierdaGancho");
+        else
+          infligirDamage(nivel.enemigo, "izquierda");
+          //println("cambia dirección");
       }
 
 
       if (spriteActual < 2 && direccionAdelante && !terminoAnimacion) {
         if ((frameCount - frameInicial) % 3 == 0) { 
           spriteActual++;
-          println(spriteActual);
+          //println(spriteActual);
         }
       }
     }
 
     if (!terminoAnimacion && !golpeoDerecha) {
-      println("frame: " + (frameCount - frameInicial));
+      //println("frame: " + (frameCount - frameInicial));
       if (!golpeandoDerecha) {
         golpeandoDerecha = true;
-        println("Empezo golpe derecha");
+        //println("Empezo golpe derecha");
         spriteActual = 3;
-        println(spriteActual);
+        //println(spriteActual);
       } else {
 
         if (spriteActual == 3 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
           spriteActual = 0;
-          println(spriteActual);
+          //println(spriteActual);
           direccionAdelante = true;
           terminoAnimacion = true;
           golpeoDerecha = true;
           golpeandoDerecha = false;
+          perfect = false;
           golpeando = false;
-          println("termino golpe izquierda");
+          //println("termino golpe derecha");
         }
 
         if (spriteActual > 3 && !direccionAdelante) {
           if ((frameCount - frameInicial) % 3 == 0) { 
             spriteActual--; 
-            println(spriteActual);
+            //println(spriteActual);
           }
         }
 
         if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
           direccionAdelante = false;   
-          println("cambia direccion");
+          if (perfect)
+            infligirDamage(nivel.enemigo, "derechaGancho");
+          else
+            infligirDamage(nivel.enemigo, "derecha");
+          //println("cambia direccion");
         }
 
 
         if (spriteActual < 4 && direccionAdelante && !terminoAnimacion) {
           if ((frameCount - frameInicial) % 3 == 0) { 
             spriteActual++;
-            println(spriteActual);
+            //println(spriteActual);
           }
         }
       }
@@ -219,128 +198,167 @@ class Jugador extends Personaje {
 class Enemigo extends Personaje {
   PImage[] pasivo;
   PImage[] golpeando;
-  PImage derrotado;
-  int pasivoCount;
-  int golpeandoCount;
-  int frame, millis;
+  PImage[] golpeado;
+  PImage intro, vencido;
+
+  boolean terminoAnimacion;
+  int frameInicial;
+  int spriteActual;
 
   String estado;
 
   boolean terminoP, terminoG;
 
   //Constructor
-  Enemigo(String personaje) {
+  Enemigo(String personaje, Nivel nivel) {
+    this.nivel = nivel;
     // Según el personaje, se cargan las diferentes imagenes
     this.personaje = personaje;
+
+    // Se crean las variables temporales para almacenar la cantidad de sprites
+    int pasivoCount, golpeandoCount, golpeadoCount;
+    pasivoCount = golpeandoCount = golpeadoCount = 0;
 
     // Variables comunes 
     jugador = false;
     estado = "pasivo";
     combo = damage = damageActual = 0;
 
+    // Se inicializan las variables propias de cada personaje
     switch (personaje) {
     case "cerbero":
-      salud = saludMaxima = 7000;
-      tamX = 583;
-      tamY = 768;
+      salud = saludMaxima = 6000;
 
       // Cantidad de imagenes
-      pasivoCount = 5;
-      golpeandoCount = 8;
+      pasivoCount = 6;
+      golpeandoCount = 6;
+      golpeadoCount =  4;
+      break;
 
     case "anubis":
       salud = saludMaxima = 8500;
-      tamX = 583;
-      tamY = 768;
 
       // Cantidad de imagenes
       pasivoCount = 5;
       golpeandoCount = 8;
+      golpeadoCount = 8;
+      break;
+
+    case "xolotl":
+      salud = saludMaxima = 10000;
+
+      // Cantidad de imagenes
+      pasivoCount = 5;
+      golpeandoCount = 8;
+      golpeadoCount = 8;
+      break;
     }
 
+    // Se cargan las imagenes de intro y ending
+    intro = loadImage("/data/imagenes/personajes/" + personaje + "/intro.png");
+    vencido = loadImage("/data/imagenes/personajes/" + personaje + "/vencido.png");
 
-
+    // Se inicializan los tamaños de los arreglos
     pasivo = new PImage[pasivoCount];
+    golpeado = new PImage[golpeadoCount];
     golpeando = new PImage[golpeandoCount];
-    derrotado = loadImage ("data/imagenes/personajes/" + personaje + "/derrotado/derrotado.png");
 
-    // Estados para los sprites
-    frame = 0;
-    terminoP = true;
-    terminoG = true;
+    // Loops para cagar las imagenes
+    for (int i = 0; i < pasivo.length; i++) {
+      pasivo[i] = loadImage("data/imagenes/personajes/" + personaje + "/pasivo/" + i + ".png");
+    }
+    for (int i = 0; i < golpeado.length; i++) {
+      golpeado[i] = loadImage("data/imagenes/personajes/" + personaje + "/golpeado/" + i + ".png");
+    }
+    for (int i = 0; i < golpeando.length; i++) {
+      golpeando[i] = loadImage("data/imagenes/personajes/" + personaje + "/golpeando/" + i + ".png");
+    }
 
-    // Loops para cargar los diferentes sprites
-    for (int i = 0; i < pasivoCount; i++) {
-      // Use nf() to number format 'i' into four digits
-      String filename = "data/imagenes/personajes/" + personaje + "/pasivo/"+ i + ".png";
-      pasivo[i] = loadImage(filename);
-    }
-    for (int i = 0; i < golpeandoCount; i++) {
-      // Use nf() to number format 'i' into four digits
-      String filename = "data/imagenes/personajes/" + personaje + "/golpeando/" + i + ".png";
-      golpeando[i] = loadImage(filename);
-    }
+    proximaAnimacion = "";
+    estado = "intro";
   }
 
-  // Métodos
-  void dibujar(float posX, float posY, float tamX, float tamY) {
+  void dibujar() {
+    pushStyle();
+    imageMode(CORNER);
+    animacion();
 
-    switch (estado) {
+    switch(estado) {
+    case "intro":
+      image(intro, 0, 0, width, height);
+      break;
     case "pasivo":
-      pasivo(); 
-      imageMode(CENTER);
-      image(pasivo[frame], posX, posY, tamX, tamY);
+      image(pasivo[spriteActual], 0, 0, width, height);
       break;
-
     case "golpeando":
-      golpeando();
-      imageMode(CENTER);
-      image(golpeando[frame], posX, posY, tamX, tamY);
+      image(golpeando[spriteActual], 0, 0, width, height);
       break;
-
-
-    case "derrotado":
-      imageMode(CENTER);
-      image(derrotado, posX, posY, tamX, tamY);
+    case "golpeado":
+      image(golpeado[spriteActual], 0, 0, width, height);
+      break;
+    case "vencido":
+      image(vencido, 0, 0, width, height);
       break;
     }
+
+    popStyle();
   }
 
-
-  void pasivo() {
-    if (terminoP) {
-      millis = millis();
-      terminoP = false;
-    }    
-    if (!terminoP) {
-      if (millis() <  millis + 100) frame = 0;
-      if (millis() >  millis + 100 && millis() < millis + 200) frame = 1;
-      if (millis() >  millis + 200 && millis() < millis + 300) frame = 2;
-      if (millis() >  millis + 300 && millis() < millis + 400) frame = 3;
-      if (millis() >  millis + 400 && millis() < millis + 500) frame = 4;
-      if (millis() >  millis + 500 && millis() < millis + 600) frame = 3;
-      if (millis() >  millis + 600 && millis() < millis + 700) frame = 2;
-      if (millis() > millis + 700) terminoP = true;
+  void animacion() {
+    if ((proximaAnimacion != "" && terminoAnimacion == true)) {
+      frameInicial = frameCount;
+      terminoAnimacion = false;
+      spriteActual = 0;
+      estado = proximaAnimacion;
+      proximaAnimacion = "";
     }
-  }
-  void golpeando() {
-    if (terminoG) {
-      millis = millis();
-      terminoG = false;
-    }    
-    if (terminoG == false) {
-      if (millis() <  millis + 50) frame = 0;
-      if (millis() >  millis + 50 && millis() < millis + 100) frame = 1;
-      if (millis() >  millis + 100 && millis() < millis + 150) frame = 2;
-      if (millis() >  millis + 150 && millis() < millis + 200) frame = 3;
-      if (millis() >  millis + 250 && millis() < millis + 300) frame = 4;
-      if (millis() >  millis + 350 && millis() < millis + 400) frame = 5;
-      if (millis() >  millis + 450 && millis() < millis + 500) frame = 6;
-      if (millis() >  millis + 550 && millis() < millis + 600) frame = 7;
 
-      if (millis() > millis + 600) {
-        terminoP = true;
-        estado = "pasivo";
+    if (estado == "pasivo") {
+      if (spriteActual == pasivo.length - 1 && (frameCount - frameInicial) % 7 == 0) {
+        terminoAnimacion = true;
+        proximaAnimacion = "pasivo";
+      }
+
+      if ((frameCount - frameInicial) % 7 == 0 && terminoAnimacion == false)
+        spriteActual++;
+    }
+
+    if (estado == "golpeando") {
+      //println("frame: " + (frameCount - frameInicial));
+
+      if (spriteActual == golpeando.length - 1 && (frameCount - frameInicial) % 7 == 0) {
+        terminoAnimacion = true;
+        proximaAnimacion = "pasivo";
+      }
+
+      if ((frameCount - frameInicial) % 7 == 0 && terminoAnimacion == false && spriteActual < golpeando.length -1 )
+        spriteActual++;
+
+      if (frameCount - frameInicial == 7 * 4) {
+        nivel.fallar = 30;
+        infligirDamage(nivel.jugador, null);
+      }
+    }
+
+    if (estado == "golpeado") {
+      switch (golpeRecibido) {
+      case "izquierda":
+        spriteActual = 1;
+        break;
+      case "derecha":
+        spriteActual = 0;
+        break;
+      case "izquierdaGancho":
+        spriteActual = 3;
+        break;
+      case "derechaGancho":
+        spriteActual = 2;
+        break;
+      }
+      if ((frameCount - frameInicial) % 16 == 15 && !terminoAnimacion && salud > 0) {
+        terminoAnimacion = true;
+        golpeRecibido = "";
+        proximaAnimacion = "pasivo";
       }
     }
   }

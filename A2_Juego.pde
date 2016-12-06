@@ -39,7 +39,7 @@ private class Juego {
       menuStart.dibujar();
     } else if (etapaActual == "introduccion") {
       if (introduccion == null) 
-        introduccion = new Cinematica("introduccion", 0, 0, 1316, 751);
+        introduccion = new Cinematica("introduccion", 0, 0, 2315.28, 1636.8, 7);
 
       introduccion.dibujar("seleccion");
     } else if (etapaActual == "seleccion") {
@@ -53,13 +53,9 @@ private class Juego {
 
       menuTutorial.dibujar();
     } else if (etapaActual == "callejon") {
-
-      if (jugador == null) 
-        jugador = new Jugador (menuSeleccion.personaje);
-
       // Se crea el objeto del callejón
       if (callejon == null) 
-        callejon = new Nivel("callejon", jugador.personaje, "cerbero", "mansion");
+        callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero", "mansion");
 
       // Se destruyen los objetos del menú
       if (menuStart != null || menuTutorial != null || menuSeleccion != null) {
@@ -98,10 +94,6 @@ private class Juego {
     if (key == '1') {
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
-      if (jugador == null) 
-        jugador = new Jugador (menuSeleccion.personaje);
-      if ( juego.menuSeleccion.personaje != null) 
-        juego.menuSeleccion.personaje = null;
       juego.etapaActual = "callejon";
     }
 
@@ -109,7 +101,7 @@ private class Juego {
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       if (jugador == null) 
-        jugador = new Jugador (menuSeleccion.personaje);
+        jugador = new Jugador (menuSeleccion.personaje, mansion);
       if ( juego.menuSeleccion.personaje != null) 
         juego.menuSeleccion.personaje = null;
       juego.etapaActual = "mansion";

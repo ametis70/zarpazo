@@ -6,8 +6,13 @@ class Cinematica {
   float tamX, tamY;
   float targetX, targetY;
 
-  // Imagen
+  // Imagenes
   PImage comic;
+  PImage[] dialogos;
+
+  // Variables para los dialogos
+  int alpha, frameInicial;
+  boolean aparecer, mostrando, desaparecer;
 
   // Booleanos para los fade
   boolean empezo, termino;
@@ -20,15 +25,24 @@ class Cinematica {
   int tiempoInicial;
   boolean millis;
 
+
   // Constructor
-  Cinematica(String comic, float posX, float posY, float tamX, float tamY) {
+  Cinematica(String comic, float posX, float posY, float tamX, float tamY, int cantidadDialogos) {
     this.posX = targetX = posX;
     this.posY = targetY = posY;
     this.tamX = tamX;
     this.tamY = tamY;
-    this.comic = loadImage("data/imagenes/cinematicas/" + comic + ".jpg");
+    this.comic = loadImage("data/imagenes/cinematicas/" + comic + "/comic.png");
     termino = false;
     empezo = true;
+
+    aparecer = true;
+
+    dialogos = new PImage[cantidadDialogos];
+
+    for (int i = 0; i < dialogos.length; i++) {
+      dialogos[i] = loadImage("data/imagenes/cinematicas/" + comic + "/dialogos/" + i + ".png");
+    }
 
     millis = true;
 
@@ -123,6 +137,41 @@ class Cinematica {
       }
     }
   }
+
+  void dialogo(int dialogo, int frames, float posX, float posY) {
+
+    if (ease.listo == false) {
+      if (aparecer) {
+        alpha += 15;
+        if (alpha >= 255) {
+          aparecer = false;
+          frameInicial = frameCount;
+        }
+      }
+
+      pushStyle();
+      tint(360, alpha);
+      imageMode(CORNER);
+      image(dialogos[dialogo], posX, posY);
+      popStyle();
+
+      if (aparecer == false && (frameCount - frameInicial) > frames) {
+        desaparecer = true;
+      }
+
+      if (desaparecer == true) {
+        alpha -= 15; 
+        if ( alpha <= 0) {
+          aparecer = true;
+          desaparecer = false;
+          ease.movimiento++;
+        }
+      }
+    }
+  }
+
+
+
   // Función con un solo parámetro para determinar el movimiento final
   void ease(int movimiento) {
     if (ease.movimiento == movimiento) {
@@ -136,13 +185,49 @@ class Cinematica {
       //println(ease.movimiento);  // Debugging
       if (juego.etapaActual == "introduccion") {
         //movimiento, targetX, targetY, tipo
-        ease(1, 500, 500, "pos");
-        ease(2, 0, 600, "pos");
-        ease(3, 500, 0, "pos");
-        ease(4, 0, 0, "pos");
-        ease(5, 2632, 1502, "tam");
-        ease(6, -500, -500, "pos");
-        ease(7);
+        ease(1, 3580, 2480, "tam");
+        if (ease.movimiento == 1)
+          dialogo(0, 200, 243, 194);   //  Izquierda y derecha
+        ease(2, -272, -180, "pos");
+        if (ease.movimiento == 2 && ease.listo == false)
+          ease.movimiento++;
+        ease(3, -828, -138, "pos");
+        if (ease.movimiento == 3)
+          dialogo(1, 200, 400, 40);    // Jugoso atún
+        ease(4, -20, -895, "pos");
+        if (ease.movimiento == 4)
+          dialogo(2, 100, 525, 75);    // Vengar a mi hermano
+        ease(5, -210, -1580, "pos");
+        if (ease.movimiento == 5 && ease.listo == false)
+          ease.movimiento++;
+        ease(6, -756, -1420, "pos");
+        if (ease.movimiento == 6 && ease.listo == false)
+          ease.movimiento++;
+        ease(7, -1700, -150, "pos");
+        if (ease.movimiento == 7 && ease.listo == false)
+          ease.movimiento++;
+        ease(8, -2190, -150, "pos");
+        if (ease.movimiento == 8 && ease.listo == false)
+          ease.movimiento++;
+        ease(9, -1490, -1170, "pos");
+        if (ease.movimiento == 9)
+          dialogo(3, 60, 550, 25);    // La mafia!
+        ease(10, -1960, -953, "pos");
+        if (ease.movimiento == 10) 
+          dialogo(4, 80, 400, 100);   // Nos llevaremos esto
+        ease(11, -1960, -953, "pos");
+        if (ease.movimiento == 11) 
+          dialogo(5, 80, 600, 175);   // ¡Teniamos un trato!
+        ease(12, -2150, -1000, "pos");
+        if (ease.movimiento == 12 && ease.listo == false)
+          ease.movimiento++;
+        ease(13, -1535, -1714, "pos");
+        if (ease.movimiento == 13) 
+          dialogo(6, 80, 350, 300);     // ¡Espera, Baast!
+        ease(14, -2180, -1695, "pos");
+        if (ease.movimiento == 14 && ease.listo == false)
+          ease.movimiento++;
+        ease(15);
       }
     }
   }

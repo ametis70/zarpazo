@@ -102,266 +102,67 @@ class Pelota {
       posX -= 3;
   }
 
-  // Función para los golpes
-  void golpear(Enemigo enemigo, Jugador jugador, Nivel nivel) { 
+  // Funciones para los golpes
+
+  void correcto(int damage, int particulas, boolean perfect) {
+    nivel.enemigo.combo = 0;
+    nivel.jugador.combo++;
+    nivel.jugador.damageActual += damage;
+    sp = new SistemaParticulas(posX, posY, particulas, tipo);
+    resultado = "¡Perfecto!";
+    golpeada = true;
+    if (perfect)
+      nivel.jugador.perfect = true;
+    nivel.jugador.golpeando = true;
+    nivel.enemigo.terminoAnimacion = true; 
+    desactivar();
+  }
+
+  void incorrecto() {
+    nivel.jugador.combo = 0;
+    nivel.enemigo.combo++;
+    nivel.enemigo.damageActual += 25;
+    resultado = "¡Bolsa equivocada!";
+    golpeada = true;
+    nivel.enemigo.proximaAnimacion = "golpeando"; 
+    nivel.enemigo.terminoAnimacion = true; 
+    desactivar();
+  }
+
+  void golpear() { 
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
       if (golpe()) {
         // Y la bolsa se corresponde al tipo...
-        if (tipo == 0) {
-          if (colorGolpe() == "azul") { 
-
-            // Se hace daño según que tan cerca se esté del centro.
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15, tipo);
-              resultado = "¡Perfecto!";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6, tipo);
-              resultado = "¡Excelente!";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4, tipo);
-              resultado = "¡Bien!";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2, tipo);
-              resultado = "Puede ser mejor...";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            }
-          }
-          // Pero si se toca la bolsa equivocada, se recibe daño
-
-          if ((colorGolpe() == "azul") == false) {
-            nivel.fallar = 30;
-            jugador.combo = 0;
-            enemigo.combo++;
-            enemigo.damageActual += 25;
-            resultado = "¡Bolsa equivocada!";
-            golpeada = true;
-            if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
-            nivel.enemigo.estado = "golpeando"; 
-            enemigo.infligirDamage(jugador);
-            desactivar();
+        if ((tipo == 0 && colorGolpe() == "azul") ||
+          (tipo == 1 && colorGolpe() == "verde") ||
+          (tipo == 2 && colorGolpe() == "rojo")) {
+          // Se hace daño según que tan cerca se esté del centro.
+          if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
+            correcto(25, 15, true);
+          } 
+          if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
+            correcto(15, 6, false);
+          } 
+          if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
+            correcto(10, 4, false);
+          } 
+          if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
+            correcto(5, 2, false);
           }
         }
-
-        // Lo mismo para cada bolsa. Se podría condensar en un solo condicional enorme, pero sería muy ilegible.
-        if (tipo == 1) {
-
-          if ((colorGolpe() == "verde")) {
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15, tipo);
-              resultado = "¡Perfecto!";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6, tipo);
-              resultado = "¡Excelente!";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4, tipo);
-              resultado = "¡Bien!";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2, tipo);
-              resultado = "Puede ser mejor...";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            }
-          }
-          if ((colorGolpe() == "verde") == false) {
-            nivel.fallar = 30;
-            jugador.combo = 0;
-            enemigo.combo++;
-            enemigo.damageActual += 25;
-            resultado = "¡Bolsa equivocada!";
-            golpeada = true;
-            if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
-            nivel.enemigo.estado = "golpeando"; 
-            enemigo.infligirDamage(jugador);
-            desactivar();
-          }
+        // Pero si se toca la bolsa equivocada, se recibe daño
+        if ((tipo == 0 && (colorGolpe() == "azul") == false) ||
+          (tipo == 1 && (colorGolpe() == "verde") == false) ||
+          (tipo == 2 && (colorGolpe() == "rojo") == false)) {
+          incorrecto();
         }
-        if (tipo == 2) {
-
-          if ((colorGolpe() == "rojo")) {
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 25;
-              sp = new SistemaParticulas(posX, posY, 15, tipo);
-              resultado = "¡Perfecto!";
-              golpeada = true;
-              jugador.infligirDamage(enemigo);
-
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 15;
-              sp = new SistemaParticulas(posX, posY, 6, tipo);
-              resultado = "¡Excelente!";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 10;
-              sp = new SistemaParticulas(posX, posY, 4, tipo);
-              resultado = "¡Bien!";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            } 
-            if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-              enemigo.combo = 0;
-              jugador.combo++;
-              jugador.damageActual += 5;
-              sp = new SistemaParticulas(posX, posY, 2, tipo);
-              resultado = "Puede ser mejor...";
-              golpeada = true;
-
-              jugador.infligirDamage(enemigo);
-              desactivar();
-            }
-          }
-          if ((colorGolpe() == "rojo") == false) {
-            nivel.fallar = 30;
-            jugador.combo = 0;
-            enemigo.combo++;
-            enemigo.damageActual += 25;
-            resultado = "¡Bolsa equivocada!";
-            if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
-            nivel.enemigo.estado = "golpeando"; 
-            enemigo.infligirDamage(jugador);
-            golpeada = true;
-            desactivar();
-          }
-        }
-        /* if (tipo == 3) {
-         if ((colorGolpe() == "naranja")) {
-         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-         enemigo.combo = 0;
-         jugador.combo++;
-         jugador.damageActual += 25;
-         resultado = "¡Perfecto!";
-         golpeada = true;
-         perfect.trigger();
-         jugador.infligirDamage(enemigo);
-         desactivar();
-         } 
-         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 5) {
-         enemigo.combo = 0;
-         jugador.combo++;
-         jugador.damageActual += 15;
-         resultado = "¡Excelente!";
-         golpeada = true;
-         comun.trigger();
-         jugador.infligirDamage(enemigo);
-         desactivar();
-         } 
-         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-         enemigo.combo = 0;
-         jugador.combo++;
-         jugador.damageActual += 10;
-         resultado = "¡Bien!";
-         golpeada = true;
-         comun.trigger();
-         jugador.infligirDamage(enemigo);
-         desactivar();
-         } 
-         if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-         enemigo.combo = 0;
-         jugador.combo++;
-         jugador.damageActual += 5;
-         resultado = "Puede ser mejor...";
-         golpeada = true;
-         comun.trigger();
-         jugador.infligirDamage(enemigo);
-         desactivar();
-         }
-         }
-         if ((colorGolpe() == "naranja") == false) {
-         nivel.fallar = 30;
-         jugador.combo = 0;
-         enemigo.combo++;
-         enemigo.damageActual += 25;
-         resultado = "¡Bolsa equivocada!";    
-         if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
-         nivel.enemigo.estado = "golpeando"; 
-         enemigo.infligirDamage(jugador);
-         golpeada = true;
-         desactivar();
-         }
-         } */
       }
-      // Si la nivel.ui.mirara pasa y no se pulsa ninguna bolsa, se recibe daño.
+
+      // Si la pelota pasa y no se pulsa ninguna bolsa, se recibe daño.
       if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) >= tam / 2) {
-        nivel.fallar = 30;
-        jugador.combo = 0;
-        enemigo.combo++;
-        enemigo.damageActual += 25;
-        resultado = "¡No golpeaste ninguna bolsa!";
-        golpeada = true;
-        if (nivel.enemigo.terminoP == true) nivel.enemigo.estado = "golpeando"; 
-        nivel.enemigo.estado = "golpeando"; 
-        enemigo.infligirDamage(jugador);
-        desactivar();
+        incorrecto();
       }
     }
   }

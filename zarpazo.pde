@@ -4,8 +4,8 @@ Juego juego;
 
 void setup() {
   // Se utiliza P2D como renderer para aprovechar la aceleración por hardware.
-  size(1368, 768, P2D);
-  //fullScreen(P2D);
+  //size(1368, 768, P2D);
+  fullScreen(P2D); 
 
   // Se crea el objeto del juego. Todos los objetos se crean a partir de este.
   juego = new Juego();             

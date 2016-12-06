@@ -1,4 +1,4 @@
-update=11/21/2016 12:17:36 PM
+update=12/3/2016 8:57:28 PM
 version=1
 last_client=kicad
 [pcbnew]
@@ -27,7 +27,7 @@ NetIExt=net
 version=1
 [eeschema]
 version=1
-LibDir=
+LibDir=library/xy128/terminal block XY128
 [eeschema/libraries]
 LibName1=power
 LibName2=device

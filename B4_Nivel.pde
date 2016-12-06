@@ -12,7 +12,7 @@ class Nivel {
 
   boolean termino, peleaTerminada;
   int fallar;  
- 
+
 
   int alphaNivelTerminado, colorEnemigo, alphaEnemigo, alphaRectFondo;
   boolean blancoDibujado, alphaRectFondoCambio, alphaEnemigoZero;
@@ -31,8 +31,8 @@ class Nivel {
     this.siguienteEtapa = siguienteEtapa;
 
     combat = new SistemaPelea(this, 185, 80, 999, 110);
-    jugador = new Jugador(gato);
-    enemigo = new Enemigo(perro);
+    jugador = new Jugador(gato, this);
+    enemigo = new Enemigo(perro, this);
 
     ui = new Ui(jugador, enemigo, combat);
 
@@ -67,7 +67,7 @@ class Nivel {
 
   void dibujar() {
     cortina.fadeIn();
-    
+
     imageMode(CORNER);
 
     pushMatrix();
@@ -107,7 +107,7 @@ class Nivel {
       if (alphaEnemigoZero == true) {
         println(colorEnemigo);
         alphaRectFondoCambio = true;
-        enemigo.estado = "derrotado";
+        enemigo.estado = "vencido";
         alphaRectFondo+=10;
         colorEnemigo+=3;
         alphaEnemigo+=3;
@@ -128,7 +128,7 @@ class Nivel {
 
     // Si el enemigo no fue derrotado, las variables no cambian y tanto el color como el alpha permanecen en sus valores por defecto (360,255)
     tint(colorEnemigo, alphaEnemigo);
-    enemigo.dibujar(width / 2, height / 2 + 100, 420.8, 557.6);
+    enemigo.dibujar();
     popStyle();
 
     popMatrix();
@@ -143,6 +143,8 @@ class Nivel {
 
     if (cortina.listo)
       if (ui.textoPreparacion.iniciarPelea && peleaTerminada == false) {
+        if (enemigo.estado == "intro")
+          enemigo.estado = "pasivo";
         combat.pelea();
         combat.reiniciar();
       }
