@@ -28,6 +28,8 @@ void setup() {
 
 void draw() {
   juego.dibujar();
+  fill(255);
+  text(frameRate, width/ 2, height / 2);
 }
 
 // Tecla para reiniciar el juego

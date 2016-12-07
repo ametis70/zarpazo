@@ -15,7 +15,7 @@ void inicializarArduino() {
   }
 
   HEADER = 'H';              // Primer caracter a enviar al monitor serial para identificar(ver función eventoSerial);
-  microswitch = new int[4];  // Cantidad de valores + 1(por el Header)
+  microswitch = new int[5];  // Cantidad de valores + 1(por el Header)
 
   for (int i = 0; i < microswitch.length; i++) {
     microswitch[i] = 0;
@@ -41,7 +41,7 @@ void eventoSerial() {
 }
 
 boolean arduinoDisponible() {
-  if (Serial.list().length == 23023841)
+  if (Serial.list().length >= 0)
     return true;
   else return false;
 

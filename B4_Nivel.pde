@@ -110,12 +110,13 @@ class Nivel {
           globoDialogoInicio = null;
         }
         tint(360, alphaGlobo);
-        alphaGlobo+=7;
+        alphaGlobo+=5;
         alphaEnemigoZero = false;
-        image(globoDialogoFinal, width/2+150, height/2-200, 300, 200);
+        imageMode(CENTER);
+        image(globoDialogoFinal, width/2 - 50, height/2 + 100, 344, 193.6);
       }
 
-      if (alphaGlobo >= 240) {
+      if (alphaGlobo >= 255) {
         finKO = true;
       }
     }
@@ -132,8 +133,10 @@ class Nivel {
     if (ui.textoPreparacion.iniciarPelea == false)
       alphaGlobo+=2;
     tint (255, alphaGlobo);
-    if ( globoDialogoInicio != null)
-      image (globoDialogoInicio, width/2+150, height/2-200, 300, 200);
+    if ( globoDialogoInicio != null){
+      imageMode(CENTER);
+      image (globoDialogoInicio, width / 2 + 230, height / 2 - 130, 344, 193.6);
+    }
     popStyle ();
 
     if (fallar > 0) {

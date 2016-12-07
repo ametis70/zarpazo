@@ -6,8 +6,6 @@ private class Juego {
   MenuGameOver menuGameOver;
   Leaderboard leaderboard;
 
-  Jugador jugador;
-
   // Objetos para los niveles
   Nivel callejon, mansion, oficina;
 
@@ -74,7 +72,7 @@ private class Juego {
       
     } else if (etapaActual == "cinematicaMansion") {
       if (cinematicaMansion == null) 
-        cinematicaMansion = new Cinematica("mansion", 0, 0, 1316, 751, 0);
+        cinematicaMansion = new Cinematica("mansion", 0, 0, 2315.28, 1636.8, 7);
       cinematicaMansion.dibujar("mansion");
     } else if (etapaActual == "mansion") {
       // Se crea el objeto de la mansión
@@ -91,7 +89,7 @@ private class Juego {
       }
     } else if (etapaActual == "cinematicaOficina") {
       if (cinematicaOficina == null) 
-        cinematicaOficina = new Cinematica("oficina", 0, 0, 1316, 751, 0);
+        cinematicaOficina = new Cinematica("oficina", 0, 0, 2315.28, 1636.8, 7);
       cinematicaOficina.dibujar("oficina");
     } else if (etapaActual == "oficina") {
       // Se crea el objeto de la oficina
@@ -107,7 +105,7 @@ private class Juego {
       oficina.dibujar();
     } else if (etapaActual == "cinematicaFinal") {
       if (cinematicaFinal == null) 
-        cinematicaFinal = new Cinematica("cinematicaFinal", 0, 0, 1316, 751, 0);
+        cinematicaFinal = new Cinematica("cinematicaFinal", 0, 0, 2315.28, 1636.8, 7);
       cinematicaFinal.dibujar("victoria");
 
       if (oficina != null) {
@@ -120,7 +118,8 @@ private class Juego {
         menuGameOver = new MenuGameOver();
 
       menuGameOver.dibujar();
-    } else {
+    }
+    else {
       println("NO WAY? NO WAY! NO WAY? NO WAY!");
     }
   }

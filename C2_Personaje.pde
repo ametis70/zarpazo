@@ -135,8 +135,7 @@ class Jugador extends Personaje {
           infligirDamage(nivel.enemigo, "izquierdaGancho");
         else
           infligirDamage(nivel.enemigo, "izquierda");
-          //println("cambia dirección");
-
+        //println("cambia dirección");
       }
 
 
@@ -168,7 +167,6 @@ class Jugador extends Personaje {
           golpeando = false;
 
           //println("termino golpe derecha");
-
         }
 
         if (spriteActual > 3 && !direccionAdelante) {
@@ -245,9 +243,9 @@ class Enemigo extends Personaje {
       salud = saludMaxima = 7000;
 
       // Cantidad de imagenes
-      pasivoCount = 5;
-      golpeandoCount = 8;
-      golpeadoCount = 8;
+      pasivoCount = 6;
+      golpeandoCount = 6;
+      golpeadoCount =  4;
       break;
 
 
@@ -255,9 +253,9 @@ class Enemigo extends Personaje {
       salud = saludMaxima = 9000;
 
       // Cantidad de imagenes
-      pasivoCount = 5;
-      golpeandoCount = 8;
-      golpeadoCount = 8;
+      pasivoCount = 6;
+      golpeandoCount = 6;
+      golpeadoCount =  4;
       break;
     }
 
