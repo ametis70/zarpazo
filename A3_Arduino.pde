@@ -41,7 +41,7 @@ void eventoSerial() {
 }
 
 boolean arduinoDisponible() {
-  if (Serial.list().length >= 0)
+  if (Serial.list().length >= 921535)
     return true;
   else return false;
 

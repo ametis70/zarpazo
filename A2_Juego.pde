@@ -3,14 +3,14 @@ private class Juego {
   MenuStart menuStart;
   MenuSeleccion menuSeleccion;
   MenuTutorial menuTutorial;
-  MenuGameOver menuGameOver;
+  MenuFin menuFin;
   Leaderboard leaderboard;
 
   // Objetos para los niveles
   Nivel callejon, mansion, oficina;
 
   // Objetos para las cinemáticas
-  Cinematica introduccion, cinematicaOficina, cinematicaMansion, cinematicaFinal;
+  Cinematica cinematicaCallejon, cinematicaOficina, cinematicaMansion, cinematicaFinal;
 
   // String para determinar en que etapa se encuentra el juego
   String etapaActual;
@@ -39,11 +39,11 @@ private class Juego {
 
       // Se dibuja el menú
       menuStart.dibujar();
-    } else if (etapaActual == "introduccion") {
-      if (introduccion == null) 
-        introduccion = new Cinematica("introduccion", 0, 0, 2315.28, 1636.8, 7);
+    } else if (etapaActual == "cinematicaCallejon") {
+      if (cinematicaCallejon == null) 
+        cinematicaCallejon = new Cinematica("cinematicaCallejon", 0, 0, 2315.28, 1636.8, 7);
 
-      introduccion.dibujar("seleccion");
+      cinematicaCallejon.dibujar("seleccion");
     } else if (etapaActual == "seleccion") {
       if (menuSeleccion == null)
         menuSeleccion = new MenuSeleccion();
@@ -59,20 +59,19 @@ private class Juego {
       if (callejon == null) 
         callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero", "cinematicaMansion");
 
-        // Se destruyen los objetos del menú
-        if (menuStart != null && menuTutorial != null && menuSeleccion != null && introduccion != null) {
+      // Se destruyen los objetos del menú
+      if (menuStart != null && menuTutorial != null && menuSeleccion != null && cinematicaCallejon != null) {
         menuStart = null;
         menuSeleccion = null;
         menuTutorial = null;
-        introduccion = null;
+        cinematicaCallejon = null;
       }
 
       // Se dibuja el nivel
       callejon.dibujar();
-      
     } else if (etapaActual == "cinematicaMansion") {
       if (cinematicaMansion == null) 
-        cinematicaMansion = new Cinematica("mansion", 0, 0, 2315.28, 1636.8, 7);
+        cinematicaMansion = new Cinematica("cinematicaMansion", 0, 0, 3500.4, 2479.8, 9);
       cinematicaMansion.dibujar("mansion");
     } else if (etapaActual == "mansion") {
       // Se crea el objeto de la mansión
@@ -83,13 +82,13 @@ private class Juego {
       mansion.dibujar();
 
       // Se destruye el objeto del callejon y el de la anterior cinemática
-      if (callejon != null || introduccion != null) {
+      if (callejon != null || cinematicaCallejon != null) {
         callejon = null;
-        introduccion = null;
+        cinematicaCallejon = null;
       }
     } else if (etapaActual == "cinematicaOficina") {
       if (cinematicaOficina == null) 
-        cinematicaOficina = new Cinematica("oficina", 0, 0, 2315.28, 1636.8, 7);
+        cinematicaOficina = new Cinematica("cinematicaOficina", 0, 0, 2724, 2069, 5);
       cinematicaOficina.dibujar("oficina");
     } else if (etapaActual == "oficina") {
       // Se crea el objeto de la oficina
@@ -105,21 +104,23 @@ private class Juego {
       oficina.dibujar();
     } else if (etapaActual == "cinematicaFinal") {
       if (cinematicaFinal == null) 
-        cinematicaFinal = new Cinematica("cinematicaFinal", 0, 0, 2315.28, 1636.8, 7);
+        cinematicaFinal = new Cinematica("cinematicaFinal", 0, 0, 2345.268, 1612.02, 3);
       cinematicaFinal.dibujar("victoria");
 
       if (oficina != null) {
         oficina = null;
       }
     } else if (etapaActual == "victoria") {
-      juego = new Juego();
-    } else if (etapaActual == "gameover") {
-      if (menuGameOver == null)
-        menuGameOver = new MenuGameOver();
+      if (menuFin == null)
+        menuFin = new MenuFin();
 
-      menuGameOver.dibujar();
-    }
-    else {
+      menuFin.dibujar();
+    } else if (etapaActual == "gameover") {
+      if (menuFin == null)
+        menuFin = new MenuFin();
+
+      menuFin.dibujar();
+    } else {
       println("NO WAY? NO WAY! NO WAY? NO WAY!");
     }
   }
@@ -149,6 +150,26 @@ private class Juego {
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "oficina";
     }
+
+    if (key == '4') {
+
+      juego.etapaActual = "cinematicaCallejon";
+    }
+    if (key == '5') {
+
+      juego.etapaActual = "cinematicaMansion";
+    }
+
+    if (key == '6') {
+
+      juego.etapaActual = "cinematicaOficina";
+    }
+
+    if (key == '7') {
+
+      juego.etapaActual = "cinematicaFinal";
+    }
+
 
     // Si se aprieta "k", el enemigo del nivel en el que se este pierde vida hasta quedar en 5.
     if (key == 'k') {

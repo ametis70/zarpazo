@@ -114,7 +114,7 @@ class MenuStart extends Menu {
 
     // Se dibuja la cortina para el fadeout
     cortina.dibujar();
-    cortina.fadeOut("introduccion");
+    cortina.fadeOut("cinematicaCallejon");
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
     if (golpe() && empezarFadeOut && easeEmpezar.listo == false) {
@@ -300,12 +300,16 @@ class MenuTutorial extends Menu {
   }
 }
 
-class MenuGameOver extends Menu {
-  PImage gameOver;
+
+class MenuFin extends Menu {
+  PImage imagenFin;
   int contador;
 
-  MenuGameOver() {
-    gameOver = loadImage("data/imagenes/menu/gameover.png");
+  MenuFin() {
+    if (juego.etapaActual == "gameover")
+      imagenFin = loadImage("data/imagenes/menu/gameover.png");
+    else if (juego.etapaActual == "victoria")  
+      imagenFin = loadImage("data/imagenes/menu/ganaste.png");
 
     cortina = new Cortina(255);
 
@@ -317,14 +321,14 @@ class MenuGameOver extends Menu {
     cortina.activar("in");
     cortina.fadeIn();
     imageMode(CORNER);
-    image(gameOver, 0, 0, width, height);
+    image(imagenFin, 0, 0, width, height);
     cortina.dibujar();
     contador++;
     switch (contador) {
     case 10:
       cortina.activar("out");
       break;
-    case 100:
+    case 150:
       juego = new Juego();
       break;
     }
