@@ -6,7 +6,6 @@ class Nivel {
   Ui ui; 
 
   Cortina cortina;
-
   // Imagen de fondo para el nivel
   PImage background, damage;
 
@@ -22,6 +21,8 @@ class Nivel {
   boolean finalListo, finKO;
 
   String siguienteEtapa;
+
+  boolean musicaNivel;
 
   // Constructor
   Nivel(String background, String gato, String perro, String siguienteEtapa) {
@@ -53,10 +54,47 @@ class Nivel {
     numeroGlobos = int(random (0, 11));
     globoDialogoInicio = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje + "/inicio/" + numeroGlobos + ".png");
     globoDialogoFinal = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje +"/final/" + numeroGlobos + ".png");
+
+    minim = new Minim(this);
+
+
+
+    musicaNivel = true;
   }
 
   void dibujar() {
-    println("Alpha Globo" + alphaGlobo);
+
+    switch (juego.etapaActual) {
+
+    case "callejon":
+      if (musicaNivel) {
+        ontheground.loop();
+        musicaNivel = false;
+      }
+      if (finKO == true)
+        ontheground.pause();
+      break;
+
+    case "mansion": 
+      if (musicaNivel) {
+        enigma.loop();
+        musicaNivel = false;
+      }
+      if (finKO == true)
+        enigma.pause();
+      break;
+
+    case "oficina":
+      if (musicaNivel) {
+        deadlyroulette.loop();
+        musicaNivel = false;
+      }
+      if (finKO == true)
+        deadlyroulette.pause();
+      break;
+    }
+
+    //  println("Alpha Globo" + alphaGlobo);
     // Se limita alphaGlobo para que no exceda ciertos valores
     alphaGlobo = constrain(alphaGlobo, 0, 256);
     cortina.fadeIn();
@@ -71,7 +109,6 @@ class Nivel {
     }
     pushStyle();
     image(background, 0, 0, width, height);
-
     // Desde acá empiezan una sucesión de estados que determinan como se comportan los elementos luego de que el jugador haya derrotado al enemigo 
 
     if (peleaTerminada == true) {
@@ -133,7 +170,7 @@ class Nivel {
     if (ui.textoPreparacion.iniciarPelea == false)
       alphaGlobo+=2;
     tint (255, alphaGlobo);
-    if ( globoDialogoInicio != null){
+    if ( globoDialogoInicio != null) {
       imageMode(CENTER);
       image (globoDialogoInicio, width / 2 + 230, height / 2 - 130, 344, 193.6);
     }
@@ -187,6 +224,20 @@ class Nivel {
       cortina.dibujar();
       cortina.activar("out");
       cortina.fadeOut(this.siguienteEtapa);
+    }
+  }
+
+  void puntos (int ultimoGolpe) {
+    juego.puntajeJugador += ultimoGolpe;
+    if (jugador.combo != 0) { 
+      if (jugador.combo == 2)
+        juego.puntajeJugador *= 1.1;
+      if (jugador.combo == 3)
+        juego.puntajeJugador *= 1.2;
+      if (jugador.combo == 4)
+        juego.puntajeJugador *= 1.3;
+      if (jugador.combo <= 5)
+        juego.puntajeJugador *= 1.4;
     }
   }
 }

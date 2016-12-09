@@ -129,6 +129,7 @@ class Jugador extends Personaje {
       }
 
       if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
+
         direccionAdelante = false;   
 
         if (perfect)

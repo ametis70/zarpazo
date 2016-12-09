@@ -7,9 +7,12 @@ class Menu {
   boolean terminoFadeIn, empezarFadeOut;
   Cortina cortina;
 
+  boolean musica;
+
   // Constructor
   Menu() {
     background = loadImage("data/imagenes/menu/background.png");
+    musica = true;
   }
 
   void dibujarFondo() {
@@ -41,6 +44,7 @@ class MenuStart extends Menu {
   Leaderboard leaderboard;
 
   MenuStart(Leaderboard leaderboard) { 
+
     this.leaderboard = leaderboard;
 
     leaderboard = new Leaderboard();
@@ -65,6 +69,11 @@ class MenuStart extends Menu {
 
   // Función para dibujar el menú
   void dibujar() {
+
+    if (musica) {
+      discomedusae.loop();
+      musica = false;
+    }
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
     dibujarFondo();
 
@@ -118,6 +127,7 @@ class MenuStart extends Menu {
 
     // Si se presiona una tecla, oscurecer y pasar a la cinemática 1.
     if (golpe() && empezarFadeOut && easeEmpezar.listo == false) {
+      select.trigger();
       cortina.activar("out");
       empezarFadeOut = false;
     }
@@ -162,6 +172,12 @@ class MenuSeleccion extends Menu {
   }
 
   void dibujar() {
+    discomedusae.pause();
+    if (musica) {
+      aceshigh.loop();
+      musica = false;
+    }
+
     if (!terminoFadeIn) {
       cortina.activar("in");
       cortina.fadeIn();
@@ -182,10 +198,12 @@ class MenuSeleccion extends Menu {
     if (terminoFadeIn && !empezarFadeOut) {
       if (golpe() && millis) {
         if (colorGolpe() == "azul") {
+          select.trigger(); 
           actual = "azul";
           sp = new SistemaParticulas(bolsaAzulX, bolsaY, 20, 3);
         }
         if (colorGolpe() == "rojo") {
+          select.trigger(); 
           actual = "rojo";
           sp = new SistemaParticulas(bolsaVerdeX, bolsaY, 20, 3);
         }
@@ -198,6 +216,7 @@ class MenuSeleccion extends Menu {
     if (golpe() && millis() < tiempoInicial + 5000 && millis() > tiempoInicial + 350 && !empezarFadeOut) {
       // Si se golpea dos veces al azul, se selecciona a Zarpazo definitivamente
       if (actual == "azul" && colorGolpe() == "azul" && !millis) {
+        select.trigger();
         personaje = "zarpazo";
         empezarFadeOut = true;
         millis = true;
@@ -206,6 +225,7 @@ class MenuSeleccion extends Menu {
 
       // Si se golpea dos veces al verde, se selecciona a Baast definitivamente
       if (actual == "rojo" && colorGolpe() == "rojo" && !millis) {
+        select.trigger();
         personaje = "baast";
         empezarFadeOut = true;
         millis = true;
@@ -214,11 +234,13 @@ class MenuSeleccion extends Menu {
 
       // Si se golpea el verde después del azul, se  Marca a Baast
       if (actual == "azul" &&  colorGolpe() == "rojo" && !millis) {
+        select.trigger();
         millis = true;
         actual = "rojo";
       }
       // Si se golpea el azul después del verde, se marca a Zarpazo
       if (actual == "rojo" &&  colorGolpe() == "azul" && !millis) {
+        select.trigger();
         millis = true;
         actual = "azul";
       }
@@ -229,10 +251,12 @@ class MenuSeleccion extends Menu {
       }
       // Si no se habia golpeando ni la verde ni la azul y se golpea una de estas
       if (actual == "" && colorGolpe() == "azul" && !millis) {
+        select.trigger();
         millis = true;
         actual = "azul";
       }
       if (actual == "" && colorGolpe() == "rojo" && !millis) {
+        select.trigger();
         millis = true;
         actual = "rojo";
       }
@@ -289,8 +313,11 @@ class MenuTutorial extends Menu {
 
     cortina.dibujar();
 
-    if (golpe() && terminoFadeIn && !empezarFadeOut)
+    if (golpe() && terminoFadeIn && !empezarFadeOut) {
+      aceshigh.pause();
+      select.trigger();
       empezarFadeOut = true;
+    }
 
     if (empezarFadeOut) {      
       cortina.activar("out");
@@ -304,6 +331,7 @@ class MenuTutorial extends Menu {
 class MenuFin extends Menu {
   PImage imagenFin;
   int contador;
+  String puntajeFinal;
 
   MenuFin() {
     if (juego.etapaActual == "gameover")
@@ -315,6 +343,8 @@ class MenuFin extends Menu {
 
     terminoFadeIn = false;
     empezarFadeOut = false;
+
+    puntajeFinal = nfc(juego.puntajeJugador);
   }
 
   void dibujar() {
@@ -322,15 +352,30 @@ class MenuFin extends Menu {
     cortina.fadeIn();
     imageMode(CORNER);
     image(imagenFin, 0, 0, width, height);
+    pushStyle();
+    fill(360);
+    textFont(fuenteNeon);
+    textMode(CORNER);
+    textSize(90);
+    text(puntajeFinal, 1030, 737);
+    popStyle();
     cortina.dibujar();
     contador++;
     switch (contador) {
     case 10:
       cortina.activar("out");
       break;
-    case 150:
+    case 400:
+      takeachance.pause();
       juego = new Juego();
       break;
+    }
+
+    if (golpe() == true) {
+      select.trigger();
+      cortina.activar("out");
+      takeachance.pause();
+      juego = new Juego();
     }
   }
 }

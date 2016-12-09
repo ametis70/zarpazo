@@ -25,6 +25,8 @@ class Cinematica {
   int tiempoInicial;
   boolean millis;
 
+  boolean musica;
+
 
   // Constructor
   Cinematica(String comic, float posX, float posY, float tamX, float tamY, int cantidadDialogos) {
@@ -48,15 +50,41 @@ class Cinematica {
 
     cortina = new Cortina(255);
     ease = new Ease();
+
+    musica = true;
   }
 
   // Métodos
   void dibujar(String proxima) {
+
+
+
     cortina.fadeIn();
 
     if (cortina.listo == true && empezo) {
       ease.movimiento = 1;
       empezo = false;
+    }
+
+
+    if (juego.etapaActual == "cinematicaMansion") {
+      if (musica) {
+        reunited.loop();
+        musica = false;
+      }
+    }
+
+    if (juego.etapaActual == "cinematicaOficina") {
+      if (musica) {
+        privateeye.loop();
+        musica = false;
+      }
+    }
+    if (juego.etapaActual == "cinematicaFinal") {
+      if (musica) {
+        takeachance.loop();
+        musica = false;
+      }
     }
 
     // Se dibuja el comic
@@ -81,6 +109,7 @@ class Cinematica {
     // Si se golpea por primera vez se activa el cuadro de confirmación 
     if (cortina.listo == true && empezo == false && millis == true) {
       if (golpe()) {
+        select.trigger();
         tiempoInicial = millis();
         millis = false;
       }
@@ -101,7 +130,10 @@ class Cinematica {
 
     // Si no pasaron 3 segundos(pero pasaron mas de 250ms) y se golpea nuevamente, se saltea la escena
     if (golpe() && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 250 && !termino) {
-
+      select.trigger();
+      discomedusae.pause();
+      reunited.pause();
+      privateeye.pause();
       termino = true;
     }
 
@@ -230,6 +262,7 @@ class Cinematica {
         if (ease.movimiento == 14 && ease.listo == false)
           ease.movimiento++;
         ease(15);
+
         break;
       case "cinematicaMansion":
         //movimiento, targetX, targetY, tipo

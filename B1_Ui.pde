@@ -45,6 +45,14 @@ class Ui {
       textoInterfaz();
       jugador.dibujar();
       popStyle();
+      pushStyle();
+      textMode(CENTER);
+      fill(360);
+      textFont(fuenteNeon);
+      textSize(50);
+      text(juego.puntajeJugador, width/2, 50);
+      popStyle();
+
 
       // Se dibuja el cuadrado que "contiene" a la barra del sistema de pelea
       fill(0, 0, 0, alphaRectNivelTerminado);

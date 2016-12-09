@@ -58,6 +58,9 @@ class Pelota {
     popStyle();
   }
 
+
+
+
   boolean bien() {
     if (resultado == "Puede ser mejor..." ||
       resultado == "¡Bien!" ||
@@ -130,6 +133,8 @@ class Pelota {
   }
 
   void golpear() { 
+
+
     // Si el circulo está activo...
     if (activa) {
       // Y se toca una bolsa...
@@ -140,16 +145,20 @@ class Pelota {
           (tipo == 2 && colorGolpe() == "rojo")) {
           // Se hace daño según que tan cerca se esté del centro.
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-            correcto(25, 15, true);
+            nivel.puntos(25);
+            correcto(4, 15, true);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
-            correcto(15, 6, false);
+            nivel.puntos(15);
+            correcto(3, 6, false);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-            correcto(10, 4, false);
+            nivel.puntos(10);
+            correcto(2, 4, false);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-            correcto(5, 2, false);
+            nivel.puntos(5);
+            correcto(1, 2, false);
           }
         }
         // Pero si se toca la bolsa equivocada, se recibe daño

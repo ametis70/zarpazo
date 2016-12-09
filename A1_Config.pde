@@ -10,6 +10,52 @@ void c5p() {
   cp5 = new ControlP5(this);
 }
 
+// Sonido
+
+AudioSample 
+  comun, 
+  perfect, 
+  golpeEnemigo, 
+  select, 
+  finish, 
+  punch;
+
+AudioPlayer 
+  discomedusae, 
+  aceshigh, 
+  constancy, 
+  ontheground, 
+  enigma, 
+  deadlyroulette, 
+  plaint, 
+  reunited, 
+  takeachance,
+  privateeye;
+
+void cargarSonidos() {
+  minim = new Minim(this);
+
+  comun = minim.loadSample( "data/sonidos/comun.wav", 512);
+  perfect = minim.loadSample( "data/sonidos/perfect.wav", 512);
+  golpeEnemigo = minim.loadSample( "data/sonidos/enemigo.wav", 512);
+  select = minim.loadSample( "data/sonidos/select.wav", 512);
+  finish = minim.loadSample( "data/sonidos/finish.wav", 512);
+  punch = minim.loadSample( "data/sonidos/punch.wav", 512);
+
+  aceshigh = minim.loadFile( "data/musica/aceshigh.mp3", 2048);
+  discomedusae = minim.loadFile( "data/musica/discomedusae.mp3", 2048);
+  constancy = minim.loadFile( "data/musica/constancy.mp3", 2048);
+  ontheground = minim.loadFile( "data/musica/ontheground.mp3", 2048);
+  enigma = minim.loadFile( "data/musica/enigma.mp3", 2048);
+  deadlyroulette = minim.loadFile( "data/musica/deadlyroulette.mp3", 2048);
+
+  plaint = minim.loadFile( "data/musica/plaint.mp3", 2048);
+  reunited = minim.loadFile( "data/musica/reunited.mp3", 2048);
+  takeachance = minim.loadFile( "data/musica/takeachance.mp3", 2048);
+  privateeye = minim.loadFile( "data/musica/privateeye.mp3", 2048);
+}
+
+
 // Tipografía
 PFont fuenteJuego, 
   fuenteDebugging, 

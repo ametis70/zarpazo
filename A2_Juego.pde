@@ -6,6 +6,8 @@ private class Juego {
   MenuFin menuFin;
   Leaderboard leaderboard;
 
+  int puntajeJugador;
+
   // Objetos para los niveles
   Nivel callejon, mansion, oficina;
 
@@ -17,9 +19,13 @@ private class Juego {
 
   // Constructor
   Juego() {
+
     // El juego comienza en el menú. Los diferentes valores se escriben en minúscula.
     etapaActual = "menuStart";
+
+    puntajeJugador = 0;
   }
+
 
 
   // Función para empezar a dibujar el juego
@@ -134,40 +140,50 @@ private class Juego {
 
     // Si se aprieta 1, se va al nivel 1. Lo mismo para los botones 2 y 3.
     if (key == '1') {
+      discomedusae.pause();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "callejon";
     }
 
     if (key == '2') {
+      discomedusae.pause();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "mansion";
     }
 
     if (key == '3') {
+      discomedusae.pause();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "oficina";
     }
 
     if (key == '4') {
-
+      discomedusae.pause();
       juego.etapaActual = "cinematicaCallejon";
     }
     if (key == '5') {
-
+      discomedusae.pause();
       juego.etapaActual = "cinematicaMansion";
     }
 
     if (key == '6') {
-
+      discomedusae.pause();
       juego.etapaActual = "cinematicaOficina";
     }
 
     if (key == '7') {
-
+      discomedusae.pause();
       juego.etapaActual = "cinematicaFinal";
+    }
+
+    if (key == '8') {
+      discomedusae.pause();
+      juego.etapaActual = "victoria";
+      menuFin = new MenuFin();
+      menuFin.dibujar();
     }
 
 
