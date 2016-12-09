@@ -50,7 +50,7 @@ class Nivel {
 
     // Se inicializan las variables que controlan el accionar de los "globos de dialogo"
     alphaGlobo = 0;
-    numeroGlobos = int(random (0, 7));
+    numeroGlobos = int(random (0, 11));
     globoDialogoInicio = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje + "/inicio/" + numeroGlobos + ".png");
     globoDialogoFinal = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje +"/final/" + numeroGlobos + ".png");
   }
