@@ -71,7 +71,7 @@ class MenuStart extends Menu {
   void dibujar() {
 
     if (musica) {
-      discomedusae.loop();
+      musicaMenuPrincipal.loop();
       musica = false;
     }
     // Se dibuja el fondo y se lo mueve para que, al llegar a cierta posición, se recinicie y se mantenga el bucle
@@ -172,9 +172,8 @@ class MenuSeleccion extends Menu {
   }
 
   void dibujar() {
-    discomedusae.pause();
     if (musica) {
-      aceshigh.loop();
+      musicaSeleccion.loop();
       musica = false;
     }
 
@@ -314,7 +313,7 @@ class MenuTutorial extends Menu {
     cortina.dibujar();
 
     if (golpe() && terminoFadeIn && !empezarFadeOut) {
-      aceshigh.pause();
+      musicaSeleccion.pause();
       select.trigger();
       empezarFadeOut = true;
     }
@@ -332,6 +331,7 @@ class MenuFin extends Menu {
   PImage imagenFin;
   int contador;
   String puntajeFinal;
+  boolean musica;
 
   MenuFin() {
     if (juego.etapaActual == "gameover")
@@ -344,10 +344,17 @@ class MenuFin extends Menu {
     terminoFadeIn = false;
     empezarFadeOut = false;
 
-    puntajeFinal = nfc(juego.puntajeJugador);
+    puntajeFinal = nf(juego.puntajeJugador, 8);
+    musica = true;
   }
 
   void dibujar() {
+    if (juego.etapaActual == "gameover" && musica == true) {
+      pausarMusica();
+      musicaGameOver.loop();
+      musica = false;
+    }
+
     cortina.activar("in");
     cortina.fadeIn();
     imageMode(CORNER);
@@ -355,7 +362,7 @@ class MenuFin extends Menu {
     pushStyle();
     fill(360);
     textFont(fuenteNeon);
-    textMode(CORNER);
+    textAlign(RIGHT);
     textSize(90);
     text(puntajeFinal, 1030, 737);
     popStyle();
@@ -365,8 +372,7 @@ class MenuFin extends Menu {
     case 10:
       cortina.activar("out");
       break;
-    case 400:
-      takeachance.pause();
+    case 6000:
       juego = new Juego();
       break;
     }
@@ -374,7 +380,7 @@ class MenuFin extends Menu {
     if (golpe() == true) {
       select.trigger();
       cortina.activar("out");
-      takeachance.pause();
+      pausarMusica();
       juego = new Juego();
     }
   }
@@ -396,11 +402,11 @@ class Leaderboard {
   // Constructor
   Leaderboard() {
     // Se carga el .csv
-    tabla = loadTable("leaderboard.csv", "header");
+    tabla = loadTable("https://github.com/Ianmethyst/zarpazo/raw/master/data/leaderboard.csv", "header");
 
     // println(tabla.getRowCount() + "Cantidad total de filas"); // Debugging
 
-    // Se settea la columna de puntos a int para poder ordenarla, y se ordena
+    // Se settea la columna de puntos a int para poder ordenarla, y se ordena1
     tabla.setColumnType("Puntos", Table.INT);
     tabla.sortReverse("Puntos");
 

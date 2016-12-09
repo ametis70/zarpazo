@@ -13,46 +13,59 @@ void c5p() {
 // Sonido
 
 AudioSample 
-  comun, 
-  perfect, 
-  golpeEnemigo, 
+  golpeCerbero,
+  golpeAnubis,
+  golpeXolotl, 
   select, 
   finish, 
-  punch;
+  punch, 
+  gameover;
 
 AudioPlayer 
-  discomedusae, 
-  aceshigh, 
-  constancy, 
-  ontheground, 
-  enigma, 
-  deadlyroulette, 
-  plaint, 
-  reunited, 
-  takeachance,
-  privateeye;
+  musicaMenuPrincipal, 
+  musicaSeleccion, 
+  musicaCallejon, 
+  musicaMansion, 
+  musicaOficina, 
+  musicaCineMansion, 
+  musicaFinal, 
+  musicaCineOficina, 
+  musicaGameOver;
 
 void cargarSonidos() {
   minim = new Minim(this);
 
-  comun = minim.loadSample( "data/sonidos/comun.wav", 512);
-  perfect = minim.loadSample( "data/sonidos/perfect.wav", 512);
-  golpeEnemigo = minim.loadSample( "data/sonidos/enemigo.wav", 512);
+  golpeCerbero = minim.loadSample( "data/sonidos/cerbero.wav", 512);
+  golpeXolotl = minim.loadSample( "data/sonidos/xolotl.wav", 512);
+  golpeAnubis = minim.loadSample( "data/sonidos/anubis.wav", 512);
   select = minim.loadSample( "data/sonidos/select.wav", 512);
-  finish = minim.loadSample( "data/sonidos/finish.wav", 512);
+  finish = minim.loadSample( "data/sonidos/punchecho.wav", 512);
   punch = minim.loadSample( "data/sonidos/punch.wav", 512);
+  gameover = minim.loadSample( "data/sonidos/gameover.wav", 512);
 
-  aceshigh = minim.loadFile( "data/musica/aceshigh.mp3", 2048);
-  discomedusae = minim.loadFile( "data/musica/discomedusae.mp3", 2048);
-  constancy = minim.loadFile( "data/musica/constancy.mp3", 2048);
-  ontheground = minim.loadFile( "data/musica/ontheground.mp3", 2048);
-  enigma = minim.loadFile( "data/musica/enigma.mp3", 2048);
-  deadlyroulette = minim.loadFile( "data/musica/deadlyroulette.mp3", 2048);
+  musicaSeleccion = minim.loadFile( "data/musica/aceshigh.mp3", 2048);
+  musicaMenuPrincipal = minim.loadFile( "data/musica/discomedusae.mp3", 2048);
+  musicaCallejon = minim.loadFile( "data/musica/retrofutureclean.mp3", 2048);
+  musicaMansion = minim.loadFile( "data/musica/enigma.mp3", 2048);
+  musicaOficina = minim.loadFile( "data/musica/clashdefiant.mp3", 2048);
+  musicaCineMansion = minim.loadFile( "data/musica/unansweredquestions.mp3", 2048);
+  musicaFinal = minim.loadFile( "data/musica/takeachance.mp3", 2048);
+  musicaCineOficina = minim.loadFile( "data/musica/privateeye.mp3", 2048);
+  musicaGameOver = minim.loadFile( "data/musica/gonebeyond.mp3", 2048);
+}
 
-  plaint = minim.loadFile( "data/musica/plaint.mp3", 2048);
-  reunited = minim.loadFile( "data/musica/reunited.mp3", 2048);
-  takeachance = minim.loadFile( "data/musica/takeachance.mp3", 2048);
-  privateeye = minim.loadFile( "data/musica/privateeye.mp3", 2048);
+
+// Funcion global para pausar todos los sonidos que estén cargados
+void pausarMusica() {  
+  musicaMenuPrincipal.pause();
+  musicaSeleccion.pause();
+  musicaCallejon.pause();
+  musicaMansion.pause();
+  musicaOficina.pause();
+  musicaCineMansion.pause();
+  musicaFinal.pause();
+  musicaCineOficina.pause();
+  musicaGameOver.pause();
 }
 
 

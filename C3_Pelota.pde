@@ -145,19 +145,19 @@ class Pelota {
           (tipo == 2 && colorGolpe() == "rojo")) {
           // Se hace daño según que tan cerca se esté del centro.
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 5) {
-            nivel.puntos(25);
+            nivel.puntos(50);
             correcto(4, 15, true);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 13 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 3) {
-            nivel.puntos(15);
+            nivel.puntos(30);
             correcto(3, 6, false);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 35 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 13) {
-            nivel.puntos(10);
+            nivel.puntos(20);
             correcto(2, 4, false);
           } 
           if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) < 50 && dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) > 35) {
-            nivel.puntos(5);
+            nivel.puntos(10);
             correcto(1, 2, false);
           }
         }

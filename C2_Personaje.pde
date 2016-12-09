@@ -19,12 +19,41 @@ class Personaje {  //<>//
       personaje.salud -= damageActual + int((combo * 1.6));
       personaje.proximaAnimacion = "golpeado";
       personaje.golpeRecibido = golpeDado;
+      if (personaje.salud > 0)
+        punch.trigger();
+      else {
+        finish.trigger();
+        pausarMusica();
+      }
     } else if (this.personaje == "baast") {
       damage = damageActual + int((combo * 1.2));
       personaje.salud -= damageActual + int((combo * 1.2));
-    } else {
+      personaje.proximaAnimacion = "golpeado";
+      personaje.golpeRecibido = golpeDado;
+      if (personaje.salud > 0)
+        punch.trigger();
+      else {
+        finish.trigger();
+        pausarMusica();
+      }
+    } else if (this.personaje == "cerbero") {
+      damage = damageActual + int((combo * 1.2));
+      personaje.salud -= damageActual + int((combo * 1.2));
+      golpeCerbero.trigger();
+      if (personaje.salud <= 0)
+        pausarMusica();
+    } else if (this.personaje == "anubis") {
       damage = damageActual + int((combo * 1.4));
       personaje.salud -= damageActual + int((combo * 1.4));
+      golpeAnubis.trigger();
+      if (personaje.salud <= 0)
+        pausarMusica();
+    } else if (this.personaje == "xolotl") {
+      damage = damageActual + int((combo * 1.2));
+      personaje.salud -= damageActual + int((combo * 1.2));
+      golpeXolotl.trigger();
+      if (personaje.salud <= 0)
+        pausarMusica();
     }
   }
   void comboBreak() {
@@ -41,14 +70,15 @@ class Jugador extends Personaje {
 
   PImage[] normal;
   PImage[] gancho;
-  int sprites;
 
-  boolean golpeoDerecha, golpeandoDerecha, direccionAdelante, terminoAnimacion, perfect;
+  boolean golpeoDerecha, golpeandoDerecha, golpeo, direccionAdelante, terminoAnimacion, perfect;
   int frameInicial;
   int spriteActual;
 
+
   int guanteRandom;
   Ease easeGuantes;
+  boolean direccionAbajo;
 
 
   //Constructor
@@ -66,30 +96,44 @@ class Jugador extends Personaje {
     jugador = true;
     puntos = 0;
 
-    sprites = 5;
-    normal = new PImage[sprites];
-    gancho = new PImage[sprites];
+    normal = new PImage[5];
+    gancho = new PImage[7];
 
-    for (int i = 0; i < sprites; i++) {
-      normal[i] = loadImage("data/imagenes/personajes/zarpazo/normal/" + i + ".png");
-      gancho[i] = loadImage("data/imagenes/personajes/zarpazo/gancho/" + i + ".png");
+    for (int i = 0; i < normal.length; i++) {
+      normal[i] = loadImage("data/imagenes/personajes/" + personaje + "/normal/" + i + ".png");
+    }
+    for (int i = 0; i < gancho.length; i++) {
+      gancho[i] = loadImage("data/imagenes/personajes/" + personaje + "/gancho/" + i + ".png");
     }
 
     terminoAnimacion = golpeoDerecha = direccionAdelante = true;
     spriteActual = 0;
 
     easeGuantes = new Ease();
+    direccionAbajo = true;
   }
 
   void dibujar() {
+    easeGuantes.inicializar(0, 0, 0, 0);
+
+    if (direccionAbajo)
+      easeGuantes.target(0, 50);
+    else
+      easeGuantes.target(0, 0);
+
+    easeGuantes.easePos(0.06);
+    if (easeGuantes.listo == false)
+      direccionAbajo = !direccionAbajo;
+
+
     pushMatrix();
     pushStyle();
+    translate(easeGuantes.posX, easeGuantes.posY);
     imageMode(CENTER);
     animacion();
-
     if (!perfect)
-      image(normal[spriteActual], width/2, height - 200, 1200, 800);
-    else image(gancho[spriteActual], width/2, height - 200, 1200, 800);
+      image(normal[spriteActual], width/2, height - 180, 1366, 768);
+    else if (perfect) image(gancho[spriteActual], width/2, height - 180, 1366, 768);
 
     popStyle();
     popMatrix();
@@ -109,90 +153,191 @@ class Jugador extends Personaje {
         golpeoDerecha = false;
     }
 
+    // Se da un golpe con la izquierda
     if (!terminoAnimacion && golpeoDerecha) {
       //println("frame: " + (frameCount - frameInicial));
 
-      if (spriteActual == 0 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
-        direccionAdelante = true;
-        terminoAnimacion = true;
-        golpeoDerecha = false;
-        perfect = false;
-        golpeando = false;
-        //println("termino golpe izquierda");
-      }
-
-      if (spriteActual > 0 && !direccionAdelante) {
-        if ((frameCount - frameInicial) % 3 == 0) { 
-          spriteActual--; 
-          //println(spriteActual);
-        }
-      }
-
-      if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
-
-        direccionAdelante = false;   
-
-        if (perfect)
-          infligirDamage(nivel.enemigo, "izquierdaGancho");
-        else
-          infligirDamage(nivel.enemigo, "izquierda");
-        //println("cambia dirección");
-      }
-
-
-      if (spriteActual < 2 && direccionAdelante && !terminoAnimacion) {
-        if ((frameCount - frameInicial) % 3 == 0) { 
-          spriteActual++;
-          //println(spriteActual);
-        }
-      }
-    }
-
-    if (!terminoAnimacion && !golpeoDerecha) {
-      //println("frame: " + (frameCount - frameInicial));
-      if (!golpeandoDerecha) {
-        golpeandoDerecha = true;
-        //println("Empezo golpe derecha");
-        spriteActual = 3;
-        //println(spriteActual);
-      } else {
-
-        if (spriteActual == 3 && !direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
-          spriteActual = 0;
-          //println(spriteActual);
+      // Si se da un golpe perfecto, el golpe es un gancho
+      if (perfect) {
+        // Si la animación llega al primer frame luego de volver, se reinician los booleanos
+        if (spriteActual == 0 && !direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
           direccionAdelante = true;
           terminoAnimacion = true;
-          golpeoDerecha = true;
-          golpeandoDerecha = false;
+          golpeoDerecha = false;
           perfect = false;
           golpeando = false;
-
-          //println("termino golpe derecha");
+          golpeo = false;
+          println("termino gancho izquierda");
         }
 
-        if (spriteActual > 3 && !direccionAdelante) {
-          if ((frameCount - frameInicial) % 3 == 0) { 
+        // Si se está regresando y todavía no se llegó al primer sprite, se resta uno a spriteActual
+        if (spriteActual > 0 && !direccionAdelante) {
+          if ((frameCount - frameInicial) % 5 == 0) { 
+            spriteActual--; 
+            println(spriteActual);
+          }
+        }
+
+
+        // Si spriteActual llegó al ultimo frame de la mano, se cambia la dirección
+        if (spriteActual == 3 && direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+          direccionAdelante = false;
+          println("cambia dirección");
+        }
+
+        // Si spriteActual es menor al ultimo frame de la mano, se le suma uno a spriteActual
+        if (spriteActual < 3 && direccionAdelante && !terminoAnimacion) {
+          if ((frameCount - frameInicial) % 5 == 0) { 
+            spriteActual++;
+            println(spriteActual);
+          }
+        }
+
+        // Si se llego al frame en el que se golpea, se hace daño al enemigo
+        if (spriteActual == 3 && direccionAdelante && golpeo == false) {
+          infligirDamage(nivel.enemigo, "izquierdaGancho");
+          golpeo = true;
+          println("se da el golpe");
+        }
+      }
+
+      // Sino se da un golpe normal
+      else if (perfect == false) {
+
+        if (spriteActual == 0 && !direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+          direccionAdelante = true;
+          terminoAnimacion = true;
+          golpeoDerecha = false;
+          golpeando = false;
+          perfect = false;
+          golpeo = false;
+          //println("termino golpe izquierda");
+        }
+
+        if (spriteActual > 0 && !direccionAdelante) {
+          if ((frameCount - frameInicial) % 5 == 0) { 
             spriteActual--; 
             //println(spriteActual);
           }
         }
 
-        if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 3 == 0) {
-          direccionAdelante = false;   
 
-          if (perfect)
-            infligirDamage(nivel.enemigo, "derechaGancho");
-          else
-            infligirDamage(nivel.enemigo, "derecha");
 
-          //println("cambia direccion");
+        if (spriteActual == 2 && direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+          direccionAdelante = false;
         }
 
 
-        if (spriteActual < 4 && direccionAdelante && !terminoAnimacion) {
-          if ((frameCount - frameInicial) % 3 == 0) { 
+        if (spriteActual < 2 && direccionAdelante && !terminoAnimacion) {
+          if ((frameCount - frameInicial) % 5 == 0) { 
             spriteActual++;
             //println(spriteActual);
+          }
+        }
+
+        if (spriteActual == 2 && direccionAdelante && golpeo == false) {
+          infligirDamage(nivel.enemigo, "izquierda");
+
+          golpeo = true;
+        }
+      }
+    }
+
+    if (!terminoAnimacion && !golpeoDerecha) {
+      if (perfect) {
+        //println("frame: " + (frameCount - frameInicial));
+        if (!golpeandoDerecha) {
+          golpeandoDerecha = true;
+          //println("Empezo golpe derecha");
+          spriteActual = 4;
+          //println(spriteActual);
+        } else {
+
+          if (spriteActual == 4 && !direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+            spriteActual = 0;
+            //println(spriteActual);
+            direccionAdelante = true;
+            terminoAnimacion = true;
+            golpeoDerecha = true;
+            golpeandoDerecha = false;
+            perfect = false;
+            golpeando = false;
+            golpeo = false;
+
+            //println("termino golpe derecha");
+          }
+
+          if (spriteActual > 4 && !direccionAdelante) {
+            if ((frameCount - frameInicial) % 5 == 0) { 
+              spriteActual--; 
+              //println(spriteActual);
+            }
+          }
+
+          if (spriteActual == 6 && direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+            direccionAdelante = false;   
+            //println("cambia direccion");
+          }
+
+
+          if (spriteActual < 6 && direccionAdelante && !terminoAnimacion) {
+            if ((frameCount - frameInicial) % 5 == 0) { 
+              spriteActual++;
+              //println(spriteActual);
+            }
+          }
+          if (spriteActual == 6 && direccionAdelante && golpeo == false) {
+            infligirDamage(nivel.enemigo, "izquierda");
+
+            golpeo = true;
+          }
+        }
+      } else {
+        //println("frame: " + (frameCount - frameInicial));
+        if (!golpeandoDerecha) {
+          golpeandoDerecha = true;
+          //println("Empezo golpe derecha");
+          spriteActual = 3;
+          //println(spriteActual);
+        } else {
+
+          if (spriteActual == 3 && !direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+            spriteActual = 0;
+            //println(spriteActual);
+            direccionAdelante = true;
+            terminoAnimacion = true;
+            golpeoDerecha = true;
+            golpeandoDerecha = false;
+            perfect = false;
+            golpeando = false;
+            golpeo = false;
+
+            //println("termino golpe derecha");
+          }
+
+          if (spriteActual > 3 && !direccionAdelante) {
+            if ((frameCount - frameInicial) % 5 == 0) { 
+              spriteActual--; 
+              //println(spriteActual);
+            }
+          }
+
+          if (spriteActual == 4 && direccionAdelante && (frameCount - frameInicial) % 5 == 0) {
+            direccionAdelante = false;   
+            //println("cambia direccion");
+          }
+
+
+          if (spriteActual < 4 && direccionAdelante && !terminoAnimacion) {
+            if ((frameCount - frameInicial) % 5 == 0) { 
+              spriteActual++;
+              //println(spriteActual);
+            }
+          }
+          if (spriteActual == 4 && direccionAdelante && golpeo == false) {
+            infligirDamage(nivel.enemigo, "izquierda");
+
+            golpeo = true;
           }
         }
       }
@@ -232,7 +377,7 @@ class Enemigo extends Personaje {
     // Se inicializan las variables propias de cada personaje
     switch (personaje) {
     case "cerbero":
-      salud = saludMaxima = 6000;
+      salud = saludMaxima = 4500;
 
       // Cantidad de imagenes
       pasivoCount = 6;
@@ -241,21 +386,21 @@ class Enemigo extends Personaje {
       break;
 
     case "anubis":
-      salud = saludMaxima = 7000;
+      salud = saludMaxima = 5500;
 
       // Cantidad de imagenes
-      pasivoCount = 6;
-      golpeandoCount = 6;
+      pasivoCount = 7;
+      golpeandoCount = 5;
       golpeadoCount =  4;
       break;
 
 
     case "xolotl":
-      salud = saludMaxima = 9000;
+      salud = saludMaxima = 7000;
 
       // Cantidad de imagenes
-      pasivoCount = 6;
-      golpeandoCount = 6;
+      pasivoCount = 5;
+      golpeandoCount = 9;
       golpeadoCount =  4;
       break;
     }
@@ -340,7 +485,12 @@ class Enemigo extends Personaje {
       if ((frameCount - frameInicial) % 7 == 0 && terminoAnimacion == false && spriteActual < golpeando.length -1 )
         spriteActual++;
 
-      if (frameCount - frameInicial == 7 * 4) {
+      if (frameCount - frameInicial == 7 * 4 && (personaje == "cerbero" || personaje == "xolotl")) {
+        nivel.fallar = 30;
+        infligirDamage(nivel.jugador, null);
+      }
+
+      if (frameCount - frameInicial == 7 * 1 && personaje == "anubis") {
         nivel.fallar = 30;
         infligirDamage(nivel.jugador, null);
       }

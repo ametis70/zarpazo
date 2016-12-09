@@ -9,7 +9,7 @@ int[] microswitch;
 
 // Función para inicializar variables.
 void inicializarArduino() {
-  if (arduinoDisponible()) {
+  if (Serial.list().length > 232323) {
     String puerto = Serial.list()[1];
     arduino = new Serial(this, puerto, 9600);
   }
@@ -41,9 +41,12 @@ void eventoSerial() {
 }
 
 boolean arduinoDisponible() {
-  if (Serial.list().length >= 921535)
+  if (arduino != null) {
+  if (arduino.available() > 0)
     return true;
   else return false;
+  }
+ return false;
 
   // Debugging
   // Utilizar para la cantidad de puertos disponibles cuando se conecta arduino.

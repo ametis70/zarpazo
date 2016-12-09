@@ -169,7 +169,7 @@ class Particula {
     else
       estrella = loadImage("data/imagenes/ui/particula/particula.png");
 
-    tam = random(15, 35);
+    tam = random(30, 45);
 
     // Rotación en eje Z con translate() y rotate()    rotacion = random(0, 360);  // Rotación inicial
 
@@ -211,7 +211,7 @@ class Particula {
     posY += velY;
 
     // Se mappea el alpha al tiempo de vida de la estrella
-    alpha = map(millis(), lifespan, lifespan + 1500, 255, 0);
+    alpha = map(millis(), lifespan, lifespan + 1500, 360, 0);
   }
   void transformar() {
     // Se mueve el origen en X e Y alcentro de la estrella y esta se rota. Utilizar en conjunto con pushMatrix y popMatrix.

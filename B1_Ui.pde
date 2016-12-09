@@ -46,11 +46,11 @@ class Ui {
       jugador.dibujar();
       popStyle();
       pushStyle();
-      textMode(CENTER);
+      textAlign(CENTER, CENTER);
       fill(360);
       textFont(fuenteNeon);
-      textSize(50);
-      text(juego.puntajeJugador, width/2, 50);
+      textSize(32);
+      text(nf(juego.puntajeJugador, 8), width/2, 50);
       popStyle();
 
 

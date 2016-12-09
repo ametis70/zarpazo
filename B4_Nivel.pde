@@ -24,6 +24,7 @@ class Nivel {
 
   boolean musicaNivel;
 
+
   // Constructor
   Nivel(String background, String gato, String perro, String siguienteEtapa) {
 
@@ -67,30 +68,39 @@ class Nivel {
     switch (juego.etapaActual) {
 
     case "callejon":
+      if (musicaNivel == true)
+        pausarMusica();
+
       if (musicaNivel) {
-        ontheground.loop();
+        musicaCallejon.loop();
         musicaNivel = false;
       }
       if (finKO == true)
-        ontheground.pause();
+        pausarMusica();
       break;
 
     case "mansion": 
+      if (musicaNivel == true)
+        pausarMusica();
+
       if (musicaNivel) {
-        enigma.loop();
+        musicaMansion.loop();
         musicaNivel = false;
       }
       if (finKO == true)
-        enigma.pause();
+        pausarMusica();
       break;
 
     case "oficina":
+      if (musicaNivel == true)
+        pausarMusica();
+
       if (musicaNivel) {
-        deadlyroulette.loop();
+        musicaOficina.loop();
         musicaNivel = false;
       }
       if (finKO == true)
-        deadlyroulette.pause();
+        pausarMusica();
       break;
     }
 
@@ -150,7 +160,7 @@ class Nivel {
         alphaGlobo+=5;
         alphaEnemigoZero = false;
         imageMode(CENTER);
-        image(globoDialogoFinal, width/2 - 50, height/2 + 100, 344, 193.6);
+        image(globoDialogoFinal, width/2 + 50, height/2, 344, 193.6);
       }
 
       if (alphaGlobo >= 255) {
@@ -201,6 +211,7 @@ class Nivel {
 
     if (termino) {
       if (jugador.salud <= 0) {
+        gameover.trigger();
         cortina.activar("out");
         cortina.fadeOut("gameover");
       } else if (enemigo.salud <= 0) {
@@ -228,16 +239,17 @@ class Nivel {
   }
 
   void puntos (int ultimoGolpe) {
-    juego.puntajeJugador += ultimoGolpe;
-    if (jugador.combo != 0) { 
-      if (jugador.combo == 2)
-        juego.puntajeJugador *= 1.1;
-      if (jugador.combo == 3)
-        juego.puntajeJugador *= 1.2;
-      if (jugador.combo == 4)
-        juego.puntajeJugador *= 1.3;
-      if (jugador.combo <= 5)
-        juego.puntajeJugador *= 1.4;
+    if (jugador.personaje == "zarpazo") {
+      if (jugador.combo == 0 )
+        juego.puntajeJugador += ultimoGolpe;
+      else
+        juego.puntajeJugador += ultimoGolpe * jugador.combo;
+    }
+    if (jugador.personaje == "baast") {
+      if (jugador.combo == 0 )
+        juego.puntajeJugador += ultimoGolpe * 1.5;
+      else
+        juego.puntajeJugador += ultimoGolpe * jugador.combo * 1.5;
     }
   }
 }

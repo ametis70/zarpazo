@@ -81,8 +81,10 @@ private class Juego {
       cinematicaMansion.dibujar("mansion");
     } else if (etapaActual == "mansion") {
       // Se crea el objeto de la mansión
-      if (mansion == null) 
+      if (mansion == null) {
         mansion = new Nivel("mansion", callejon.jugador.personaje, "anubis", "cinematicaOficina");
+        puntajeJugador += 10000;
+      }
 
       // Se dibuja el nivel
       mansion.dibujar();
@@ -98,8 +100,10 @@ private class Juego {
       cinematicaOficina.dibujar("oficina");
     } else if (etapaActual == "oficina") {
       // Se crea el objeto de la oficina
-      if (oficina == null) 
+      if (oficina == null) {
         oficina = new Nivel("oficina", mansion.jugador.personaje, "xolotl", "cinematicaFinal");
+        puntajeJugador += 20000;
+      }
 
       // Se destruye el objeto de la mansion y de la anterior cinematica
       if (mansion != null || cinematicaMansion != null ||  cinematicaOficina != null) {
@@ -135,53 +139,59 @@ private class Juego {
   void debugging() {
 
     // Si se aprieta "r", se reinicia el juego
-    if (key == 'r')
+    if (key == 'r') {
+      pausarMusica();
       juego = new Juego();
+    }
 
     // Si se aprieta 1, se va al nivel 1. Lo mismo para los botones 2 y 3.
     if (key == '1') {
-      discomedusae.pause();
+      pausarMusica();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "callejon";
     }
 
     if (key == '2') {
-      discomedusae.pause();
+      pausarMusica();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "mansion";
     }
 
     if (key == '3') {
-      discomedusae.pause();
+      pausarMusica();
       juego.menuSeleccion = new MenuSeleccion();
       juego.menuSeleccion.personaje = "zarpazo";
       juego.etapaActual = "oficina";
     }
 
     if (key == '4') {
-      discomedusae.pause();
+      pausarMusica();
       juego.etapaActual = "cinematicaCallejon";
     }
     if (key == '5') {
-      discomedusae.pause();
+      pausarMusica();
       juego.etapaActual = "cinematicaMansion";
     }
 
     if (key == '6') {
-      discomedusae.pause();
+      pausarMusica();
+      juego.menuSeleccion = new MenuSeleccion();
+      juego.menuSeleccion.personaje = "zarpazo";
+      callejon = new Nivel("callejon", menuSeleccion.personaje, "cerbero", "cinematicaMansion");
+      mansion = new Nivel("mansion", callejon.jugador.personaje, "anubis", "cinematicaOficina");
       juego.etapaActual = "cinematicaOficina";
     }
 
     if (key == '7') {
-      discomedusae.pause();
+      pausarMusica();
       juego.etapaActual = "cinematicaFinal";
     }
 
     if (key == '8') {
-      discomedusae.pause();
-      juego.etapaActual = "victoria";
+      pausarMusica();
+      juego.etapaActual = "gameover";
       menuFin = new MenuFin();
       menuFin.dibujar();
     }

@@ -5,10 +5,10 @@ Juego juego;
 void setup() {
   // Se utiliza P2D como renderer para aprovechar la aceleración por hardware.
   //size(1368, 768, P2D);
-  fullScreen(FX2D); 
+  fullScreen(P2D); 
 
   // Se crea el objeto del juego. Todos los objetos se crean a partir de este.
-  juego = new Juego();             
+  juego = new Juego();      
 
   // Cambiamos el espacio de color a HSB para tener más control.
   colorMode(HSB, 360, 100, 100);   
@@ -31,8 +31,6 @@ void setup() {
 
 void draw() {
   juego.dibujar();
-  fill(255);
-  text(frameRate, width/ 2, height / 2);
 }
 
 // Tecla para reiniciar el juego

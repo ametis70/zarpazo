@@ -51,6 +51,7 @@ class Cinematica {
     cortina = new Cortina(255);
     ease = new Ease();
 
+
     musica = true;
   }
 
@@ -68,21 +69,29 @@ class Cinematica {
 
 
     if (juego.etapaActual == "cinematicaMansion") {
+      if (musica)
+        pausarMusica();
+
       if (musica) {
-        reunited.loop();
+        musicaCineMansion.loop();
         musica = false;
       }
+      if (ease.movimiento == 16)
+        pausarMusica();
     }
 
     if (juego.etapaActual == "cinematicaOficina") {
+      if (musica)
+        pausarMusica();
+
       if (musica) {
-        privateeye.loop();
+        musicaCineOficina.loop();
         musica = false;
       }
     }
     if (juego.etapaActual == "cinematicaFinal") {
       if (musica) {
-        takeachance.loop();
+        musicaFinal.loop();
         musica = false;
       }
     }
@@ -131,9 +140,8 @@ class Cinematica {
     // Si no pasaron 3 segundos(pero pasaron mas de 250ms) y se golpea nuevamente, se saltea la escena
     if (golpe() && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 250 && !termino) {
       select.trigger();
-      discomedusae.pause();
-      reunited.pause();
-      privateeye.pause();
+      if (juego.etapaActual != "cinematicaFinal")
+        pausarMusica();
       termino = true;
     }
 
@@ -408,7 +416,7 @@ class Cinematica {
 
         ease(2, 5349.778, 3677.17, "tam");
 
-        if (ease.movimiento == 2 && ease.listo == false)
+        if (ease.movimiento == 2 && ease.listo == false )
           ease.movimiento++;
 
         ease(3, -1380, -180, "pos");
@@ -430,17 +438,22 @@ class Cinematica {
 
         if (ease.movimiento == 6 && ease.listo == false)
           ease.movimiento++;
-        ease(7, -980, -60, "pos");
+        ease(7, -3620, -740, "pos");
 
         if (ease.movimiento == 7 && ease.listo == false)
           ease.movimiento++;
 
-        ease(8, 2345.268, 1612.02, "tam");
+        ease(8, 0, -820, "pos");
 
         if (ease.movimiento == 8 && ease.listo == false)
           ease.movimiento++;
 
-        ease(9, 0, -820, "pos");
+
+
+
+        ease(9, 2345.268, 1612.02, "tam");
+
+
 
         if (ease.movimiento == 9 && ease.listo == false)
           dialogo(0, 200, 46, 34);                          // "Se acabo, Xolotl(...)"
