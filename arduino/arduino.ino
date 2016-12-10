@@ -48,7 +48,7 @@ void enviarDatos() {
   //  Serial.print(pin5, DEC);    // Naranja
   Serial.print(",");
   Serial.println();
-  delay(30);
+  delay(5);
 }
 
 

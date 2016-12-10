@@ -7,9 +7,9 @@ Serial arduino;
 char HEADER;
 int[] microswitch;
 
-// Función para inicializar variables.
+// Función para inicializar variables. Cambiar el numero en el if(Serial.list().length > 100) a 0 para usar Arduino
 void inicializarArduino() {
-  if (Serial.list().length > 232323) {
+  if (Serial.list().length > 100) {
     String puerto = Serial.list()[1];
     arduino = new Serial(this, puerto, 9600);
   }

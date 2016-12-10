@@ -45,9 +45,9 @@ class MenuStart extends Menu {
 
   MenuStart(Leaderboard leaderboard) { 
 
-    this.leaderboard = leaderboard;
+    //this.leaderboard = leaderboard;
 
-    leaderboard = new Leaderboard();
+    //leaderboard = new Leaderboard();
     textoAlpha = 0;
     textoAlphaDireccion = true;
 
@@ -119,7 +119,8 @@ class MenuStart extends Menu {
     }
 
     // Se dibuja el leaderboard  
-    leaderboard.dibujar(250, height-170, 24);
+    if (leaderboard != null)
+      leaderboard.dibujar(250, height-170, 24);
 
     // Se dibuja la cortina para el fadeout
     cortina.dibujar();
@@ -188,10 +189,18 @@ class MenuSeleccion extends Menu {
     // Se dibuja el fondo(con el personaje seleccionado)
     if (actual == "")
       image(seleccion, 0, 0, width, height);
-    if (actual == "azul") 
+    if (actual == "azul") {
       image(zarpazo, 0, 0, width, height);
-    if (actual == "rojo") 
+      fill(360);
+      textAlign(CENTER);
+      text("FÁCIL", width / 2, 60);
+    }
+    if (actual == "rojo") {
       image(baast, 0, 0, width, height);
+      fill(360);
+      textAlign(CENTER);
+      text("DIFÍCIL", width / 2, 60);
+    }
 
     // Si se golpea una bolsa(verde o azul) por primera vez, se activa marca un personaje
     if (terminoFadeIn && !empezarFadeOut) {
@@ -364,7 +373,7 @@ class MenuFin extends Menu {
     textFont(fuenteNeon);
     textAlign(RIGHT);
     textSize(90);
-    text(puntajeFinal, 1030, 737);
+    text(puntajeFinal, 1030, 736);
     popStyle();
     cortina.dibujar();
     contador++;

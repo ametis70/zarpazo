@@ -4,7 +4,7 @@ private class Juego {
   MenuSeleccion menuSeleccion;
   MenuTutorial menuTutorial;
   MenuFin menuFin;
-  Leaderboard leaderboard;
+  //Leaderboard leaderboard;
 
   int puntajeJugador;
 
@@ -22,7 +22,6 @@ private class Juego {
 
     // El juego comienza en el menú. Los diferentes valores se escriben en minúscula.
     etapaActual = "menuStart";
-
     puntajeJugador = 0;
   }
 
@@ -39,8 +38,8 @@ private class Juego {
     if (etapaActual == "menuStart") {
       // Si el objeto menú no se creó todavía, este se crea. También el del Leaderboard
       if (menuStart == null) {
-        leaderboard = new Leaderboard();
-        menuStart = new MenuStart(leaderboard);
+        //leaderboard = new Leaderboard();
+        menuStart = new MenuStart(null);
       }
 
       // Se dibuja el menú
@@ -212,7 +211,15 @@ private class Juego {
 
     // Si se aprieta "j", el jugador pierde vida hasta quedar en 5.
     if (key == 'j') {
-      juego.callejon.ui.jugador.salud = 5;
+      if (callejon != null) {
+        juego.callejon.ui.jugador.salud = 5;
+      }
+      if (mansion!= null) {
+        juego.mansion.ui.jugador.salud = 5;
+      }
+      if (oficina != null) {
+        juego.oficina.ui.jugador.salud = 5;
+      }
     }
   }
 }

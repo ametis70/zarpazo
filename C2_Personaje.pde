@@ -377,7 +377,7 @@ class Enemigo extends Personaje {
     // Se inicializan las variables propias de cada personaje
     switch (personaje) {
     case "cerbero":
-      salud = saludMaxima = 4500;
+      salud = saludMaxima = 2500;
 
       // Cantidad de imagenes
       pasivoCount = 6;
@@ -386,7 +386,7 @@ class Enemigo extends Personaje {
       break;
 
     case "anubis":
-      salud = saludMaxima = 5500;
+      salud = saludMaxima = 3400;
 
       // Cantidad de imagenes
       pasivoCount = 7;
@@ -396,7 +396,7 @@ class Enemigo extends Personaje {
 
 
     case "xolotl":
-      salud = saludMaxima = 7000;
+      salud = saludMaxima = 5000;
 
       // Cantidad de imagenes
       pasivoCount = 5;
