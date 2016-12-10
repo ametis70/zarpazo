@@ -8,7 +8,7 @@ El club Bolsa de Gatos es el escenario de la final de un torneo de boxeo clandes
 ### Sobre el proyecto
 ![Stand](http://i.imgur.com/ntq7lG2.jpg)
 
-Este es un videojuego que se realizó utilizando [Processing](https://processing.org/) y [Arduino](https://arduino.cc) para la décima muestra de fin de año de Taller de Diseño Multimedial 1 de la [Universidad Nacional de La Plata](www.unlp.edu.ar).
+Este es un videojuego que se realizó utilizando [Processing](https://processing.org/) y [Arduino](https://arduino.cc) para la décima muestra de fin de año de Taller de Diseño Multimedial 1 de la [Universidad Nacional de La Plata](http://www.unlp.edu.ar).
 
 La temática de los videojuegos de este año fueron probervios, y él que fue asignado a nuestro grupo fue "Es una bolsa de gatos". 
 
