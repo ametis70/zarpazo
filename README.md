@@ -1,6 +1,6 @@
 # Zarpazo 
  
-![Logo](http://i.imgur.com/lNvYXpd.png)
+![Logo](http://i.imgur.com/crCGdXB.jpg)
 
 El club Bolsa de Gatos es el escenario de la final de un torneo de boxeo clandestino.Todo se vuelve aún más violento cuando la mafia irrumpe y lo sabotea.
 ¡Elegí a tu luchador y recuperá el trofeo en Zarpazo!
@@ -8,11 +8,11 @@ El club Bolsa de Gatos es el escenario de la final de un torneo de boxeo clandes
 ### Sobre el proyecto
 ![Stand](http://i.imgur.com/ntq7lG2.jpg)
 
-Este es un videojuego que se realizó utilizando [Processing](https://processing.org/) y [Arduino](https://arduino.cc) para la décima muestra de fin de año de Taller de Diseño Multimedial 1 de la [Universidad Nacional de La Plata](www.unlp.edu.ar).
+Este es un videojuego que se realizó utilizando [Processing](https://processing.org/) y [Arduino](https://arduino.cc) para la décima muestra de fin de año de Taller de Diseño Multimedial 1 de la [Universidad Nacional de La Plata](http://www.unlp.edu.ar).
 
-La temática de los videojuegos de este año fueron probervios, y él que fue asignado a nuestro grupo fue "Es una bolsa de gatos" 
+La temática de los videojuegos de este año fueron probervios, y él que fue asignado a nuestro grupo fue "Es una bolsa de gatos". 
 
-Parte de la consigna era que los videojuegos debían tener una interacción no convencional, que se resolvió utilizando microswitches que eran presionados por bolsas que el jugador debe golpear.
+Parte de la consigna era que los videojuegos debían poseer una interacción no convencional, que se resolvió utilizando microswitches que eran presionados por bolsas que el jugador debe golpear.
 
 Acá se puede ver un vídeo del juego en acción: [link a YouTube](https://www.youtube.com/watch?v=CN1-HlIt3Nw).
 
