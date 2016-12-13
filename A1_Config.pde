@@ -1,6 +1,4 @@
 // Librerías
-import controlP5.*;
-
 import ddf.minim.*;
 Minim minim;
 
