@@ -23,6 +23,8 @@ class Nivel {
   String siguienteEtapa;
 
   boolean musicaNivel;
+  
+  boolean delay;
 
 
   // Constructor
@@ -57,7 +59,8 @@ class Nivel {
     globoDialogoFinal = loadImage("data/imagenes/globosDialogo/" + enemigo.personaje +"/final/" + numeroGlobos + ".png");
 
     minim = new Minim(this);
-
+  
+    delay = true;
 
 
     musicaNivel = true;
@@ -152,11 +155,12 @@ class Nivel {
         finalListo = true;
       }
 
-      if (colorEnemigo >= 350 && finalListo == true) {
+      if (colorEnemigo >= 255 && finalListo == true) {
         if (globoDialogoInicio != null) {
           globoDialogoInicio = null;
         }
         tint(360, alphaGlobo);
+        println(alphaGlobo);
         alphaGlobo+=5;
         alphaEnemigoZero = false;
         imageMode(CENTER);
@@ -164,6 +168,10 @@ class Nivel {
       }
 
       if (alphaGlobo >= 255) {
+        if (delay) {
+          delay(3000);
+          delay = false;
+        }
         finKO = true;
       }
     }

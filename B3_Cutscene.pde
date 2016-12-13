@@ -97,7 +97,7 @@ class Cinematica {
     }
 
     // Se dibuja el comic
-    background(0, 0, 100);
+    background(0, 0, 0);
     image(comic, posX, posY, tamX, tamY);
 
     mover();
@@ -110,6 +110,8 @@ class Cinematica {
     if (termino) {
       cortina.activar("out");
       cortina.fadeOut(proxima);
+      if (juego.etapaActual != "cinematicaFinal")
+        pausarMusica();
     }
   }
 
@@ -140,8 +142,6 @@ class Cinematica {
     // Si no pasaron 3 segundos(pero pasaron mas de 250ms) y se golpea nuevamente, se saltea la escena
     if (golpe() && millis() < tiempoInicial + 3000 && millis() > tiempoInicial + 250 && !termino) {
       select.trigger();
-      if (juego.etapaActual != "cinematicaFinal")
-        pausarMusica();
       termino = true;
     }
 

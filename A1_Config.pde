@@ -1,14 +1,8 @@
 // Librerías
 import controlP5.*;
-ControlP5 cp5;
 
 import ddf.minim.*;
 Minim minim;
-
-// c5p(Interfaz)
-void c5p() {
-  cp5 = new ControlP5(this);
-}
 
 // Sonido
 

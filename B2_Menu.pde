@@ -458,25 +458,6 @@ class Leaderboard {
     }
   }
 
-  void crearCampoTexto() {
-    cp5.addTextfield("input")
-      .setPosition(width / 2, height /2 )
-      .setSize(200, 40)
-      .setFont(fuenteJuego)
-      .setFocus(true)
-      .setColor(color(255, 255, 255));
-  }
-
-  void enviar() {
-    if (keyPressed && listo)
-      if (key == TAB) {
-        listo = false;
-        nombre = cp5.get(Textfield.class, "input").getText();
-        cp5.remove("input");
-        nuevoNombre = true;
-      }
-  }
-
   void agregarPuntaje(Jugador jugador) {
     if (nuevoNombre == true) {
       TableRow newRow = tabla.addRow();

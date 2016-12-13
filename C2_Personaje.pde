@@ -287,7 +287,7 @@ class Jugador extends Personaje {
             }
           }
           if (spriteActual == 6 && direccionAdelante && golpeo == false) {
-            infligirDamage(nivel.enemigo, "izquierda");
+            infligirDamage(nivel.enemigo, "derechaGancho");
 
             golpeo = true;
           }
@@ -335,7 +335,7 @@ class Jugador extends Personaje {
             }
           }
           if (spriteActual == 4 && direccionAdelante && golpeo == false) {
-            infligirDamage(nivel.enemigo, "izquierda");
+            infligirDamage(nivel.enemigo, "derecha");
 
             golpeo = true;
           }
@@ -503,6 +503,7 @@ class Enemigo extends Personaje {
         break;
       case "derecha":
         spriteActual = 0;
+        //aaaaa
         break;
       case "izquierdaGancho":
         spriteActual = 3;
@@ -514,7 +515,7 @@ class Enemigo extends Personaje {
       if ((frameCount - frameInicial) % 16 == 15 && !terminoAnimacion && salud > 0) {
         terminoAnimacion = true;
         golpeRecibido = "";
-        proximaAnimacion = "pasivo";
+        proximaAnimacion = "pasivo"; 
       }
     }
   }

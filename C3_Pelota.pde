@@ -162,16 +162,20 @@ class Pelota {
           }
         }
         // Pero si se toca la bolsa equivocada, se recibe daño
-        if ((tipo == 0 && (colorGolpe() == "azul") == false) ||
-          (tipo == 1 && (colorGolpe() == "verde") == false) ||
-          (tipo == 2 && (colorGolpe() == "rojo") == false)) {
-          incorrecto();
+        if (nivel.enemigo.salud > 0) {
+          if ((tipo == 0 && (colorGolpe() == "azul") == false) ||
+            (tipo == 1 && (colorGolpe() == "verde") == false) ||
+            (tipo == 2 && (colorGolpe() == "rojo") == false)) {
+            incorrecto();
+          }
         }
       }
 
       // Si la pelota pasa y no se pulsa ninguna bolsa, se recibe daño.
-      if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) >= tam / 2) {
-        incorrecto();
+      if (nivel.enemigo.salud > 0) {
+        if (dist(posX, posY, nivel.ui.mira.posX, nivel.ui.mira.posY) >= tam / 2) {
+          incorrecto();
+        }
       }
     }
   }
