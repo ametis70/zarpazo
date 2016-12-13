@@ -16,7 +16,9 @@ Parte de la consigna era que los videojuegos debían poseer una interacción no 
 
 Acá se puede ver un vídeo del juego en acción: [link a YouTube](https://www.youtube.com/watch?v=CN1-HlIt3Nw).
 
-### El Staff ([Versión en wallpaper](http://i.imgur.com/HdKqGTs.png))
+Se puede descargar una versión compilada para Windows de 64 bits en [este link](https://github.com/Ianmethyst/zarpazo/releases/tag/1.0.0).
+
+### El Staff ([versión en wallpaper](http://i.imgur.com/Gd75QCb.png)).
 
 ![Staff](http://i.imgur.com/2hGjJP6.jpg)
 
