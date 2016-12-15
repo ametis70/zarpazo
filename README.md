@@ -47,7 +47,7 @@ En caso de que se descargue el código fuente del juego, hay que descargar prime
 
 Los controles para jugar con el teclado son la A para el azul, la S para el verde y la D para el rojo.
 
-El juego está diseñado para que solo funcione en una resolución de 1366x768. En caso de que se modficara esto, habría que cambiar muchas posisciones y tamaños absolutos.
+El juego está diseñado para que solo funcione en una resolución de 1366x768. En caso de que se modficara esto, habría que cambiar muchas posiciones y tamaños absolutos.
 
 En el PCB(o el esquemático) de KiCad, los pines del conector que van a tierra y 5V están mal conectados, por lo que hay que cambiarlos antes de imprimir una placa.
 
