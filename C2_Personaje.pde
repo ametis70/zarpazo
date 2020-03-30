@@ -406,8 +406,8 @@ class Enemigo extends Personaje {
     }
 
     // Se cargan las imagenes de intro y ending
-    intro = loadImage("/data/imagenes/personajes/" + personaje + "/intro.png");
-    vencido = loadImage("/data/imagenes/personajes/" + personaje + "/vencido.png");
+    intro = loadImage("data/imagenes/personajes/" + personaje + "/intro.png");
+    vencido = loadImage("data/imagenes/personajes/" + personaje + "/vencido.png");
 
     // Se inicializan los tamaños de los arreglos
     pasivo = new PImage[pasivoCount];
